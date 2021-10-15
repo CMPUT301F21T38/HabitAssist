@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2021-10-15T00:24:28.082Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36" etag="0rD2UDibC5Z9QOK_Bvwr" version="15.5.2" type="github">
+<mxfile host="app.diagrams.net" modified="2021-10-15T00:26:19.705Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.1 Safari/605.1.15" etag="bi4LFDcju9N9Nk4tD5KP" version="15.5.2" type="github">
   <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
-    <mxGraphModel dx="1038" dy="555" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="946" dy="662" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-0" />
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-1" parent="WIyWlLk6GJQsqaUBKTNV-0" />
@@ -13,7 +13,7 @@
         <mxCell id="Yk_99B-b_8awWAHzNRga-2" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="Yk_99B-b_8awWAHzNRga-0" vertex="1">
           <mxGeometry y="290" width="260" height="18" as="geometry" />
         </mxCell>
-        <mxCell id="Yk_99B-b_8awWAHzNRga-3" value="Collaborators" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="Yk_99B-b_8awWAHzNRga-0" vertex="1">
+        <mxCell id="Yk_99B-b_8awWAHzNRga-3" value="Collaborators&#xa;- HabitEvent&#xa;- Profile&#xa;- Visual Indicator" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="Yk_99B-b_8awWAHzNRga-0" vertex="1">
           <mxGeometry y="308" width="260" height="70" as="geometry" />
         </mxCell>
         <mxCell id="Yk_99B-b_8awWAHzNRga-29" value="HabitEvent" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
