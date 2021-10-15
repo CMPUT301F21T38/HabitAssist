@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2021-10-15T00:17:17.025Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.1 Safari/605.1.15" etag="D5ZZ3F9bKREfB5tOVLeY" version="15.3.4" type="github">
+<mxfile host="app.diagrams.net" modified="2021-10-15T00:20:29.823Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36" etag="3Zi0GV_KpGLuGD_N7ria" version="15.3.5" type="github">
   <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
-    <mxGraphModel dx="946" dy="662" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="946" dy="646" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-0" />
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-1" parent="WIyWlLk6GJQsqaUBKTNV-0" />
@@ -17,16 +17,16 @@
           <mxGeometry y="98" width="160" height="70" as="geometry" />
         </mxCell>
         <mxCell id="Yk_99B-b_8awWAHzNRga-29" value="HabitEvent" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
-          <mxGeometry x="520" y="40" width="160" height="168" as="geometry" />
+          <mxGeometry x="520" y="40" width="160" height="318" as="geometry" />
         </mxCell>
-        <mxCell id="Yk_99B-b_8awWAHzNRga-30" value="Responsibilities" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="Yk_99B-b_8awWAHzNRga-29" vertex="1">
-          <mxGeometry y="26" width="160" height="54" as="geometry" />
+        <mxCell id="Yk_99B-b_8awWAHzNRga-30" value="Responsibilities&#xa;&#xa;*Attributes&#xa;    -Habit&#xa;    -Date&#xa;    -HabitOccurence&#xa;    -Photo(Optional)&#xa;    -Comment(Optional)&#xa;    -MapLocation(Optional)&#xa;&#xa;*Methods&#xa;    -View event details&#xa;    -Edit&#xa;    -Share event on profile&#xa;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="Yk_99B-b_8awWAHzNRga-29" vertex="1">
+          <mxGeometry y="26" width="160" height="204" as="geometry" />
         </mxCell>
         <mxCell id="Yk_99B-b_8awWAHzNRga-31" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="Yk_99B-b_8awWAHzNRga-29" vertex="1">
-          <mxGeometry y="80" width="160" height="18" as="geometry" />
+          <mxGeometry y="230" width="160" height="18" as="geometry" />
         </mxCell>
         <mxCell id="Yk_99B-b_8awWAHzNRga-32" value="Collaborators&#xa;- Habit&#xa;- Profile" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="Yk_99B-b_8awWAHzNRga-29" vertex="1">
-          <mxGeometry y="98" width="160" height="70" as="geometry" />
+          <mxGeometry y="248" width="160" height="70" as="geometry" />
         </mxCell>
         <mxCell id="Yk_99B-b_8awWAHzNRga-33" value="Profile" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="120" y="300" width="220" height="428" as="geometry" />
@@ -41,7 +41,7 @@
           <mxGeometry y="358" width="220" height="70" as="geometry" />
         </mxCell>
         <mxCell id="Yk_99B-b_8awWAHzNRga-37" value="Visual Indicator" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
-          <mxGeometry x="520" y="320" width="270" height="288" as="geometry" />
+          <mxGeometry x="450" y="570" width="270" height="288" as="geometry" />
         </mxCell>
         <mxCell id="Yk_99B-b_8awWAHzNRga-38" value="Responsibilities&#xa;&#xa;* Attributes:&#xa;    * Habit&#xa;    * WellnessPercentage&#xa;    * List of HabitEvents&#xa;&#xa;* Methods:&#xa;    * Formulate a wellnessPercentage from &#xa;      a list of habit events of a particular habit&#xa;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="Yk_99B-b_8awWAHzNRga-37" vertex="1">
           <mxGeometry y="26" width="270" height="174" as="geometry" />
