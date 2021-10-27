@@ -34,4 +34,15 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
     }
 
+    public void addHabit(){
+        //Getting information from each text location and adding creating a new habit with that information
+        //After creating habit we reset the text boxes and date to original settings
+
+    }
+
+    public void cancelHabit(){
+        //if cancel button is clicked then remove information from text boxes and return to previous screen
+
+    }
+
 }
