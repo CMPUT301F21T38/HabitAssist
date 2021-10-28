@@ -1,6 +1,7 @@
 package com.example.habitassist;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -34,13 +35,15 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
     }
 
-    public void addHabit(){
+    public void addHabit(View view){
         //Getting information from each text location and adding creating a new habit with that information
-        //After creating habit we reset the text boxes and date to original settings
+        //start the new activity where we create a new habit and get the information.
+
+
 
     }
 
-    public void cancelHabit(){
+    public void cancelHabit(View view){
         //if cancel button is clicked then remove information from text boxes and return to previous screen
 
     }
