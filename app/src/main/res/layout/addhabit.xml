@@ -80,6 +80,17 @@
         app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName2"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2" />
 
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="240dp"
+        android:text="Days in a Week:"
+        android:textSize="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
     <Button
         android:id="@+id/button"
         android:layout_width="180dp"
@@ -97,5 +108,90 @@
         android:text="@string/cancel_button"
         app:layout_constraintEnd_toEndOf="parent"
         tools:layout_editor_absoluteY="655dp" />
+
+    <CheckBox
+        android:id="@+id/checkbox_Monday"
+        android:layout_width="112dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="24dp"
+        android:onClick="onCheckboxClicked"
+        android:text="Monday"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.719"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendarView" />
+
+    <CheckBox
+        android:id="@+id/checkbox_Tuesday"
+        android:layout_width="112dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="76dp"
+        android:onClick="onCheckboxClicked"
+        android:text="Tuesday"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.14"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendarView" />
+
+    <CheckBox
+        android:id="@+id/checkbox_Wednesday"
+        android:layout_width="112dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="136dp"
+        android:onClick="onCheckboxClicked"
+        android:text="Wednesday"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.14"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendarView" />
+
+    <CheckBox
+        android:id="@+id/checkbox_Thursday"
+        android:layout_width="112dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="188dp"
+        android:onClick="onCheckboxClicked"
+        android:text="Thursday"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.14"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendarView" />
+
+    <CheckBox
+        android:id="@+id/checkbox_Friday"
+        android:layout_width="112dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="76dp"
+        android:onClick="onCheckboxClicked"
+        android:text="Friday"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.719"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendarView" />
+
+    <CheckBox
+        android:id="@+id/checkbox_Saturday"
+        android:layout_width="112dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="128dp"
+        android:onClick="onCheckboxClicked"
+        android:text="Saturday"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.719"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendarView" />
+
+    <CheckBox
+        android:id="@+id/checkbox_Sunday"
+        android:layout_width="112dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="188dp"
+        android:onClick="onCheckboxClicked"
+        android:text="Sunday"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.719"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendarView" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
