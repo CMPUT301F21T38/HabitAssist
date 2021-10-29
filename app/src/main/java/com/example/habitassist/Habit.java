@@ -1,21 +1,32 @@
 package com.example.habitassist;
 
 import java.util.Date;
+import java.util.List;
 
 public class Habit {
     private String title;
     private String reason;
     private Date startDate;
+    private List<String> DaysToBeDone;
 
-    Habit(String title, String reason, Date startDate){
+    Habit(String title, String reason, Date startDate, List<String> DaysToBeDone){
         this.title = title;
         this.reason = reason;
         this.startDate = startDate;
+        this.DaysToBeDone = DaysToBeDone;
     }
 
-    String getHabitTitle(){return this.title;}
+    String getHabitTitle() {return this.title;}
     String getReason(){return this.reason;}
     Date getStartDate(){return this.startDate;}
+
+    public List<String> getDaysToBeDone() {
+        return DaysToBeDone;
+    }
+
+    public void setDaysToBeDone(List<String> daysToBeDone) {
+        DaysToBeDone = daysToBeDone;
+    }
 
     public void setReason(String reason) {
         this.reason = reason;

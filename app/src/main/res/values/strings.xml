@@ -3,6 +3,11 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-    <string name="save_button">SAVE</string>
+    <string name="save_button" translatable="false">SAVE</string>
     <string name="cancel_button">CANCEL</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="Enter_Name">Enter the Title</string>
+    <string name="Enter_Reason">Enter the Reason</string>
 </resources>
