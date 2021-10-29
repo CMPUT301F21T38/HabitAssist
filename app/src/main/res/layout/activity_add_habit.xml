@@ -74,12 +74,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-    <CalendarView
-        android:id="@+id/calendarView"
-        android:layout_width="233dp"
-        android:layout_height="206dp"
-        app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName2"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2" />
+    <DatePicker
+        android:id="@+id/editTextDate2"
+        android:layout_width="283dp"
+        android:layout_height="199dp"
+        android:ems="10"
+        android:inputType="date"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.71"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.342" />
 
     <TextView
         android:id="@+id/textView6"
@@ -91,6 +97,8 @@
         android:textSize="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+
 
     <Button
         android:id="@+id/button"
@@ -116,78 +124,74 @@
         android:id="@+id/checkbox_Monday"
         android:layout_width="112dp"
         android:layout_height="41dp"
-        android:layout_marginTop="24dp"
         android:text="Monday"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.719"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calendarView" />
+        app:layout_constraintHorizontal_bias="0.275"
+        app:layout_constraintStart_toEndOf="@+id/textView6"
+        tools:layout_editor_absoluteY="406dp" />
 
     <CheckBox
         android:id="@+id/checkbox_Tuesday"
         android:layout_width="112dp"
         android:layout_height="41dp"
-        android:layout_marginTop="76dp"
+        android:layout_marginTop="28dp"
         android:text="Tuesday"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.14"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calendarView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <CheckBox
         android:id="@+id/checkbox_Wednesday"
         android:layout_width="112dp"
         android:layout_height="41dp"
-        android:layout_marginTop="136dp"
+        android:layout_marginTop="80dp"
         android:text="Wednesday"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.14"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calendarView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <CheckBox
         android:id="@+id/checkbox_Thursday"
         android:layout_width="112dp"
         android:layout_height="41dp"
-        android:layout_marginTop="188dp"
         android:text="Thursday"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.14"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calendarView" />
+        tools:layout_editor_absoluteY="570dp" />
 
     <CheckBox
         android:id="@+id/checkbox_Friday"
         android:layout_width="112dp"
         android:layout_height="41dp"
-        android:layout_marginTop="76dp"
         android:text="Friday"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.719"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calendarView" />
+        app:layout_constraintHorizontal_bias="0.275"
+        app:layout_constraintStart_toEndOf="@+id/textView6"
+        tools:layout_editor_absoluteY="458dp" />
 
     <CheckBox
         android:id="@+id/checkbox_Saturday"
         android:layout_width="112dp"
         android:layout_height="41dp"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="80dp"
         android:text="Saturday"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.719"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calendarView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <CheckBox
         android:id="@+id/checkbox_Sunday"
         android:layout_width="112dp"
         android:layout_height="41dp"
-        android:layout_marginTop="188dp"
         android:text="Sunday"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.719"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calendarView" />
+        tools:layout_editor_absoluteY="570dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

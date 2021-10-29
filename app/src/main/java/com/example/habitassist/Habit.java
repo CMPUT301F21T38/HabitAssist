@@ -6,10 +6,10 @@ import java.util.List;
 public class Habit {
     private String title;
     private String reason;
-    private Date startDate;
+    private String startDate;
     private List<String> DaysToBeDone;
 
-    Habit(String title, String reason, Date startDate, List<String> DaysToBeDone){
+    Habit(String title, String reason, String startDate, List<String> DaysToBeDone){
         this.title = title;
         this.reason = reason;
         this.startDate = startDate;
@@ -18,7 +18,7 @@ public class Habit {
 
     String getHabitTitle() {return this.title;}
     String getReason(){return this.reason;}
-    Date getStartDate(){return this.startDate;}
+    String getStartDate(){return this.startDate;}
 
     public List<String> getDaysToBeDone() {
         return DaysToBeDone;
