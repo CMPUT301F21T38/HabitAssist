@@ -1,9 +1,10 @@
 package com.example.habitassist;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class Habit {
+public class Habit implements Serializable {
     private String title;
     private String reason;
     private String startDate;

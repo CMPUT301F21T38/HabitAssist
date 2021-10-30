@@ -33,15 +33,19 @@ public class AddHabitActivity extends AppCompatActivity {
     public void SaveButton(View view){
         MedTempo2 = new ArrayList<>();
         EditText title_added = (EditText) findViewById(R.id.editTextTextPersonName);
-        String main_title = title_added.toString();
+        String main_title = title_added.getText().toString();
         EditText reason_added = (EditText) findViewById(R.id.editTextTextPersonName2);
-        String main_reason = reason_added.toString();
+        String main_reason = reason_added.getText().toString();
 
         DatePicker take_date = (DatePicker) findViewById(R.id.editTextDate2);
         int take_day = take_date.getDayOfMonth();
+        String take_day1 = Integer.toString(take_day);
+        if (take_day < 10){
+            take_day1 = "0" + take_day1;
+        }
         int take_month = take_date.getMonth() + 1;
         int take_year = take_date.getYear();
-        String take_day1 = Integer.toString(take_day);
+
         String take_month1 = Integer.toString(take_month);
         if (take_month < 10){
             take_month1 = "0" + take_month1;

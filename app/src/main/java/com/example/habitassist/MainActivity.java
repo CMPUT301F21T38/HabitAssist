@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -17,10 +19,16 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.habitassist.databinding.ActivityMainBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     public FloatingActionButton myFab;
+    ArrayList<Habit> habitList;
+    ArrayAdapter<Habit> habitAdapter;
+    private ListView listview;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +36,11 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        listview = (ListView) findViewById(R.id.listview);
+        habitList = new ArrayList<>();
+        habitAdapter = new CustomList(this, habitList);
+        listview.setAdapter(habitAdapter);
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -72,6 +85,8 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 3) {
             Habit habit_main = (Habit) data.getSerializableExtra("Object");
+            habitList.add(habit_main);
+            habitAdapter.notifyDataSetChanged();
 
         }
     }
