@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HabitAssist">
         <activity
+            android:name=".HabitDetailActivity"
+            android:exported="true" />
+        <activity
             android:name=".AddHabitActivity"
             android:exported="true" />
         <activity
