@@ -17,6 +17,7 @@ import org.w3c.dom.Text;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class AddHabitActivity extends AppCompatActivity {
     ArrayList<String> MedTempo2;
@@ -52,8 +53,12 @@ public class AddHabitActivity extends AppCompatActivity {
         if (((CheckBox) findViewById(R.id.checkbox_Sunday)).isChecked()) {
             MedTempo2.add("Sunday");
         }
+        EditText title = (EditText) findViewById(R.id.editTextTextPersonName);
+        EditText reason = (EditText) findViewById(R.id.editTextTextPersonName2);
+        //ToDo get the date from the calendar
+        Date date_Started = (Date) findViewById(R.id.calendarView);
 
-        Habit habit1 = new Habit(title,reason,date_Started,MedTempo2);
+        Habit habit1 = new Habit(title.toString(),reason.toString(),date_Started,MedTempo2);
         Intent intent_add = new Intent(view.getContext(), MainActivity.class);
         intent_add.putExtra("Object", (Serializable) habit1);
         setResult(Activity.RESULT_OK, intent_add);
