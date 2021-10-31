@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -19,16 +20,18 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.habitassist.databinding.ActivityMainBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
 //    private ActivityMainBinding binding;
     public FloatingActionButton myFab;
     ArrayList<Habit> habitList;
-    ArrayAdapter<Habit> habitAdapter;
+    ArrayAdapter<String> habitAdapter;
+    ArrayList<String> habitList2;
     private ListView listview;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +41,14 @@ public class MainActivity extends AppCompatActivity {
 //        setContentView(binding.getRoot());
         setContentView(R.layout.activity_main);
         listview = (ListView) findViewById(R.id.listview);
+
         habitList = new ArrayList<>();
-//        habitAdapter = new CustomList(this, habitList);
-//        listview.setAdapter(habitAdapter);
+
+        habitList2 = new ArrayList<>();
+        habitAdapter = new ArrayAdapter<>(this, R.layout.profile_content, R.id.list_item, habitList2);
+        //habitAdapter = new CustomList(this, habitList2);
+
+        listview.setAdapter(habitAdapter);
 
 //        BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -98,8 +106,15 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == 3) {
             Habit habit_main = (Habit) data.getSerializableExtra("Object");
             habitList.add(habit_main);
-//            habitAdapter.notifyDataSetChanged();
-
+            String date_tempo = habit_main.getStartDate();
+            String dateString = (new SimpleDateFormat("yyyy-MM-dd")).format(Calendar.getInstance().getTime());
+            if (date_tempo.equals(dateString)){
+                String title_tempo = habit_main.getHabitTitle();
+                habitList2.add(title_tempo);
+            }
+            String temp = habitList2.toString();
+            //((TextView) findViewById(R.id.textView5)).setText(temp);
+            habitAdapter.notifyDataSetChanged();
         }
     }
 }
