@@ -45,12 +45,19 @@ public class ProfileActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 // it returns the index of the name of the medicine from the Listview OR the ArrayList
                 position = i;
-                Intent intent3 = new Intent(ProfileActivity.this, ViewActivity.class);
+                Intent intent3 = new Intent(ProfileActivity.this, HabitDetailActivity.class);
                 Habit tempo_passed = profile_habitList.get(position);
                 intent3.putExtra("habitPassed", tempo_passed);
                 startActivityForResult(intent3, 5);
 
             }
         });
+    }
+
+    public void FeedButton(View view){
+
+    }
+    public void HomeButton(View view){
+        finish();
     }
 }
