@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "669492007965",
+    "project_id": "habitassist-da3c4",
+    "storage_bucket": "habitassist-da3c4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:669492007965:android:d348727bc15bfce4ee22f4",
+        "android_client_info": {
+          "package_name": "com.example.habitassist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "669492007965-dfdr5hbvr0j0fkh8g4747q703itq791i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuvwbW5rF98dJAXHKI44NG-spt7Y1SEVg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "669492007965-dfdr5hbvr0j0fkh8g4747q703itq791i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
