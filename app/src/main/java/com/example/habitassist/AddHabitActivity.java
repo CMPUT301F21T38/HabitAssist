@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -75,7 +76,7 @@ public class AddHabitActivity extends AppCompatActivity {
             MedTempo2.add("Sunday");
         }
 
-        Habit habit1 = new Habit(main_title,main_reason,date_Started,MedTempo2);
+        Habit habit1 = new Habit(main_title,main_reason,date_Started, TextUtils.join(", ", MedTempo2));
         Intent intent_add = new Intent(view.getContext(), MainActivity.class);
         intent_add.putExtra("Object", (Serializable) habit1);
         setResult(Activity.RESULT_OK, intent_add);

@@ -30,7 +30,7 @@ public class HabitDetailActivity extends AppCompatActivity {
         habitDetailTitle.setText(habit.getHabitTitle());
         habitDetailStartDate.setText("Date started: " + habit.getStartDate());
         habitDetailReason.setText(habit.getReason());
-        habitDetailDaysToDo.setText(TextUtils.join(", ", habit.getDaysToBeDone()));
+        habitDetailDaysToDo.setText(habit.getDaysToBeDone());
 
         // TODO: Determine here if this habit actually belongs to the correct profile in database
         if (true) {
