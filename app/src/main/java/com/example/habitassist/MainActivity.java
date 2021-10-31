@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 >>>>>>> javin
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -22,19 +23,30 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.habitassist.databinding.ActivityMainBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
 //    private ActivityMainBinding binding;
-    public FloatingActionButton myFab;
-    ArrayList<Habit> habitList;
+    private FloatingActionButton myFab;
+    public ArrayList<Habit> habitList;
     ArrayAdapter<String> habitAdapter;
     ArrayList<String> habitList2;
     private ListView listview;
+
+    public FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +56,34 @@ public class MainActivity extends AppCompatActivity {
 //        setContentView(binding.getRoot());
         setContentView(R.layout.activity_main);
         listview = (ListView) findViewById(R.id.listview);
-
         habitList = new ArrayList<>();
-
         habitList2 = new ArrayList<>();
+        // Access a Cloud Firestore instance
+        db = FirebaseFirestore.getInstance();
+        CollectionReference habitsCollection = db.collection("habits");
+        habitsCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                habitList.clear();
+                habitList2.clear();
+                for (QueryDocumentSnapshot doc: value) {
+                    Map<String, Object> data = doc.getData();
+                    String title = (String) data.get("title");
+                    String reason = (String) data.get("reason");
+                    String startDate = (String) data.get("startDate");
+                    String daysToBeDone = (String) data.get("daysToBeDone");
+                    if (title != null && reason != null && startDate != null && daysToBeDone != null) {
+                        Habit habit = new Habit(title, reason, startDate, daysToBeDone);
+                        habitList.add(habit);
+                        if (habit.isForToday()) {
+                            habitList2.add(title);
+                        }
+                    }
+                }
+                habitAdapter.notifyDataSetChanged();
+            }
+        });
         habitAdapter = new ArrayAdapter<>(this, R.layout.profile_content, R.id.list_item, habitList2);
-        //habitAdapter = new CustomList(this, habitList2);
-
         listview.setAdapter(habitAdapter);
 
 //        BottomNavigationView navView = findViewById(R.id.nav_view);
@@ -69,6 +102,17 @@ public class MainActivity extends AppCompatActivity {
         myFab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 AddMainHabit();
+            }
+        });
+
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                // it returns the index of the name of the medicine from the Listview OR the ArrayList
+                Intent intent3 = new Intent(MainActivity.this, HabitDetailActivity.class);
+                intent3.putExtra("habitPassed", habitList.get(i));
+                startActivityForResult(intent3, 5);
+
             }
         });
     }
@@ -111,15 +155,9 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == 3) {
             Habit habit_main = (Habit) data.getSerializableExtra("Object");
             habitList.add(habit_main);
-            String date_tempo = habit_main.getStartDate();
-            String dateString = (new SimpleDateFormat("yyyy-MM-dd")).format(Calendar.getInstance().getTime());
-            if (date_tempo.equals(dateString)){
-                String title_tempo = habit_main.getHabitTitle();
-                habitList2.add(title_tempo);
-            }
-            String temp = habitList2.toString();
-            //((TextView) findViewById(R.id.textView5)).setText(temp);
-            habitAdapter.notifyDataSetChanged();
+            String title = habit_main.getHabitTitle();
+            HashMap<String, String> habitDocument = habit_main.getDocument();
+            db.collection("habits").document(title).set(habitDocument);
         }
     }
 }

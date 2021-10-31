@@ -1,16 +1,19 @@
 package com.example.habitassist;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class Habit implements Serializable {
     private String title;
     private String reason;
     private String startDate;
-    private List<String> DaysToBeDone;
+    private String DaysToBeDone;
 
-    Habit(String title, String reason, String startDate, List<String> DaysToBeDone){
+    Habit(String title, String reason, String startDate, String DaysToBeDone){
         this.title = title;
         this.reason = reason;
         this.startDate = startDate;
@@ -21,11 +24,11 @@ public class Habit implements Serializable {
     String getReason(){return this.reason;}
     String getStartDate(){return this.startDate;}
 
-    public List<String> getDaysToBeDone() {
+    public String getDaysToBeDone() {
         return DaysToBeDone;
     }
 
-    public void setDaysToBeDone(List<String> daysToBeDone) {
+    public void setDaysToBeDone(String daysToBeDone) {
         DaysToBeDone = daysToBeDone;
     }
 
@@ -35,5 +38,20 @@ public class Habit implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public boolean isForToday() {
+        Date date = Calendar.getInstance().getTime();
+        String currentDayOfTheWeek = (new SimpleDateFormat("EEEE")).format(date);
+        return this.DaysToBeDone.contains(currentDayOfTheWeek);
+    }
+
+    public HashMap<String, String> getDocument() {
+        HashMap<String, String> habitDocument = new HashMap<>();
+        habitDocument.put("title", title);
+        habitDocument.put("reason", reason);
+        habitDocument.put("startDate", startDate);
+        habitDocument.put("daysToBeDone", DaysToBeDone);
+        return habitDocument;
     }
 }
