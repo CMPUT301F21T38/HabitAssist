@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +32,27 @@ public class AddHabitActivity extends AppCompatActivity {
 
     public void SaveButton(View view){
         MedTempo2 = new ArrayList<>();
+        EditText title_added = (EditText) findViewById(R.id.editTextTextPersonName);
+        String main_title = title_added.getText().toString();
+        EditText reason_added = (EditText) findViewById(R.id.editTextTextPersonName2);
+        String main_reason = reason_added.getText().toString();
+
+        DatePicker take_date = (DatePicker) findViewById(R.id.editTextDate2);
+        int take_day = take_date.getDayOfMonth();
+        String take_day1 = Integer.toString(take_day);
+        if (take_day < 10){
+            take_day1 = "0" + take_day1;
+        }
+        int take_month = take_date.getMonth() + 1;
+        int take_year = take_date.getYear();
+
+        String take_month1 = Integer.toString(take_month);
+        if (take_month < 10){
+            take_month1 = "0" + take_month1;
+        }
+        String take_year1 = Integer.toString(take_year);
+        String date_Started = take_year1 + "-" + take_month1 + "-" + take_day1;
+
         if (((CheckBox) findViewById(R.id.checkbox_Monday)).isChecked()) {
             MedTempo2.add("Monday");
         }
@@ -53,13 +75,11 @@ public class AddHabitActivity extends AppCompatActivity {
             MedTempo2.add("Sunday");
         }
 
-        Habit habit1 = new Habit(title,reason,date_Started,MedTempo2);
+        Habit habit1 = new Habit(main_title,main_reason,date_Started,MedTempo2);
         Intent intent_add = new Intent(view.getContext(), MainActivity.class);
         intent_add.putExtra("Object", (Serializable) habit1);
         setResult(Activity.RESULT_OK, intent_add);
         finish();
-
-
 
     }
 
