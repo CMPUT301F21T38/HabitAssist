@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ActivityMainBinding binding;
+//    private ActivityMainBinding binding;
     public FloatingActionButton myFab;
     ArrayList<Habit> habitList;
     ArrayAdapter<Habit> habitAdapter;
@@ -34,25 +34,25 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
+//        binding = ActivityMainBinding.inflate(getLayoutInflater());
+//        setContentView(binding.getRoot());
+        setContentView(R.layout.activity_main);
         listview = (ListView) findViewById(R.id.listview);
         habitList = new ArrayList<>();
-        habitAdapter = new CustomList(this, habitList);
-        listview.setAdapter(habitAdapter);
+//        habitAdapter = new CustomList(this, habitList);
+//        listview.setAdapter(habitAdapter);
 
-        BottomNavigationView navView = findViewById(R.id.nav_view);
+//        BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
 
 
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(binding.navView, navController);
+//        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+//                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
+//                .build();
+//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
+//        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+//        NavigationUI.setupWithNavController(binding.navView, navController);
 
         myFab = (FloatingActionButton) findViewById(R.id.add_habit_button);
         myFab.setOnClickListener(new View.OnClickListener() {
@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
                 AddMainHabit();
             }
         });
-
     }
 
     public void AddMainHabit(){
@@ -80,13 +79,26 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void ProfileButton(View view){
+        Intent intent2 = new Intent(this, ProfileActivity.class);
+        intent2.putExtra("habit2", habitList);
+        startActivityForResult(intent2, 4);
+    }
+
+    public void FeedButton(View view){
+
+    }
+    public void HomeButton(View view){
+        // do something when the home button is clicked
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 3) {
             Habit habit_main = (Habit) data.getSerializableExtra("Object");
             habitList.add(habit_main);
-            habitAdapter.notifyDataSetChanged();
+//            habitAdapter.notifyDataSetChanged();
 
         }
     }
