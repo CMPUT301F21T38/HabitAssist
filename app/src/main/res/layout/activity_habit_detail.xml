@@ -112,8 +112,9 @@
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:backgroundTint="#FF3C3C"
+                    android:onClick="DeleteHabit"
                     android:text="Delete"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
                 <Button
                     android:id="@+id/habit_detail_edit_button"
@@ -122,8 +123,9 @@
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:backgroundTint="#4CAF50"
+                    android:onClick="EditHabit"
                     android:text="Edit"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
             </LinearLayout>
 

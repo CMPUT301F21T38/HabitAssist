@@ -8,18 +8,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
-import com.example.habitassist.databinding.ActivityMainBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
@@ -28,11 +24,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -46,6 +39,11 @@ public class MainActivity extends AppCompatActivity {
 
     public FirebaseFirestore db;
 
+    public int deletable;
+    final String TAG = "Sample";
+
+    private static MainActivity instance;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
 //        binding = ActivityMainBinding.inflate(getLayoutInflater());
 //        setContentView(binding.getRoot());
         setContentView(R.layout.activity_main);
+        instance = this;
         listview = (ListView) findViewById(R.id.listview);
         habitList = new ArrayList<>();
         habitList2 = new ArrayList<>();
@@ -84,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
         habitAdapter = new ArrayAdapter<>(this, R.layout.profile_content, R.id.list_item, habitList2);
         listview.setAdapter(habitAdapter);
 
+
+
 //        BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -107,12 +108,36 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 // it returns the index of the name of the medicine from the Listview OR the ArrayList
+                deletable = i;
                 Intent intent3 = new Intent(MainActivity.this, HabitDetailActivity.class);
                 intent3.putExtra("habitPassed", habitList.get(i));
                 startActivityForResult(intent3, 5);
 
             }
         });
+    }
+
+    public static MainActivity getInstance(){
+        return instance;
+    }
+
+    public void DeleteHabit(View view){
+        db.collection("habits").document(habitList.get(deletable).getHabitTitle())
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error deleting document", e);
+                    }
+                });
+
+
     }
 
     public void AddMainHabit(){

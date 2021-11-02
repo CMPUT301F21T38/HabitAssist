@@ -3,6 +3,7 @@ package com.example.habitassist;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -39,4 +40,15 @@ public class HabitDetailActivity extends AppCompatActivity {
         }
 
     }
+
+    public void DeleteHabit(View view){
+        MainActivity.getInstance().DeleteHabit(view);
+        finish();
+    }
+
+    public void EditHabit(View view){
+        finish();
+    }
+
+
 }
