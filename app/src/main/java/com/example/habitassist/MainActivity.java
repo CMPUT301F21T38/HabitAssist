@@ -2,10 +2,8 @@ package com.example.habitassist;
 
 import android.content.Intent;
 import android.os.Bundle;
-<<<<<<< HEAD
-=======
+
 import android.util.Log;
->>>>>>> javin
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
