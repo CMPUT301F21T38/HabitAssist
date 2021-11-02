@@ -59,7 +59,7 @@ public class AddHabitFragment extends DialogFragment{
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_add_habit, null);
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.addhabit, null);
 //        Button SaveButton = (Button) view.findViewById(R.id.save_button);
 //        Button CancelButton = (Button) view.findViewById(R.id.cancel_button);
 //        SaveButton.setOnClickListener(new View.OnClickListener() {
@@ -118,6 +118,6 @@ public class AddHabitFragment extends DialogFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_habit, container, false);
+        return inflater.inflate(R.layout.addhabit, container, false);
     }
 }

@@ -57,14 +57,6 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent1, 3);
     }
 
-    public void addHabit(View view){
-        //Getting information from each text location and adding creating a new habit with that information
-        //start the new activity where we create a new habit and get the information.
-
-
-
-    }
-
     public void cancelHabit(View view){
         //if cancel button is clicked then remove information from text boxes and return to previous screen
 
@@ -78,4 +70,10 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+
+    public void DeleteHabit(int i){
+
+
+    }
+
 }

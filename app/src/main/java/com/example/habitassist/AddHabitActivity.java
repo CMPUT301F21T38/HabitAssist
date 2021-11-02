@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -55,8 +56,8 @@ public class AddHabitActivity extends AppCompatActivity {
         }
         EditText title = (EditText) findViewById(R.id.editTextTextPersonName);
         EditText reason = (EditText) findViewById(R.id.editTextTextPersonName2);
-        //ToDo get the date from the calendar
-        Date date_Started = (Date) findViewById(R.id.calendarView);
+        CalendarView start = (CalendarView) findViewById(R.id.calendarView);
+        long date_Started = start.getDate();
 
         Habit habit1 = new Habit(title.toString(),reason.toString(),date_Started,MedTempo2);
         Intent intent_add = new Intent(view.getContext(), MainActivity.class);
