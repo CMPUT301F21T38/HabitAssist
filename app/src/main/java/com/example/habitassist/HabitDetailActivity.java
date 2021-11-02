@@ -47,6 +47,7 @@ public class HabitDetailActivity extends AppCompatActivity {
     }
 
     public void EditHabit(View view){
+        MainActivity.getInstance().EditHabit(view);
         finish();
     }
 

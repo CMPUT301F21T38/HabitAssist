@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     public FirebaseFirestore db;
 
-    public int deletable;
+    public int DeleteAndEdit;
     final String TAG = "Sample";
 
     private static MainActivity instance;
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 // it returns the index of the name of the medicine from the Listview OR the ArrayList
-                deletable = i;
+                DeleteAndEdit = i;
                 Intent intent3 = new Intent(MainActivity.this, HabitDetailActivity.class);
                 intent3.putExtra("habitPassed", habitList.get(i));
                 startActivityForResult(intent3, 5);
@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void DeleteHabit(View view){
-        db.collection("habits").document(habitList.get(deletable).getHabitTitle())
+        db.collection("habits").document(habitList.get(DeleteAndEdit).getHabitTitle())
                 .delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -137,6 +137,13 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+
+    }
+
+    public void EditHabit(View view){
+        Intent intent4= new Intent(MainActivity.this, HabitDetailActivity.class);
+        intent4.putExtra("habitPassedIn", habitList.get(DeleteAndEdit));
+        startActivityForResult(intent4, 9);
 
     }
 
