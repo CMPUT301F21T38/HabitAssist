@@ -40,6 +40,8 @@ public class Habit implements Serializable {
         this.title = title;
     }
 
+    //public void setStartDate(String startDate) {this.startDate = startDate;}
+
     public boolean isForToday() {
         Date date = Calendar.getInstance().getTime();
         String currentDayOfTheWeek = (new SimpleDateFormat("EEEE")).format(date);

@@ -24,6 +24,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -107,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                // it returns the index of the name of the medicine from the Listview OR the ArrayList
+                // it returns the index of the name of the habit from the Listview OR the ArrayList
                 DeleteAndEdit = i;
                 Intent intent3 = new Intent(MainActivity.this, HabitDetailActivity.class);
                 intent3.putExtra("habitPassed", habitList.get(i));
@@ -141,9 +142,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void EditHabit(View view){
-        Intent intent4= new Intent(MainActivity.this, HabitDetailActivity.class);
-        intent4.putExtra("habitPassedIn", habitList.get(DeleteAndEdit));
+        System.out.println("EditHabit entered");
+        Intent intent4= new Intent(this, HabitEditActivity.class);
+
+        intent4.putExtra("habitPassedIn", (Serializable) habitList.get(DeleteAndEdit));
+
         startActivityForResult(intent4, 9);
+
 
     }
 
