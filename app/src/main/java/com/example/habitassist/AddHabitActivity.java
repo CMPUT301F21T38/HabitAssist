@@ -6,8 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -34,9 +38,10 @@ public class AddHabitActivity extends AppCompatActivity {
     public void SaveButton(View view){
         MedTempo2 = new ArrayList<>();
         EditText title_added = (EditText) findViewById(R.id.editTextTextPersonName);
-        String main_title = title_added.getText().toString();
+
+        Button saveButton = (Button) findViewById(R.id.button);
+
         EditText reason_added = (EditText) findViewById(R.id.editTextTextPersonName2);
-        String main_reason = reason_added.getText().toString();
 
         DatePicker take_date = (DatePicker) findViewById(R.id.editTextDate2);
         int take_day = take_date.getDayOfMonth();
@@ -76,12 +81,26 @@ public class AddHabitActivity extends AppCompatActivity {
             MedTempo2.add("Sunday");
         }
 
+        if (title_added.getText().toString().length() > 20) {
+            Toast.makeText(getApplicationContext(),"Please keep the title under 20 characters",Toast.LENGTH_SHORT).show();
+        }
+        if (reason_added.getText().toString().length() > 30) {
+            Toast.makeText(getApplicationContext(), "Please keep the reason under 30 characters", Toast.LENGTH_SHORT).show();
+        }
+        if (reason_added.getText().toString().length() <= 30 && title_added.getText().toString().length() <= 20) {
+            Habit habit1 = new Habit(title_added.getText().toString(),reason_added.getText().toString(),date_Started, TextUtils.join(", ", MedTempo2));
+            Intent intent_add = new Intent(view.getContext(), MainActivity.class);
+            intent_add.putExtra("Object", (Serializable) habit1);
+            setResult(Activity.RESULT_OK, intent_add);
+            finish();
+        }
+        /*
         Habit habit1 = new Habit(main_title,main_reason,date_Started, TextUtils.join(", ", MedTempo2));
         Intent intent_add = new Intent(view.getContext(), MainActivity.class);
         intent_add.putExtra("Object", (Serializable) habit1);
         setResult(Activity.RESULT_OK, intent_add);
         finish();
-
+         */
     }
 
     public void CancelButton(View view){
