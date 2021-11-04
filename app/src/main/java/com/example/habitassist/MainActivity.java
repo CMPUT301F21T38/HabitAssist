@@ -137,8 +137,6 @@ public class MainActivity extends AppCompatActivity {
                         Log.w(TAG, "Error deleting document", e);
                     }
                 });
-
-
     }
 
     public void EditHabit(View view){
@@ -148,8 +146,6 @@ public class MainActivity extends AppCompatActivity {
         intent4.putExtra("habitPassedIn", (Serializable) habitList.get(DeleteAndEdit));
 
         startActivityForResult(intent4, 9);
-
-
     }
 
     public void AddMainHabit(){
@@ -189,6 +185,30 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 3) {
             Habit habit_main = (Habit) data.getSerializableExtra("Object");
+            habitList.add(habit_main);
+            String title = habit_main.getHabitTitle();
+            HashMap<String, String> habitDocument = habit_main.getDocument();
+            db.collection("habits").document(title).set(habitDocument);
+        }
+
+        if (requestCode == 9) {
+            Habit habit_main = (Habit) data.getSerializableExtra("Object");
+            db.collection("habits").document(habitList.get(DeleteAndEdit).getHabitTitle())
+                    .delete()
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(TAG, "Error deleting document", e);
+                        }
+                    });
+
+
             habitList.add(habit_main);
             String title = habit_main.getHabitTitle();
             HashMap<String, String> habitDocument = habit_main.getDocument();
