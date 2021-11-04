@@ -138,24 +138,20 @@ public class HabitEditActivity extends AppCompatActivity {
         habit.setReason(main_reason);
         //habit.setStartDate(date_Started);
         habit.setDaysToBeDone(TextUtils.join(", ", HabitDays));
-        Button saveButton = (Button) findViewById(R.id.button);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (title_added.getText().toString().length() > 20) {
-                    Toast.makeText(getApplicationContext(), "Please keep the title under 20 characters", Toast.LENGTH_SHORT).show();
-                }
-                if (reason_added.getText().toString().length() > 30) {
-                    Toast.makeText(getApplicationContext(), "Please keep the reason under 30 characters", Toast.LENGTH_SHORT).show();
-                }
-                if (reason_added.getText().toString().length() <= 30 && title_added.getText().toString().length() <= 20) {
-                    Intent intent_add = new Intent(view.getContext(), MainActivity.class);
-                    intent_add.putExtra("Object", (Serializable) habit);
-                    setResult(Activity.RESULT_OK, intent_add);
-                    finish();
-                }
-            }
-        });
+
+
+        if (title_added.getText().toString().length() > 20) {
+            Toast.makeText(getApplicationContext(), "Please keep the title under 20 characters", Toast.LENGTH_SHORT).show();
+        }
+        if (reason_added.getText().toString().length() > 30) {
+            Toast.makeText(getApplicationContext(), "Please keep the reason under 30 characters", Toast.LENGTH_SHORT).show();
+        }
+        if (reason_added.getText().toString().length() <= 30 && title_added.getText().toString().length() <= 20) {
+            Intent intent_add = new Intent(view.getContext(), MainActivity.class);
+            intent_add.putExtra("Object", (Serializable) habit);
+            setResult(Activity.RESULT_OK, intent_add);
+            finish();
+        }
 
 
     }

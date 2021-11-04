@@ -39,8 +39,6 @@ public class AddHabitActivity extends AppCompatActivity {
         MedTempo2 = new ArrayList<>();
         EditText title_added = (EditText) findViewById(R.id.editTextTextPersonName);
 
-        Button saveButton = (Button) findViewById(R.id.button);
-
         EditText reason_added = (EditText) findViewById(R.id.editTextTextPersonName2);
 
         DatePicker take_date = (DatePicker) findViewById(R.id.editTextDate2);
@@ -80,24 +78,21 @@ public class AddHabitActivity extends AppCompatActivity {
         if (((CheckBox) findViewById(R.id.checkbox_Sunday)).isChecked()) {
             MedTempo2.add("Sunday");
         }
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (title_added.getText().toString().length() > 20) {
-                    Toast.makeText(getApplicationContext(), "Please keep the title under 20 characters", Toast.LENGTH_SHORT).show();
-                }
-                if (reason_added.getText().toString().length() > 30) {
-                    Toast.makeText(getApplicationContext(), "Please keep the reason under 30 characters", Toast.LENGTH_SHORT).show();
-                }
-                if (reason_added.getText().toString().length() <= 30 && title_added.getText().toString().length() <= 20) {
-                    Habit habit1 = new Habit(title_added.getText().toString(), reason_added.getText().toString(), date_Started, TextUtils.join(", ", MedTempo2));
-                    Intent intent_add = new Intent(view.getContext(), MainActivity.class);
-                    intent_add.putExtra("Object", (Serializable) habit1);
-                    setResult(Activity.RESULT_OK, intent_add);
-                    finish();
-                }
-            }
-        });
+
+        if (title_added.getText().toString().length() > 20) {
+            Toast.makeText(getApplicationContext(), "Please keep the title under 20 characters", Toast.LENGTH_SHORT).show();
+        }
+        if (reason_added.getText().toString().length() > 30) {
+            Toast.makeText(getApplicationContext(), "Please keep the reason under 30 characters", Toast.LENGTH_SHORT).show();
+        }
+        if (reason_added.getText().toString().length() <= 30 && title_added.getText().toString().length() <= 20) {
+            Habit habit1 = new Habit(title_added.getText().toString(), reason_added.getText().toString(), date_Started, TextUtils.join(", ", MedTempo2));
+            Intent intent_add = new Intent(view.getContext(), MainActivity.class);
+            intent_add.putExtra("Object", (Serializable) habit1);
+            setResult(Activity.RESULT_OK, intent_add);
+            finish();
+        }
+
 
 
         /*
