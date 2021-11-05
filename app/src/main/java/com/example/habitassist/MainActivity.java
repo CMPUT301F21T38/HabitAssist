@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -31,7 +32,6 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-//    private ActivityMainBinding binding;
     private FloatingActionButton myFab;
     public ArrayList<Habit> habitList;
     ArrayAdapter<String> habitAdapter;
@@ -40,22 +40,24 @@ public class MainActivity extends AppCompatActivity {
 
     public FirebaseFirestore db;
 
-    public int DeleteAndEdit;
-    final String TAG = "Sample";
+    final String TAG = "MainActivity";
+
+    // This variable is set immediately after a ListView of habits is clicked
+    // It stores the title of the habit clicked. The unique title is used to identify which habit
+    // object to delete or edit if an action like that is triggered.
+    public String DeleteAndEdit;
 
     private static MainActivity instance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//        binding = ActivityMainBinding.inflate(getLayoutInflater());
-//        setContentView(binding.getRoot());
         setContentView(R.layout.activity_main);
         instance = this;
         listview = (ListView) findViewById(R.id.listview);
         habitList = new ArrayList<>();
         habitList2 = new ArrayList<>();
+
         // Access a Cloud Firestore instance
         db = FirebaseFirestore.getInstance();
         CollectionReference habitsCollection = db.collection("habits");
@@ -84,20 +86,6 @@ public class MainActivity extends AppCompatActivity {
         habitAdapter = new ArrayAdapter<>(this, R.layout.profile_content, R.id.list_item, habitList2);
         listview.setAdapter(habitAdapter);
 
-
-
-//        BottomNavigationView navView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-
-
-//        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-//                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
-//                .build();
-//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
-//        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-//        NavigationUI.setupWithNavController(binding.navView, navController);
-
         myFab = (FloatingActionButton) findViewById(R.id.add_habit_button);
         myFab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -108,10 +96,18 @@ public class MainActivity extends AppCompatActivity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                // it returns the index of the name of the habit from the Listview OR the ArrayList
-                DeleteAndEdit = i;
+                // it returns the name of the habit from the Listview OR the ArrayList
+                DeleteAndEdit = habitList2.get(i);
                 Intent intent3 = new Intent(MainActivity.this, HabitDetailActivity.class);
-                intent3.putExtra("habitPassed", habitList.get(i));
+                String uniqueTitle = habitList2.get(i);
+                Habit habitPassed = habitList.get(i); // Not necessarily the correct Habit object
+                for (Habit habit : habitList) {
+                    if (habit.getHabitTitle().equals(uniqueTitle)) {
+                        habitPassed = habit;
+                        break;
+                    }
+                }
+                intent3.putExtra("habitPassed", habitPassed);
                 startActivityForResult(intent3, 5);
 
             }
@@ -123,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void DeleteHabit(View view){
-        db.collection("habits").document(habitList.get(DeleteAndEdit).getHabitTitle())
+        db.collection("habits").document(DeleteAndEdit)
                 .delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -139,32 +135,30 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    public void EditHabit(View view){
+    public void EditHabit(View view) {
         System.out.println("EditHabit entered");
         Intent intent4= new Intent(this, HabitEditActivity.class);
 
-        intent4.putExtra("habitPassedIn", (Serializable) habitList.get(DeleteAndEdit));
-
-        startActivityForResult(intent4, 9);
+        // Look for the habit with the same title as DeleteAndEdit
+        Habit habitPassedIn = null;
+        for (Habit habit : habitList) {
+            if (habit.getHabitTitle().equals(DeleteAndEdit)) {
+                habitPassedIn = habit;
+                break;
+            }
+        }
+        if (habitPassedIn != null) {
+            intent4.putExtra("habitPassedIn", (Serializable) habitPassedIn);
+            startActivityForResult(intent4, 9);
+        } else {
+            Toast.makeText(getApplicationContext(), "DeleteAndEdit is: " + DeleteAndEdit + " " +"HabitPassedIn is NULL", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void AddMainHabit(){
         System.out.println("AddMainHabit entered1");
         Intent intent1 = new Intent(this, AddHabitActivity.class);
         startActivityForResult(intent1, 3);
-    }
-
-    public void addHabit(View view){
-        //Getting information from each text location and adding creating a new habit with that information
-        //start the new activity where we create a new habit and get the information.
-
-
-
-    }
-
-    public void cancelHabit(View view){
-        //if cancel button is clicked then remove information from text boxes and return to previous screen
-
     }
 
     public void ProfileButton(View view){
@@ -178,41 +172,5 @@ public class MainActivity extends AppCompatActivity {
     }
     public void HomeButton(View view){
         // do something when the home button is clicked
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 3) {
-            Habit habit_main = (Habit) data.getSerializableExtra("Object");
-            habitList.add(habit_main);
-            String title = habit_main.getHabitTitle();
-            HashMap<String, String> habitDocument = habit_main.getDocument();
-            db.collection("habits").document(title).set(habitDocument);
-        }
-
-        if (requestCode == 9) {
-            Habit habit_main = (Habit) data.getSerializableExtra("Object");
-            db.collection("habits").document(habitList.get(DeleteAndEdit).getHabitTitle())
-                    .delete()
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Log.d(TAG, "DocumentSnapshot successfully deleted!");
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.w(TAG, "Error deleting document", e);
-                        }
-                    });
-
-
-            habitList.add(habit_main);
-            String title = habit_main.getHabitTitle();
-            HashMap<String, String> habitDocument = habit_main.getDocument();
-            db.collection("habits").document(title).set(habitDocument);
-        }
     }
 }

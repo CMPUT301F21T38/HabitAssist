@@ -1,5 +1,7 @@
 package com.example.habitassist;
 
+import android.widget.DatePicker;
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -40,12 +42,28 @@ public class Habit implements Serializable {
         this.title = title;
     }
 
-    //public void setStartDate(String startDate) {this.startDate = startDate;}
-
     public boolean isForToday() {
         Date date = Calendar.getInstance().getTime();
         String currentDayOfTheWeek = (new SimpleDateFormat("EEEE")).format(date);
         return this.DaysToBeDone.contains(currentDayOfTheWeek);
+    }
+
+    public static String dateStringFromDatePicker(DatePicker datePicker) {
+        int take_day = datePicker.getDayOfMonth();
+        String take_day1 = Integer.toString(take_day);
+        if (take_day < 10){
+            take_day1 = "0" + take_day1;
+        }
+        int take_month = datePicker.getMonth() + 1;
+        int take_year = datePicker.getYear();
+
+        String take_month1 = Integer.toString(take_month);
+        if (take_month < 10){
+            take_month1 = "0" + take_month1;
+        }
+        String take_year1 = Integer.toString(take_year);
+        String date_Started = take_year1 + "-" + take_month1 + "-" + take_day1;
+        return date_Started;
     }
 
     public HashMap<String, String> getDocument() {
