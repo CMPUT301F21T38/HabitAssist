@@ -83,6 +83,10 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+    public void addHabitButtonClickHandler(View view) {
+        startActivity(new Intent(ProfileActivity.this, AddHabitActivity.class));
+    }
+
     public void FeedButton(View view) {
 
     }
