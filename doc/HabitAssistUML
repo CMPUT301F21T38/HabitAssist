@@ -1,11 +1,11 @@
-<mxfile host="app.diagrams.net" modified="2021-11-05T15:59:15.834Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36" etag="b2RwRJUs_J21SRGLXcBT" version="15.6.8" type="github">
+<mxfile host="app.diagrams.net" modified="2021-11-05T16:11:06.563Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36" etag="LLN-daTTGHlYQAqAKbXq" version="15.6.8" type="github">
   <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
-    <mxGraphModel dx="669" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="614" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-0" />
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-1" parent="WIyWlLk6GJQsqaUBKTNV-0" />
         <mxCell id="zkfFHV4jXpPFQw0GAbJ--0" value="CustomList" style="swimlane;fontStyle=2;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
-          <mxGeometry x="667" y="620" width="160" height="138" as="geometry">
+          <mxGeometry x="667" y="720" width="160" height="138" as="geometry">
             <mxRectangle x="230" y="140" width="160" height="26" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
@@ -44,23 +44,32 @@
           <mxGeometry y="160" width="210" height="170" as="geometry" />
         </mxCell>
         <mxCell id="lfY1y7EgfsoNMWNS-3i6-5" value="ProfileActivity" style="swimlane;fontStyle=2;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
-          <mxGeometry x="470" y="450" width="160" height="138" as="geometry">
+          <mxGeometry x="470" y="450" width="240" height="202" as="geometry">
             <mxRectangle x="230" y="140" width="160" height="26" as="alternateBounds" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="2tdP9jHFn7oQBucGkD1O-11" value="-p_list: ListView&lt;br&gt;-profile_habitList: ArrayList&amp;lt;Habit&amp;gt;&lt;br&gt;-p_habit_titles: ArrayList&amp;lt;String&amp;gt;&lt;br&gt;-position: int&lt;br&gt;-profile_habitAdapter: ArrayAdapter&amp;lt;String&amp;gt;&lt;br&gt;-db: FirebaseFirestore" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="lfY1y7EgfsoNMWNS-3i6-5">
+          <mxGeometry y="26" width="240" height="90" as="geometry" />
         </mxCell>
         <mxCell id="lfY1y7EgfsoNMWNS-3i6-6" value="" style="line;html=1;strokeWidth=1;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="lfY1y7EgfsoNMWNS-3i6-5" vertex="1">
-          <mxGeometry y="26" width="160" height="8" as="geometry" />
+          <mxGeometry y="116" width="240" height="6" as="geometry" />
+        </mxCell>
+        <mxCell id="2tdP9jHFn7oQBucGkD1O-12" value="onCreate(savedInstance)&lt;br&gt;onEvent()&lt;br&gt;onItemClick()&lt;br&gt;FeedButton(view)&lt;br&gt;HomeButton(view)" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="lfY1y7EgfsoNMWNS-3i6-5">
+          <mxGeometry y="122" width="240" height="80" as="geometry" />
         </mxCell>
         <mxCell id="lfY1y7EgfsoNMWNS-3i6-7" value="HabitEditActivity" style="swimlane;fontStyle=2;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
-          <mxGeometry x="250" y="450" width="160" height="150" as="geometry">
+          <mxGeometry x="250" y="450" width="170" height="180" as="geometry">
             <mxRectangle x="230" y="140" width="160" height="26" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="2tdP9jHFn7oQBucGkD1O-4" value="HabitDays: Array&amp;lt;String&amp;gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="lfY1y7EgfsoNMWNS-3i6-7">
-          <mxGeometry y="26" width="160" height="20" as="geometry" />
+        <mxCell id="2tdP9jHFn7oQBucGkD1O-4" value="-HabitDays: Array&amp;lt;String&amp;gt;&lt;br&gt;-db: FirebaseFirestore" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="lfY1y7EgfsoNMWNS-3i6-7">
+          <mxGeometry y="26" width="170" height="30" as="geometry" />
         </mxCell>
         <mxCell id="lfY1y7EgfsoNMWNS-3i6-8" value="" style="line;html=1;strokeWidth=1;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="lfY1y7EgfsoNMWNS-3i6-7" vertex="1">
-          <mxGeometry y="46" width="160" height="104" as="geometry" />
+          <mxGeometry y="56" width="170" height="4" as="geometry" />
+        </mxCell>
+        <mxCell id="2tdP9jHFn7oQBucGkD1O-6" value="onCreate(savedInstanceState)&lt;br&gt;SaveButton(view)&lt;br&gt;Cancel Button" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="lfY1y7EgfsoNMWNS-3i6-7">
+          <mxGeometry y="60" width="170" height="50" as="geometry" />
         </mxCell>
         <mxCell id="lfY1y7EgfsoNMWNS-3i6-9" value="AddHabitActivity" style="swimlane;fontStyle=2;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="240" y="50" width="185" height="182" as="geometry">
@@ -101,6 +110,12 @@
         </mxCell>
         <mxCell id="2tdP9jHFn7oQBucGkD1O-3" value="gets the habit and sets its information&lt;br&gt;in the text views and allows you to edit &lt;br&gt;and delete" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
           <mxGeometry x="20" y="622" width="220" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="2tdP9jHFn7oQBucGkD1O-7" value="Allows user to edit a Habit" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="250" y="630" width="150" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="2tdP9jHFn7oQBucGkD1O-13" value="Shows the list of all the habits" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="470" y="652" width="170" height="20" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
