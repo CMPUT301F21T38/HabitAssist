@@ -1,11 +1,11 @@
-<mxfile host="app.diagrams.net" modified="2021-11-05T17:28:10.102Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36" etag="6cBr8EuBEIvJ1sujD06Q" version="15.5.2" type="github">
+<mxfile host="app.diagrams.net" modified="2021-11-05T17:46:31.615Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36" etag="cXgdZ9uuozFvP_p3Z-31" version="15.5.2" type="github">
   <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
-    <mxGraphModel dx="2036" dy="1811" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2439" dy="2025" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-0" />
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-1" parent="WIyWlLk6GJQsqaUBKTNV-0" />
         <mxCell id="zkfFHV4jXpPFQw0GAbJ--0" value="CustomList" style="swimlane;fontStyle=2;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
-          <mxGeometry x="-280" y="-190" width="160" height="138" as="geometry">
+          <mxGeometry x="-810" y="-1150" width="160" height="138" as="geometry">
             <mxRectangle x="230" y="140" width="160" height="26" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
@@ -16,7 +16,7 @@
           <mxGeometry y="46" width="160" height="44" as="geometry" />
         </mxCell>
         <mxCell id="lfY1y7EgfsoNMWNS-3i6-1" value="Habit" style="swimlane;fontStyle=2;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
-          <mxGeometry x="570" y="241" width="160" height="220" as="geometry">
+          <mxGeometry x="-180" y="-719" width="160" height="220" as="geometry">
             <mxRectangle x="230" y="140" width="160" height="26" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
@@ -38,8 +38,8 @@
         <mxCell id="vcX_49xRjuP6-rd_diLw-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=1.005;entryDx=0;entryDy=0;entryPerimeter=0;endArrow=none;endFill=0;startArrow=diamond;startFill=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="lfY1y7EgfsoNMWNS-3i6-3" target="lfY1y7EgfsoNMWNS-3i6-19">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="-180" y="800" />
-              <mxPoint x="650" y="800" />
+              <mxPoint x="-722" y="-100" />
+              <mxPoint x="-100" y="-100" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -47,7 +47,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="lfY1y7EgfsoNMWNS-3i6-3" value="MainActivity" style="swimlane;fontStyle=2;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
-          <mxGeometry x="-285" y="180" width="210" height="330" as="geometry">
+          <mxGeometry x="-810" y="-780" width="210" height="330" as="geometry">
             <mxRectangle x="230" y="140" width="160" height="26" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
@@ -70,7 +70,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="lfY1y7EgfsoNMWNS-3i6-5" value="ProfileActivity" style="swimlane;fontStyle=2;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
-          <mxGeometry x="55" y="300" width="240" height="202" as="geometry">
+          <mxGeometry x="-533" y="-660" width="240" height="202" as="geometry">
             <mxRectangle x="230" y="140" width="160" height="26" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
@@ -83,11 +83,11 @@
         <mxCell id="2tdP9jHFn7oQBucGkD1O-12" value="onCreate(savedInstance)&lt;br&gt;onEvent()&lt;br&gt;onItemClick()&lt;br&gt;FeedButton(view)&lt;br&gt;HomeButton(view)" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="lfY1y7EgfsoNMWNS-3i6-5" vertex="1">
           <mxGeometry y="122" width="240" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="vcX_49xRjuP6-rd_diLw-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;startArrow=diamond;startFill=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="lfY1y7EgfsoNMWNS-3i6-7" target="lfY1y7EgfsoNMWNS-3i6-1">
+        <mxCell id="vcX_49xRjuP6-rd_diLw-37" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startArrow=diamond;startFill=0;endArrow=none;endFill=0;sourcePerimeterSpacing=0;targetPerimeterSpacing=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="lfY1y7EgfsoNMWNS-3i6-7" target="lfY1y7EgfsoNMWNS-3i6-1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="lfY1y7EgfsoNMWNS-3i6-7" value="HabitEditActivity" style="swimlane;fontStyle=2;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
-          <mxGeometry x="90" y="-190" width="170" height="180" as="geometry">
+          <mxGeometry x="-498" y="-1150" width="170" height="180" as="geometry">
             <mxRectangle x="230" y="140" width="160" height="26" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
@@ -104,7 +104,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="lfY1y7EgfsoNMWNS-3i6-9" value="AddHabitActivity" style="swimlane;fontStyle=2;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
-          <mxGeometry x="82.5" y="578" width="185" height="182" as="geometry">
+          <mxGeometry x="-505.5" y="-382" width="185" height="182" as="geometry">
             <mxRectangle x="230" y="140" width="160" height="26" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
@@ -124,7 +124,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="lfY1y7EgfsoNMWNS-3i6-11" value="HabitDetailActivity" style="swimlane;fontStyle=2;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
-          <mxGeometry x="80" y="74" width="190" height="182" as="geometry">
+          <mxGeometry x="-508" y="-886" width="190" height="182" as="geometry">
             <mxRectangle x="230" y="140" width="160" height="26" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
@@ -137,26 +137,26 @@
         <mxCell id="2tdP9jHFn7oQBucGkD1O-2" value="onCreate(savedInstanceState)&lt;br&gt;DeleteHabit(view)&lt;br&gt;EditHabit(view)&lt;br&gt;&lt;span style=&quot;color: rgb(32 , 33 , 36) ; font-family: &amp;#34;roboto&amp;#34; , &amp;#34;arial&amp;#34; , sans-serif ; font-size: 13px ; background-color: rgb(255 , 255 , 255)&quot;&gt;onSupportNavigateUp()&lt;/span&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="lfY1y7EgfsoNMWNS-3i6-11" vertex="1">
           <mxGeometry y="122" width="190" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="lfY1y7EgfsoNMWNS-3i6-20" value="Model class: Contains the &lt;br&gt;Habit information and &lt;br&gt;related methods to set &lt;br&gt;or retrieve this info" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
-          <mxGeometry x="660" y="170" width="150" height="60" as="geometry" />
-        </mxCell>
         <mxCell id="lfY1y7EgfsoNMWNS-3i6-24" value="Implements core functionality" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
-          <mxGeometry x="-265" y="150" width="170" height="20" as="geometry" />
+          <mxGeometry x="-790" y="-810" width="170" height="20" as="geometry" />
         </mxCell>
         <mxCell id="lfY1y7EgfsoNMWNS-3i6-27" value="Gets info from user to &lt;br&gt;create&amp;nbsp;a new habit" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
-          <mxGeometry x="267.5" y="573" width="130" height="30" as="geometry" />
+          <mxGeometry x="-478" y="-190" width="130" height="30" as="geometry" />
         </mxCell>
         <mxCell id="2tdP9jHFn7oQBucGkD1O-3" value="gets the habit and sets its information&lt;br&gt;in the text views and allows you to delete&amp;nbsp;&lt;br&gt;and open the edit page" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
-          <mxGeometry x="280" y="70" width="240" height="50" as="geometry" />
+          <mxGeometry x="-400" y="-936" width="240" height="50" as="geometry" />
         </mxCell>
         <mxCell id="2tdP9jHFn7oQBucGkD1O-7" value="Allows user to edit a Habit" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
-          <mxGeometry x="97.5" y="-220" width="150" height="20" as="geometry" />
+          <mxGeometry x="-328" y="-1150" width="150" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="2tdP9jHFn7oQBucGkD1O-13" value="Shows the list of all the habits&amp;nbsp;&lt;br&gt;and the user&#39;s information" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
-          <mxGeometry x="290" y="300" width="180" height="30" as="geometry" />
+        <mxCell id="2tdP9jHFn7oQBucGkD1O-13" value="Shows the list of all &lt;br&gt;the habits&amp;nbsp;and the &lt;br&gt;user&#39;s information" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="-413" y="-458" width="120" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="vcX_49xRjuP6-rd_diLw-20" value="Not fully implemented and not used in the current state of the app.&lt;br&gt;May be useful later on when Habit Events are implemented" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="-385" y="-40" width="370" height="30" as="geometry" />
+        <mxCell id="vcX_49xRjuP6-rd_diLw-20" value="Not fully implemented and not used in the &lt;br&gt;current state of the app (as of Part 3).&lt;br&gt;May be useful later on when &lt;br&gt;Habit Events are implemented" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#000000;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="-825" y="-1000" width="240" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="lfY1y7EgfsoNMWNS-3i6-20" value="Model class: Contains &lt;br&gt;the Habit information &lt;br&gt;and related methods to &lt;br&gt;set or retrieve this info" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="-240" y="-780" width="140" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
