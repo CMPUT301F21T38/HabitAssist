@@ -1,17 +1,32 @@
+/*
+ * This file implements User-Interface Tests for various intents and functionalities
+ * -------------------------------------------------------------------------------------------------
+ *
+ * Copyright [2021] [CMPUT301F21T38]
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
 package com.example.habitassist;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import android.app.Activity;
-import android.app.Instrumentation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.robotium.solo.Solo;
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.platform.app.InstrumentationRegistry;
 
@@ -23,7 +38,6 @@ import org.junit.Test;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class MainActivityTest {
@@ -34,11 +48,16 @@ public class MainActivityTest {
     public ActivityTestRule<MainActivity> rule =
             new ActivityTestRule<>(MainActivity.class, true, true);
 
+    /**
+     * Create two Habits, one for today and the other for a different day. This method runs once
+     * before each test.
+     * @throws Exception
+     */
     @Before
     public void setUp() throws Exception {
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
 
-        // Add two new habits for the tests
+        // Create two habits for the tests
         LocalDate today = LocalDate.now();
         Date todayDate = Date.from(today.atStartOfDay(ZoneId.systemDefault()).toInstant());
         Date tomorrowDate = Date.from(today.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant());
@@ -47,39 +66,14 @@ public class MainActivityTest {
         String dateString = (new SimpleDateFormat("yyyy-MM-dd")).format(todayDate);
         myExampleHabitToday = new Habit("testt_gym", "stay fit", dateString, currentDayOfTheWeek);
         myExampleHabitTomorrow = new Habit("testt_cook", "yum", dateString, nextDayOfTheWeek);
-
-        // Click on the add_habit_button
-        // Check that it navigates to the right activity
-        // Try entering a new Habit
-        MainActivity mainActivity = (MainActivity) solo.getCurrentActivity();
-        mainActivity.getInstance().db.collection("habits")
-                .document(myExampleHabitToday.getHabitTitle())
-                .set(myExampleHabitToday.getDocument());
-        mainActivity.getInstance().db.collection("habits")
-                .document(myExampleHabitTomorrow.getHabitTitle())
-                .set(myExampleHabitTomorrow.getDocument());
     }
 
     @Test
-    public void start() throws Exception {
-        Activity activity = rule.getActivity();
-    }
-    /**
-     * Add a city to the listview and check the city name using assertTrue
-     * Clear all the cities from the listview and check again with assertFalse
-     */
-    @Test
-    public void Should_Allow_Reaching_AddHabitActivity() {
-        //Asserts that the current activity is the MainActivity. Otherwise, show “Wrong Activity”
-        solo.assertCurrentActivity("Did not start on MainActivity", MainActivity.class);
+    public void testTheAddingEditingAndDeletingOfHabits() {
+        // Click on the plus button
         solo.clickOnView((FloatingActionButton) solo.getView(R.id.add_habit_button));
-        solo.assertCurrentActivity("Clicking plus button did not reach AddHabitActivity", AddHabitActivity.class);
-    }
 
-    @Test
-    public void Should_Open_Correct_HabitDetail_Page() {
-        // Add new habit
-        solo.clickOnView((FloatingActionButton) solo.getView(R.id.add_habit_button));
+        // Check that we are on the AddHabitActivity page
         solo.assertCurrentActivity(
                 "Click on the plus button does not navigate to AddHabitActivity",
                 AddHabitActivity.class);
@@ -187,8 +181,7 @@ public class MainActivityTest {
             assertTrue(solo.searchButton("Delete"));
         }
 
-        // delete the two habits we added
-        // NOTE: These habits are NOT getting deleted as of now
+        // Delete the two habits we added
         solo.clickOnView((Button) solo.getView(R.id.habit_detail_delete_button));
         solo.assertCurrentActivity("", ProfileActivity.class);
         solo.goBack();

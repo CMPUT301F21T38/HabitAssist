@@ -1,17 +1,21 @@
-/*Copyright [2021] [CMPUT301F21T38]
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.*/
-    
+/*
+ * This file implements the Android Activity called MainActivity
+ * -------------------------------------------------------------------------------------------------
+ *
+ * Copyright [2021] [CMPUT301F21T38]
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
 package com.example.habitassist;
 
 import android.content.Intent;
@@ -41,45 +45,64 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The main Android Activity and the entry point of the app. It handles showing the home page with
+ * habits to do today. It also enables navigating to the page for adding new habits and also to the
+ * detail page of any clicked habit.
+ */
 public class MainActivity extends AppCompatActivity {
 
-    private FloatingActionButton myFab;
-    public ArrayList<Habit> habitList;
-    ArrayAdapter<String> habitAdapter;
-    ArrayList<String> habitList2;
-    private ListView listview;
+    /** A list of the habits belonging to the profile that needs to be done today */
+    private ArrayList<Habit> habitList;
+    /** A list of the titles of the habits belonging to the profile that needs to be done today */
+    private ArrayList<String> habitTitleList;
+    /** An array adapter used to show the titles in habitTitleList into a ListView */
+    private ArrayAdapter<String> habitAdapter;
 
+    /** A reference to the Firestore database  */
     public FirebaseFirestore db;
 
+    /** A name tag used in logging statements from this activity */
     final String TAG = "MainActivity";
 
-    // This variable is set immediately after a ListView of habits is clicked
-    // It stores the title of the habit clicked. The unique title is used to identify which habit
-    // object to delete or edit if an action like that is triggered.
+    /**
+     * This variable is set immediately after a ListView of habits is clicked. It stores the title
+     * of the habit clicked. The unique title is used to identify which habit object to delete or
+     * edit if an action like that is triggered. */
     public String DeleteAndEdit;
 
+    /** Instance of the current running MainActivity `this` context */
     private static MainActivity instance;
 
+    /**
+     * This method sets the view, initializes variables, and assigns the Event Listeners.
+     * It runs once immediately after entering this Activity.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        // Initialize variables
         instance = this;
-        listview = (ListView) findViewById(R.id.listview);
+        ListView listview = (ListView) findViewById(R.id.listview);
         habitList = new ArrayList<>();
-        habitList2 = new ArrayList<>();
+        habitTitleList = new ArrayList<>();
 
         // Access a Cloud Firestore instance
         db = FirebaseFirestore.getInstance();
+
+        // Add listener that reacts to changes to the Firestore database and updates the local UI
         CollectionReference habitsCollection = db.collection("habits");
         habitsCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 habitList.clear();
-                habitList2.clear();
+                habitTitleList.clear();
                 for (QueryDocumentSnapshot doc: value) {
                     Map<String, Object> data = doc.getData();
                     String title = (String) data.get("title");
@@ -90,30 +113,34 @@ public class MainActivity extends AppCompatActivity {
                         Habit habit = new Habit(title, reason, startDate, daysToBeDone);
                         habitList.add(habit);
                         if (habit.isForToday()) {
-                            habitList2.add(title);
+                            habitTitleList.add(title);
                         }
                     }
                 }
                 habitAdapter.notifyDataSetChanged();
             }
         });
-        habitAdapter = new ArrayAdapter<>(this, R.layout.profile_content, R.id.list_item, habitList2);
+
+        // Connect the habit titles data list to the user-interface with an ArrayAdapter
+        habitAdapter = new ArrayAdapter<>(this, R.layout.profile_content, R.id.list_item, habitTitleList);
         listview.setAdapter(habitAdapter);
 
-        myFab = (FloatingActionButton) findViewById(R.id.add_habit_button);
+        // Navigate to the AddHabitActivity page when the Plus button is clicked
+        FloatingActionButton myFab = (FloatingActionButton) findViewById(R.id.add_habit_button);
         myFab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 AddMainHabit();
             }
         });
 
+        // Add listener that navigates to the correct Habit detail page when a habit is clicked
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 // it returns the name of the habit from the Listview OR the ArrayList
-                DeleteAndEdit = habitList2.get(i);
-                Intent intent3 = new Intent(MainActivity.this, HabitDetailActivity.class);
-                String uniqueTitle = habitList2.get(i);
+                DeleteAndEdit = habitTitleList.get(i);
+                Intent intent = new Intent(MainActivity.this, HabitDetailActivity.class);
+                String uniqueTitle = habitTitleList.get(i);
                 Habit habitPassed = habitList.get(i); // Not necessarily the correct Habit object
                 for (Habit habit : habitList) {
                     if (habit.getHabitTitle().equals(uniqueTitle)) {
@@ -121,17 +148,25 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     }
                 }
-                intent3.putExtra("habitPassed", habitPassed);
-                startActivityForResult(intent3, 5);
+                intent.putExtra("habitPassed", habitPassed);
+                startActivity(intent);
 
             }
         });
     }
 
+    /**
+     * This method returns an instance of the running MainActivity `this` context;
+     * @return
+     */
     public static MainActivity getInstance(){
         return instance;
     }
 
+    /**
+     * This method deletes the habit with title stored in the DeleteAndEdit variable.
+     * @param view
+     */
     public void DeleteHabit(View view){
         db.collection("habits").document(DeleteAndEdit)
                 .delete()
@@ -149,9 +184,13 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * This method is called when the Edit button on the HabitDetailActivity page is called.
+     * It navigates to the HabitEditActivity page.
+     * @param view
+     */
     public void EditHabit(View view) {
-        System.out.println("EditHabit entered");
-        Intent intent4= new Intent(this, HabitEditActivity.class);
+        Intent intent= new Intent(this, HabitEditActivity.class);
 
         // Look for the habit with the same title as DeleteAndEdit
         Habit habitPassedIn = null;
@@ -162,28 +201,43 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         if (habitPassedIn != null) {
-            intent4.putExtra("habitPassedIn", (Serializable) habitPassedIn);
-            startActivityForResult(intent4, 9);
-        } else {
-            Toast.makeText(getApplicationContext(), "DeleteAndEdit is: " + DeleteAndEdit + " " +"HabitPassedIn is NULL", Toast.LENGTH_SHORT).show();
+            intent.putExtra("habitPassedIn", (Serializable) habitPassedIn);
+            startActivity(intent);
         }
     }
 
+    /**
+     * This method is called when the Plus button on the activity_main.xml page is clicked
+     * It navigates to the AddHabitActivity page
+     */
     public void AddMainHabit(){
-        System.out.println("AddMainHabit entered1");
-        Intent intent1 = new Intent(this, AddHabitActivity.class);
-        startActivityForResult(intent1, 3);
+        Intent intent = new Intent(this, AddHabitActivity.class);
+        startActivity(intent);
     }
 
+    /**
+     * This method is called when the Profile button on the activity_main.xml page is clicked.
+     * It navigates to the profile page.
+     * @param view
+     */
     public void ProfileButton(View view){
-        Intent intent2 = new Intent(this, ProfileActivity.class);
-        intent2.putExtra("habit2", habitList);
-        startActivityForResult(intent2, 4);
+        Intent intent = new Intent(this, ProfileActivity.class);
+        intent.putExtra("habit2", habitList);
+        startActivity(intent);
     }
 
+    /**
+     * This method is called when the Feed button on the activity_main.xml page is clicked
+     * @param view
+     */
     public void FeedButton(View view){
 
     }
+
+    /**
+     * This method is called when the Home button on the activity_main.xml page is clicked
+     * @param view
+     */
     public void HomeButton(View view){
         // do something when the home button is clicked
     }

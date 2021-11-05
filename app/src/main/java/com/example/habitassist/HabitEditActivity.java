@@ -1,44 +1,60 @@
+/*
+ * This file implements the Android Activity called HabitEditActivity
+ * -------------------------------------------------------------------------------------------------
+ *
+ * Copyright [2021] [CMPUT301F21T38]
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
 package com.example.habitassist;
 
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 
+/**
+ * The Android Activity that handles getting information about a Habit from the user, validating
+ * it and then updating it to the database of habits. It pre-fills the user interface fields with
+ * the details of the particular Habit being edited.
+ */
 public class HabitEditActivity extends AppCompatActivity {
-    ArrayList<String> HabitDays;
+    /** A reference to the Firestore database */
     private FirebaseFirestore db;
 
+    /**
+     * This method sets the view and initializes variables. It runs once immediately after entering
+     * this Activity.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        System.out.println("EditHabitActivity entered");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_habit);
 
         // Store a reference to cloud database
         db = FirebaseFirestore.getInstance();
 
-        // get the habit to edit passed in from MainActivity
+        // Get the Habit to edit that was passed in from MainActivity
         Habit habit = (Habit) getIntent().getSerializableExtra("habitPassedIn");
 
         // get the edittext and datepicker objects
@@ -85,8 +101,13 @@ public class HabitEditActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * This method is called when the Save button on the activity_edit_habit.xml page is clicked
+     * It updates the habit directly in the Firestore database if the input fields are valid.
+     * @param view
+     */
     public void SaveButton(View view){
-        HabitDays = new ArrayList<>();
+        ArrayList<String> HabitDays = new ArrayList<>();
 
         // get the habit to edit passed in from MainActivity
         Habit habit = (Habit) getIntent().getSerializableExtra("habitPassedIn");
@@ -141,14 +162,19 @@ public class HabitEditActivity extends AppCompatActivity {
             db.collection("habits").document(DeleteAndEdit).delete();
             db.collection("habits").document(habit.getHabitTitle()).set(habit.getDocument());
 
+            // Exit the activity
             finish();
         }
 
 
     }
 
+    /**
+     * This method is called when the Cancel button on the activity_edit_habit.xml page is clicked
+     * @param view
+     */
     public void CancelButton(View view){
-        // do something when the cancel button is pressed
+        // Exit the activity
         finish();
     }
 }

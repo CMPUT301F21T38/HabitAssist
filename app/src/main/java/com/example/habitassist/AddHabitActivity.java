@@ -1,47 +1,67 @@
+/*
+ * This file implements the Android Activity called AddHabitActivity
+ * -------------------------------------------------------------------------------------------------
+ *
+ * Copyright [2021] [CMPUT301F21T38]
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
 package com.example.habitassist;
 
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import org.w3c.dom.Text;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * The Android Activity that handles getting information about a new Habit from the user, validating
+ * it and then adding it to the database of habits.
+ */
 public class AddHabitActivity extends AppCompatActivity {
-    ArrayList<String> dayToBeDoneArray;
+    /** A reference to the Firestore database */
     private FirebaseFirestore db;
 
+    /**
+     * This method sets the view and initializes variables. It runs once immediately after entering
+     * this Activity.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_habit);
-        Intent intent = getIntent();
+
+        // Store a reference to the Firestore database
         db = FirebaseFirestore.getInstance();
     }
 
+    /**
+     * This method is called when the Save button on the activity_add_habit.xml page is clicked
+     * It adds a new habit directly to the Firestore database if the input fields are valid.
+     * @param view
+     */
     public void SaveButton(View view){
-        dayToBeDoneArray = new ArrayList<>();
+        ArrayList<String> dayToBeDoneArray = new ArrayList<>();
         EditText title_added = (EditText) findViewById(R.id.editTextTextPersonName);
 
         EditText reason_added = (EditText) findViewById(R.id.editTextTextPersonName2);
@@ -100,8 +120,12 @@ public class AddHabitActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * This method is called when the Cancel button on the activity_add_habit.xml page is clicked
+     * @param view
+     */
     public void CancelButton(View view){
-        // do something when the cancel button is pressed
+        // Exit the activity
         finish();
     }
 }
