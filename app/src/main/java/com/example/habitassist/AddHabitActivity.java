@@ -19,13 +19,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import org.w3c.dom.Text;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class AddHabitActivity extends AppCompatActivity {
     ArrayList<String> MedTempo2;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +37,7 @@ public class AddHabitActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_habit);
         Intent intent = getIntent();
+        db = FirebaseFirestore.getInstance();
     }
 
     public void SaveButton(View view){
@@ -87,21 +92,12 @@ public class AddHabitActivity extends AppCompatActivity {
         }
         if (reason_added.getText().toString().length() <= 30 && title_added.getText().toString().length() <= 20) {
             Habit habit1 = new Habit(title_added.getText().toString(), reason_added.getText().toString(), date_Started, TextUtils.join(", ", MedTempo2));
-            Intent intent_add = new Intent(view.getContext(), MainActivity.class);
-            intent_add.putExtra("Object", (Serializable) habit1);
-            setResult(Activity.RESULT_OK, intent_add);
+
+            String title = habit1.getHabitTitle();
+            HashMap<String, String> habitDocument = habit1.getDocument();
+            db.collection("habits").document(title).set(habitDocument);
             finish();
         }
-
-
-
-        /*
-        Habit habit1 = new Habit(main_title,main_reason,date_Started, TextUtils.join(", ", MedTempo2));
-        Intent intent_add = new Intent(view.getContext(), MainActivity.class);
-        intent_add.putExtra("Object", (Serializable) habit1);
-        setResult(Activity.RESULT_OK, intent_add);
-        finish();
-         */
     }
 
     public void CancelButton(View view){

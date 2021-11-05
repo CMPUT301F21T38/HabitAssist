@@ -11,15 +11,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+
 public class HabitDetailActivity extends AppCompatActivity {
     private TextView habitDetailTitle, habitDetailStartDate, habitDetailReason, habitDetailDaysToDo;
     private Button habitDetailDeleteButton, habitDetailEditButton;
+    private Habit habitRecieved;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_habit_detail);
-        Habit habit = (Habit) getIntent().getSerializableExtra("habitPassed");
+
+        // Enable the back button on the top of the screen
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        habitRecieved = (Habit) getIntent().getSerializableExtra("habitPassed");
 
         habitDetailTitle = (TextView) findViewById(R.id.habit_detail_title);
         habitDetailStartDate = (TextView) findViewById(R.id.habit_detail_date);
@@ -28,26 +34,41 @@ public class HabitDetailActivity extends AppCompatActivity {
         habitDetailDeleteButton = (Button) findViewById(R.id.habit_detail_delete_button);
         habitDetailEditButton = (Button) findViewById(R.id.habit_detail_edit_button);
 
-        habitDetailTitle.setText(habit.getHabitTitle());
-        habitDetailStartDate.setText("Date started: " + habit.getStartDate());
-        habitDetailReason.setText(habit.getReason());
-        habitDetailDaysToDo.setText(habit.getDaysToBeDone());
+        habitDetailTitle.setText(habitRecieved.getHabitTitle());
+        habitDetailStartDate.setText("Date started: " + habitRecieved.getStartDate());
+        habitDetailReason.setText(habitRecieved.getReason());
+        habitDetailDaysToDo.setText(habitRecieved.getDaysToBeDone());
 
         // TODO: Determine here if this habit actually belongs to the correct profile in database
         if (true) {
             habitDetailDeleteButton.setVisibility(View.VISIBLE);
             habitDetailEditButton.setVisibility(View.VISIBLE);
         }
+    }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     public void DeleteHabit(View view){
-        MainActivity.getInstance().DeleteHabit(view);
+        // Get mainActivity
+        MainActivity mainActivityInstance = MainActivity.getInstance();
+        // Set the habit it be deleted into the DeleteAndEdit variable in mainactivity
+        mainActivityInstance.DeleteAndEdit = habitRecieved.getHabitTitle();
+        // Let mainActivity handle the deleting
+        mainActivityInstance.DeleteHabit(view);
         finish();
     }
 
-    public void EditHabit(View view){
-        MainActivity.getInstance().EditHabit(view);
+    public void EditHabit(View view) {
+        // Get mainActivity
+        MainActivity mainActivityInstance = MainActivity.getInstance();
+        // Set the habit it be deleted into the DeleteAndEdit variable in mainactivity
+        mainActivityInstance.DeleteAndEdit = habitRecieved.getHabitTitle();
+        // Let mainActivity handle the deleting
+        mainActivityInstance.EditHabit(view);
         finish();
     }
 

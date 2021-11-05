@@ -1,12 +1,14 @@
 package com.example.habitassist;
 
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -14,19 +16,27 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class HabitEditActivity extends AppCompatActivity {
     ArrayList<String> HabitDays;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         System.out.println("EditHabitActivity entered");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_habit);
-        Intent intent = getIntent();
+
+        // Store a reference to cloud database
+        db = FirebaseFirestore.getInstance();
 
         // get the habit to edit passed in from MainActivity
         Habit habit = (Habit) getIntent().getSerializableExtra("habitPassedIn");
@@ -34,15 +44,10 @@ public class HabitEditActivity extends AppCompatActivity {
         // get the edittext and datepicker objects
         EditText title = (EditText) findViewById(R.id.editTextTextPersonName);
         EditText reason = (EditText) findViewById(R.id.editTextTextPersonName2);
-        //DatePicker date = (DatePicker) findViewById(R.id.editTextDate2);
 
         // set the habit values that have already been given previously
         title.setText(habit.getHabitTitle());
         reason.setText(habit.getReason());
-
-        // set the calandar on the original start date
-        //String[] original_date = habit.getStartDate().split("-");
-        //date.init(Integer.parseInt(original_date[0]), Integer.parseInt(original_date[1]), Integer.parseInt(original_date[2]), null);
 
         // check day boxes that have already been checked
         String[] days = habit.getDaysToBeDone().split(",");
@@ -95,22 +100,6 @@ public class HabitEditActivity extends AppCompatActivity {
         String main_title = title_added.getText().toString();
         String main_reason = reason_added.getText().toString();
 
-        // get the date and convert it
-        //int take_day = take_date.getDayOfMonth();
-        //String take_day1 = Integer.toString(take_day);
-        //if (take_day < 10){
-        /*    take_day1 = "0" + take_day1;
-        }
-        int take_month = take_date.getMonth() + 1;
-        int take_year = take_date.getYear();
-
-        String take_month1 = Integer.toString(take_month);
-        if (take_month < 10){
-            take_month1 = "0" + take_month1;
-        }
-        String take_year1 = Integer.toString(take_year);
-        String date_Started = take_year1 + "-" + take_month1 + "-" + take_day1;*/
-
         if (((CheckBox) findViewById(R.id.checkbox_Monday)).isChecked()) {
             HabitDays.add("Monday");
         }
@@ -147,9 +136,11 @@ public class HabitEditActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Please keep the reason under 30 characters", Toast.LENGTH_SHORT).show();
         }
         if (reason_added.getText().toString().length() <= 30 && title_added.getText().toString().length() <= 20) {
-            Intent intent_add = new Intent(view.getContext(), MainActivity.class);
-            intent_add.putExtra("Object", (Serializable) habit);
-            setResult(Activity.RESULT_OK, intent_add);
+            // Directly Edit the Firestore entry from here instead of passing it back to the MainActivity
+            String DeleteAndEdit = MainActivity.getInstance().DeleteAndEdit;
+            db.collection("habits").document(DeleteAndEdit).delete();
+            db.collection("habits").document(habit.getHabitTitle()).set(habit.getDocument());
+
             finish();
         }
 
