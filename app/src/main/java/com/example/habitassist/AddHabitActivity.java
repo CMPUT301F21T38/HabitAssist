@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class AddHabitActivity extends AppCompatActivity {
-    ArrayList<String> MedTempo2;
+    ArrayList<String> dayToBeDoneArray;
     private FirebaseFirestore db;
 
     @Override
@@ -41,7 +41,7 @@ public class AddHabitActivity extends AppCompatActivity {
     }
 
     public void SaveButton(View view){
-        MedTempo2 = new ArrayList<>();
+        dayToBeDoneArray = new ArrayList<>();
         EditText title_added = (EditText) findViewById(R.id.editTextTextPersonName);
 
         EditText reason_added = (EditText) findViewById(R.id.editTextTextPersonName2);
@@ -63,25 +63,25 @@ public class AddHabitActivity extends AppCompatActivity {
         String date_Started = take_year1 + "-" + take_month1 + "-" + take_day1;
 
         if (((CheckBox) findViewById(R.id.checkbox_Monday)).isChecked()) {
-            MedTempo2.add("Monday");
+            dayToBeDoneArray.add("Monday");
         }
         if (((CheckBox) findViewById(R.id.checkbox_Tuesday)).isChecked()) {
-            MedTempo2.add("Tuesday");
+            dayToBeDoneArray.add("Tuesday");
         }
         if (((CheckBox) findViewById(R.id.checkbox_Wednesday)).isChecked()) {
-            MedTempo2.add("Wednesday");
+            dayToBeDoneArray.add("Wednesday");
         }
         if (((CheckBox) findViewById(R.id.checkbox_Thursday)).isChecked()) {
-            MedTempo2.add("Thursday");
+            dayToBeDoneArray.add("Thursday");
         }
         if (((CheckBox) findViewById(R.id.checkbox_Friday)).isChecked()) {
-            MedTempo2.add("Friday");
+            dayToBeDoneArray.add("Friday");
         }
         if (((CheckBox) findViewById(R.id.checkbox_Saturday)).isChecked()) {
-            MedTempo2.add("Saturday");
+            dayToBeDoneArray.add("Saturday");
         }
         if (((CheckBox) findViewById(R.id.checkbox_Sunday)).isChecked()) {
-            MedTempo2.add("Sunday");
+            dayToBeDoneArray.add("Sunday");
         }
 
         if (title_added.getText().toString().length() > 20) {
@@ -91,7 +91,7 @@ public class AddHabitActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Please keep the reason under 30 characters", Toast.LENGTH_SHORT).show();
         }
         if (reason_added.getText().toString().length() <= 30 && title_added.getText().toString().length() <= 20) {
-            Habit habit1 = new Habit(title_added.getText().toString(), reason_added.getText().toString(), date_Started, TextUtils.join(", ", MedTempo2));
+            Habit habit1 = new Habit(title_added.getText().toString(), reason_added.getText().toString(), date_Started, TextUtils.join(", ", dayToBeDoneArray));
 
             String title = habit1.getHabitTitle();
             HashMap<String, String> habitDocument = habit1.getDocument();
