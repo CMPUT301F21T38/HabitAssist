@@ -58,7 +58,7 @@ public class HabitEditActivity extends AppCompatActivity {
         Habit habit = (Habit) getIntent().getSerializableExtra("habitPassedIn");
 
         // get the edittext and datepicker objects
-        EditText title = (EditText) findViewById(R.id.editTextTextPersonName);
+        EditText title = (EditText) findViewById(R.id.comment_edit_text);
         EditText reason = (EditText) findViewById(R.id.editTextTextPersonName2);
 
         // set the habit values that have already been given previously
@@ -113,7 +113,7 @@ public class HabitEditActivity extends AppCompatActivity {
         Habit habit = (Habit) getIntent().getSerializableExtra("habitPassedIn");
 
         // get the edittext and datepicker objects
-        EditText title_added = (EditText) findViewById(R.id.editTextTextPersonName);
+        EditText title_added = (EditText) findViewById(R.id.comment_edit_text);
         EditText reason_added = (EditText) findViewById(R.id.editTextTextPersonName2);
         //DatePicker take_date = (DatePicker) findViewById(R.id.editTextDate2);
 

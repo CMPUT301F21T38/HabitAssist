@@ -21,6 +21,7 @@ package com.example.habitassist;
 import android.widget.DatePicker;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -38,6 +39,9 @@ public class Habit implements Serializable {
     private String startDate;
     /** a string of comma-separated days of the week; These are the days to do the habit */
     private String daysToBeDone;
+
+    private ArrayList<HabitEvent> habitEvents;
+
 
     /**
      * Simple constructor that expects all the attributes as arguments
@@ -111,6 +115,13 @@ public class Habit implements Serializable {
         this.title = title;
     }
 
+    public ArrayList<HabitEvent> getHabitEvents() {
+        return habitEvents;
+    }
+
+    public void setHabitEvents(ArrayList<HabitEvent> habitEvents) {
+        this.habitEvents = habitEvents;
+    }
 
     // Other utility methods
 

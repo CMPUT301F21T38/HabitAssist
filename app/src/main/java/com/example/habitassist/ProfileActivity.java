@@ -71,7 +71,7 @@ public class ProfileActivity extends AppCompatActivity {
         profileAllHabitsTitleList = new ArrayList<>();
 
         // Add listener that reacts to changes to the Firestore database and updates the local UI
-        db = MainActivity.getInstance().db;
+        db = FirebaseFirestore.getInstance();
         db.collection("habits").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {

@@ -62,7 +62,7 @@ public class AddHabitActivity extends AppCompatActivity {
      */
     public void SaveButton(View view){
         ArrayList<String> dayToBeDoneArray = new ArrayList<>();
-        EditText title_added = (EditText) findViewById(R.id.editTextTextPersonName);
+        EditText title_added = (EditText) findViewById(R.id.comment_edit_text);
 
         EditText reason_added = (EditText) findViewById(R.id.editTextTextPersonName2);
 

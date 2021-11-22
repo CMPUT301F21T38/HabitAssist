@@ -18,17 +18,15 @@
  */
 package com.example.habitassist;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -36,7 +34,6 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -46,13 +43,13 @@ import java.util.Map;
  *  Currently outstanding issues: Always shows the Edit and Delete buttons on all habits because it
  *  assumes only one profile can use the App.
  */
-public class HabitDetailActivity extends AppCompatActivity {
+public class HabitEventDetailActivity extends AppCompatActivity {
     /** UI buttons */
-    private TextView habitDetailTitle, habitDetailStartDate, habitDetailReason, habitDetailDaysToDo;
+    private TextView habitTitle, habitEventTime, habitEventComment;
     private Button habitDetailDeleteButton, habitDetailEditButton;
 
     /** This is the habit that we need to show the details of in this Activity */
-    private Habit habitRecieved;
+    private HabitEvent habitEventRecieved;
 
     /** A reference to the Firestore database */
     private FirebaseFirestore db;
@@ -67,7 +64,7 @@ public class HabitDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_habit_detail);
+        setContentView(R.layout.activity_habit_event_detail);
 
         // Store a reference to the Firestore database
         db = FirebaseFirestore.getInstance();
@@ -75,26 +72,26 @@ public class HabitDetailActivity extends AppCompatActivity {
         // Enable the back button on the top of the screen
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // Get the Habit that we need to show the details of
-        habitRecieved = (Habit) getIntent().getSerializableExtra("habitPassed");
+        // Get the HabitEvent that we need to show the details of
+        habitEventRecieved = (HabitEvent) getIntent().getSerializableExtra("habitEventPassed");
 
         // Access UI elements from the layout
-        habitDetailTitle = (TextView) findViewById(R.id.habit_detail_title);
-        habitDetailStartDate = (TextView) findViewById(R.id.habit_detail_date);
-        habitDetailReason = (TextView) findViewById(R.id.habit_detail_reason);
-        habitDetailDaysToDo = (TextView) findViewById(R.id.habit_detail_days_to_do);
+        habitTitle = (TextView) findViewById(R.id.habit_title);
+        habitEventTime = (TextView) findViewById(R.id.habit_event_detail_time);
+        habitEventComment = (TextView) findViewById(R.id.habit_event_comment);
+
         habitDetailDeleteButton = (Button) findViewById(R.id.habit_detail_delete_button);
         habitDetailEditButton = (Button) findViewById(R.id.habit_detail_edit_button);
-        ListView habitEventsListView = (ListView) findViewById(R.id.habit_events_listview);
 
 
-        ArrayList<HabitEvent> habitEventsList = new ArrayList<>();
-        ArrayList<String> habitEventsIdList = new ArrayList<>();
+        // Enter the details of the habit event onto the View
+        habitTitle.setText(habitEventRecieved.getHabitTitle());
+        habitEventTime.setText("Date started: " + habitEventRecieved.getTimeStamp());
+        habitEventComment.setText(habitEventRecieved.getComment());
+
         db.collection("habitEvents").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                habitEventsList.clear();
-                habitEventsIdList.clear();
                 for (QueryDocumentSnapshot doc : value) {
                     Map<String, Object> data = doc.getData();
                     String comment = (String) data.get("comment");
@@ -105,44 +102,19 @@ public class HabitDetailActivity extends AppCompatActivity {
                         continue;
                     }
                     // Only add if this HabitEvent belongs to the correct Habit in question.
-                    if (habitTitle.equals(habitRecieved.getHabitTitle())) {
-                        HabitEvent habitEvent = new HabitEvent(habitTitle, timeStamp, comment);
-                        habitEventsList.add(habitEvent);
-                        habitEventsIdList.add(doc.getId());
+                    if (habitEventRecieved.getUniqueId().equals(doc.getId())) {
+                        habitEventComment.setText(comment);
                     }
                 }
-                habitEventsAdapter.notifyDataSetChanged();
             }
         });
 
-        // Connect the habit titles data list to the user-interface with an ArrayAdapter
-        habitEventsAdapter = new ArrayAdapter<>(this, R.layout.profile_content, R.id.list_item, habitEventsIdList);
-        habitEventsListView.setAdapter(habitEventsAdapter);
-
-        // Add listener that navigates to the correct Habit detail page when a habit is clicked
-        habitEventsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Intent intent = new Intent(HabitDetailActivity.this, HabitEventDetailActivity.class);
-                intent.putExtra("habitEventPassed", habitEventsList.get(position));
-                startActivity(intent);
-            }
-        });
-
-
-
-        // Enter the details of the habit onto the View
-        habitDetailTitle.setText(habitRecieved.getHabitTitle());
-        habitDetailStartDate.setText("Date started: " + habitRecieved.getStartDate());
-        habitDetailReason.setText(habitRecieved.getReason());
-        habitDetailDaysToDo.setText(habitRecieved.getDaysToBeDone());
-
-        // TODO: Determine here if this habit actually belongs to the correct profile in database
-        if (true) {
-            // Show the Edit and Delete buttons
-            habitDetailDeleteButton.setVisibility(View.VISIBLE);
-            habitDetailEditButton.setVisibility(View.VISIBLE);
-        }
+        // // TODO: Determine here if this habit actually belongs to the correct profile in database
+        // if (true) {
+        //     // Show the Edit and Delete buttons
+        //     habitDetailDeleteButton.setVisibility(View.VISIBLE);
+        //     habitDetailEditButton.setVisibility(View.VISIBLE);
+        // }
     }
 
     /**
@@ -161,8 +133,9 @@ public class HabitDetailActivity extends AppCompatActivity {
      * @param view
      */
     public void DeleteHabit(View view){
-        db.collection("habits")
-                .document(habitRecieved.getHabitTitle())
+        String habitEventId = habitEventRecieved.getHabitTitle() + "*" + habitEventRecieved.getTimeStamp();
+        db.collection("habitEvents")
+                .document(habitEventId)
                 .delete();
         finish();
     }
@@ -173,18 +146,8 @@ public class HabitDetailActivity extends AppCompatActivity {
      * @param view
      */
     public void EditHabit(View view) {
-        // Get mainActivity
-        MainActivity mainActivityInstance = MainActivity.getInstance();
-        // Set the habit to be edited into the DeleteAndEdit variable in the MainActivity
-        mainActivityInstance.DeleteAndEdit = habitRecieved.getHabitTitle();
-        // Let mainActivity handle the deleting
-        mainActivityInstance.EditHabit(view);
-        finish();
-    }
-
-    public void onClickCompleted(View view) {
-        Intent intent = new Intent(this, AddHabitEventActivity.class);
-        intent.putExtra("habit", habitRecieved);
+        Intent intent = new Intent(this, HabitEventEditActivity.class);
+        intent.putExtra("habitEventPassed", habitEventRecieved);
         startActivity(intent);
     }
 }

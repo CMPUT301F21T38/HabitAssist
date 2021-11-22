@@ -10,6 +10,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HabitAssist">
         <activity
+            android:name=".HabitEventEditActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HabitEventDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddHabitEventActivity"
+            android:exported="false" />
+        <activity
             android:name=".HabitDetailActivity"
             android:exported="true" />
         <activity
