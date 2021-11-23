@@ -19,15 +19,28 @@
 package com.example.habitassist;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -44,9 +57,11 @@ import java.util.Map;
  *  assumes only one profile can use the App.
  */
 public class HabitEventDetailActivity extends AppCompatActivity {
+    private static final String TAG = "HabitEventDetail";
     /** UI buttons */
     private TextView habitTitle, habitEventTime, habitEventComment;
     private Button habitDetailDeleteButton, habitDetailEditButton;
+    private ImageView habitEventImageView;
 
     /** This is the habit that we need to show the details of in this Activity */
     private HabitEvent habitEventRecieved;
@@ -75,11 +90,13 @@ public class HabitEventDetailActivity extends AppCompatActivity {
         // Get the HabitEvent that we need to show the details of
         habitEventRecieved = (HabitEvent) getIntent().getSerializableExtra("habitEventPassed");
 
+        // updateHabitEventRecieved();
+
         // Access UI elements from the layout
         habitTitle = (TextView) findViewById(R.id.habit_title);
         habitEventTime = (TextView) findViewById(R.id.habit_event_detail_time);
         habitEventComment = (TextView) findViewById(R.id.habit_event_comment);
-
+        habitEventImageView = (ImageView) findViewById(R.id.image_view);
         habitDetailDeleteButton = (Button) findViewById(R.id.habit_detail_delete_button);
         habitDetailEditButton = (Button) findViewById(R.id.habit_detail_edit_button);
 
@@ -87,7 +104,13 @@ public class HabitEventDetailActivity extends AppCompatActivity {
         // Enter the details of the habit event onto the View
         habitTitle.setText(habitEventRecieved.getHabitTitle());
         habitEventTime.setText("Date started: " + habitEventRecieved.getTimeStamp());
-        habitEventComment.setText(habitEventRecieved.getComment());
+
+        // habitEventComment.setText(habitEventRecieved.getComment());
+        // String imageBitmapString = habitEventRecieved.getImageBitmapString();
+        // if (imageBitmapString != null && !imageBitmapString.isEmpty()) {
+        //     Bitmap imageBitmap = HabitEvent.stringToBitMap(imageBitmapString);
+        //     habitEventImageView.setImageBitmap(imageBitmap);
+        // }
 
         db.collection("habitEvents").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -97,6 +120,7 @@ public class HabitEventDetailActivity extends AppCompatActivity {
                     String comment = (String) data.get("comment");
                     String habitTitle = (String) data.get("habitTitle");
                     String timeStamp = (String) data.get("timeStamp");
+                    String imageBitmapString = (String) data.get("imageBitmapString");
                     // Add a guard in case a wrongly structured Habit data is put into firestore
                     if (habitTitle == null || timeStamp == null) {
                         continue;
@@ -104,6 +128,11 @@ public class HabitEventDetailActivity extends AppCompatActivity {
                     // Only add if this HabitEvent belongs to the correct Habit in question.
                     if (habitEventRecieved.getUniqueId().equals(doc.getId())) {
                         habitEventComment.setText(comment);
+                        if (imageBitmapString != null && !imageBitmapString.isEmpty()) {
+                            Bitmap imageBitmap = HabitEvent.stringToBitMap(imageBitmapString);
+                            habitEventImageView.setImageBitmap(imageBitmap);
+                        }
+                        habitEventRecieved = new HabitEvent(habitTitle, timeStamp, comment, imageBitmapString);
                     }
                 }
             }
@@ -133,10 +162,22 @@ public class HabitEventDetailActivity extends AppCompatActivity {
      * @param view
      */
     public void DeleteHabit(View view){
-        String habitEventId = habitEventRecieved.getHabitTitle() + "*" + habitEventRecieved.getTimeStamp();
+        // updateHabitEventRecieved();
+        String habitEventId = habitEventRecieved.getUniqueId();
         db.collection("habitEvents")
                 .document(habitEventId)
-                .delete();
+                .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(HabitEventDetailActivity.this, habitEventId+" successfully deleted!", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(HabitEventDetailActivity.this, "Error deleting "+habitEventId +" :" + e, Toast.LENGTH_SHORT).show();
+                    }
+                });
         finish();
     }
 
@@ -146,6 +187,7 @@ public class HabitEventDetailActivity extends AppCompatActivity {
      * @param view
      */
     public void EditHabit(View view) {
+        // updateHabitEventRecieved();
         Intent intent = new Intent(this, HabitEventEditActivity.class);
         intent.putExtra("habitEventPassed", habitEventRecieved);
         startActivity(intent);

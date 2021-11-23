@@ -83,19 +83,10 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/habit_event_picture"
+                <ImageView
+                    android:id="@+id/image_view"
                     android:layout_width="match_parent"
-                    android:layout_height="37dp"
-                    android:height="90dp"
-                    android:paddingLeft="20dp"
-                    android:paddingTop="5dp"
-                    android:paddingRight="10dp"
-                    android:paddingBottom="5dp"
-                    android:text="TO DO: put a picture here"
-                    android:textColor="#000000"
-                    android:textSize="14sp"
-                    android:textStyle="normal" />
+                    android:layout_height="300dp" />
 
 
 
