@@ -1,6 +1,7 @@
 package com.example.habitassist;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 public class Profile implements Serializable {
      private String username;
@@ -21,4 +22,10 @@ public class Profile implements Serializable {
         return this.password;
     }
 
+    public HashMap<String, String> getDocument() {
+        HashMap<String, String> profileDocument = new HashMap<>();
+        profileDocument.put("username", username);
+        profileDocument.put("password", password);
+        return profileDocument;
+    }
 }
