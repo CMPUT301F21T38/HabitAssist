@@ -241,4 +241,9 @@ public class MainActivity extends AppCompatActivity {
     public void HomeButton(View view){
         // do something when the home button is clicked
     }
+
+    public void Logout(View view){
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
 }

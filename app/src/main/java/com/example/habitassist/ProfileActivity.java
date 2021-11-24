@@ -135,4 +135,12 @@ public class ProfileActivity extends AppCompatActivity {
     public void HomeButton(View view) {
         finish();
     }
+
+    public void Logout(View view){
+
+        MainActivity mainActivityInstance = MainActivity.getInstance();
+
+        mainActivityInstance.Logout(view);
+        finish();
+    }
 }

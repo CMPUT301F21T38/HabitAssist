@@ -26,6 +26,7 @@
         android:layout_height="55dp"
         android:layout_marginTop="16dp"
         android:backgroundTint="#FF0202"
+        android:onClick="Logout"
         android:text="Logout"
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
