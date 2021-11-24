@@ -15,7 +15,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void LoginButton(View view){
-        finish();
 
+        finish();
     }
 }
