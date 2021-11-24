@@ -43,6 +43,7 @@
         android:layout_width="160dp"
         android:layout_height="45dp"
         android:layout_marginEnd="8dp"
+        android:onClick="LoginButton"
         android:text="Login"
         app:layout_constraintBaseline_toBaselineOf="@+id/button6"
         app:layout_constraintEnd_toStartOf="@+id/button6"
