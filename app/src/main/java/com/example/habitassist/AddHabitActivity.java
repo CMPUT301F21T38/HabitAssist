@@ -111,7 +111,8 @@ public class AddHabitActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Please keep the reason under 30 characters", Toast.LENGTH_SHORT).show();
         }
         if (reason_added.getText().toString().length() <= 30 && title_added.getText().toString().length() <= 20) {
-            Habit habit1 = new Habit(title_added.getText().toString(), reason_added.getText().toString(), date_Started, TextUtils.join(", ", dayToBeDoneArray), MainActivity.getUsername());
+            MainActivity mainActivityInstance = MainActivity.getInstance();
+            Habit habit1 = new Habit(title_added.getText().toString(), reason_added.getText().toString(), date_Started, TextUtils.join(", ", dayToBeDoneArray), mainActivityInstance.getUsername());
 
             String title = habit1.getHabitTitle();
             HashMap<String, String> habitDocument = habit1.getDocument();

@@ -78,16 +78,20 @@ public class ProfileActivity extends AppCompatActivity {
                 profileAllHabitsList.clear();
                 profileAllHabitsTitleList.clear();
                 for (QueryDocumentSnapshot doc : value) {
-                    Map<String, Object> data = doc.getData();
-                    String title = (String) data.get("title");
-                    String reason = (String) data.get("reason");
-                    String startDate = (String) data.get("startDate");
-                    String daysToBeDone = (String) data.get("daysToBeDone");
-                    // Add a guard in case a wrongly structured Habit data is put into firestore
-                    if (title != null && reason != null && startDate != null && daysToBeDone != null) {
-                        Habit habit = new Habit(title, reason, startDate, daysToBeDone, MainActivity.getUsername());
-                        profileAllHabitsList.add(habit);
-                        profileAllHabitsTitleList.add(title);
+                    String uniqueId = doc.getId().split("\\*")[0];
+                    MainActivity mainActivityInstance = MainActivity.getInstance();
+                    if (uniqueId.equals(mainActivityInstance.getUsername())) {
+                        Map<String, Object> data = doc.getData();
+                        String title = (String) data.get("title");
+                        String reason = (String) data.get("reason");
+                        String startDate = (String) data.get("startDate");
+                        String daysToBeDone = (String) data.get("daysToBeDone");
+                        // Add a guard in case a wrongly structured Habit data is put into firestore
+                        if (title != null && reason != null && startDate != null && daysToBeDone != null) {
+                            Habit habit = new Habit(title, reason, startDate, daysToBeDone, mainActivityInstance.getUsername());
+                            profileAllHabitsList.add(habit);
+                            profileAllHabitsTitleList.add(title);
+                        }
                     }
                 }
                 profile_habitAdapter.notifyDataSetChanged();

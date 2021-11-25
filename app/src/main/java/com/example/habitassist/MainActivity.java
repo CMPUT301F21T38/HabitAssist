@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
     int profileCode = 42;
 
-    private static String username;
+    private String username;
     /** Instance of the current running MainActivity `this` context */
     private static MainActivity instance;
 
@@ -118,16 +118,20 @@ public class MainActivity extends AppCompatActivity {
                 habitList.clear();
                 habitTitleList.clear();
                 for (QueryDocumentSnapshot doc: value) {
-                    Map<String, Object> data = doc.getData();
-                    String title = (String) data.get("title");
-                    String reason = (String) data.get("reason");
-                    String startDate = (String) data.get("startDate");
-                    String daysToBeDone = (String) data.get("daysToBeDone");
-                    if (title != null && reason != null && startDate != null && daysToBeDone != null) {
-                        Habit habit = new Habit(title, reason, startDate, daysToBeDone, username);
-                        habitList.add(habit);
-                        if (habit.isForToday()) {
-                            habitTitleList.add(title);
+                    String uniqueId = doc.getId().split("\\*")[0];
+
+                    if (uniqueId.equals(username)) {
+                        Map<String, Object> data = doc.getData();
+                        String title = (String) data.get("title");
+                        String reason = (String) data.get("reason");
+                        String startDate = (String) data.get("startDate");
+                        String daysToBeDone = (String) data.get("daysToBeDone");
+                        if (title != null && reason != null && startDate != null && daysToBeDone != null) {
+                            Habit habit = new Habit(title, reason, startDate, daysToBeDone, username);
+                            habitList.add(habit);
+                            if (habit.isForToday()) {
+                                habitTitleList.add(title);
+                            }
                         }
                     }
                 }
@@ -176,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == profileCode) {
             if(resultCode == Activity.RESULT_OK){
                 String result = data.getStringExtra("result");
-                username = result;
+                setUsername(result);
 
             }
             if (resultCode == Activity.RESULT_CANCELED) {
@@ -277,7 +281,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public static String getUsername(){
+    public void setUsername(String new_username){
+        username = new_username;
+    }
+
+    public String getUsername(){
         return username;
     }
 }

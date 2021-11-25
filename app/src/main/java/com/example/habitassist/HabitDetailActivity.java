@@ -135,7 +135,8 @@ public class HabitDetailActivity extends AppCompatActivity {
                             String daysToBeDone = (String) data.get("daysToBeDone");
 
                             if (title != null && reason != null && startDate != null && daysToBeDone != null) {
-                                habitRecieved = new Habit(title, reason, startDate, daysToBeDone, MainActivity.getUsername());
+                                MainActivity mainActivityInstance = MainActivity.getInstance();
+                                habitRecieved = new Habit(title, reason, startDate, daysToBeDone, mainActivityInstance.getUsername());
                             }
 
                             if (startDate == null) {

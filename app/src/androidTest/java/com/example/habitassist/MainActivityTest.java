@@ -56,6 +56,7 @@ public class MainActivityTest {
     @Before
     public void setUp() throws Exception {
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
+        MainActivity mainActivityInstance = MainActivity.getInstance();
 
         // Create two habits for the tests
         LocalDate today = LocalDate.now();
@@ -64,8 +65,8 @@ public class MainActivityTest {
         String currentDayOfTheWeek = (new SimpleDateFormat("EEEE")).format(todayDate);
         String nextDayOfTheWeek = (new SimpleDateFormat("EEEE")).format(tomorrowDate);
         String dateString = (new SimpleDateFormat("yyyy-MM-dd")).format(todayDate);
-        myExampleHabitToday = new Habit("testt_gym", "stay fit", dateString, currentDayOfTheWeek, MainActivity.getUsername());
-        myExampleHabitTomorrow = new Habit("testt_cook", "yum", dateString, nextDayOfTheWeek, MainActivity.getUsername());
+        myExampleHabitToday = new Habit("testt_gym", "stay fit", dateString, currentDayOfTheWeek, mainActivityInstance.getUsername());
+        myExampleHabitTomorrow = new Habit("testt_cook", "yum", dateString, nextDayOfTheWeek, mainActivityInstance.getUsername());
     }
 
     @Test
