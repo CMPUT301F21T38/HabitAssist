@@ -98,8 +98,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivityForResult(intent, profileCode);
 
-        System.out.println(username);
-
 
         // Initialize variables
         instance = this;
@@ -119,8 +117,10 @@ public class MainActivity extends AppCompatActivity {
                 habitTitleList.clear();
                 for (QueryDocumentSnapshot doc: value) {
                     String uniqueId = doc.getId().split("\\*")[0];
-
-                    if (uniqueId.equals(username)) {
+                    System.out.println(doc.getId());
+                    System.out.println(getUsername());
+                    System.out.println(uniqueId.equals(getUsername()));
+                    if (uniqueId.equals(getUsername())) {
                         Map<String, Object> data = doc.getData();
                         String title = (String) data.get("title");
                         String reason = (String) data.get("reason");
@@ -138,6 +138,9 @@ public class MainActivity extends AppCompatActivity {
                 habitAdapter.notifyDataSetChanged();
             }
         });
+
+
+
 
         // Connect the habit titles data list to the user-interface with an ArrayAdapter
         habitAdapter = new ArrayAdapter<>(this, R.layout.profile_content, R.id.list_item, habitTitleList);
@@ -181,6 +184,12 @@ public class MainActivity extends AppCompatActivity {
             if(resultCode == Activity.RESULT_OK){
                 String result = data.getStringExtra("result");
                 setUsername(result);
+                //get the username and all the habits associated with that username
+                //take the first habit and update its title to be the same as it once was
+
+                db.collection("habits").document("null").set();
+                db.collection("habits").document("null").delete();
+
 
             }
             if (resultCode == Activity.RESULT_CANCELED) {
@@ -202,7 +211,8 @@ public class MainActivity extends AppCompatActivity {
      * @param view
      */
     public void DeleteHabit(View view){
-        db.collection("habits").document(DeleteAndEdit)
+        String toDeleteOrEdit = username + "*" + DeleteAndEdit;
+        db.collection("habits").document(toDeleteOrEdit)
                 .delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -278,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void Logout(View view){
         Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, profileCode);
     }
 
     public void setUsername(String new_username){
