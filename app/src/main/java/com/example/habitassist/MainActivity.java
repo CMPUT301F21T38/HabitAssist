@@ -51,6 +51,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -186,10 +187,39 @@ public class MainActivity extends AppCompatActivity {
                 setUsername(result);
                 //get the username and all the habits associated with that username
                 //take the first habit and update its title to be the same as it once was
+                // add a temp document to update the habits collection
+                Map<String, Object> temp = new HashMap<>();
+                temp.put("temp", "temp");
+                db.collection("habits").document("temp")
+                        .set(temp)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d(TAG, "DocumentSnapshot successfully written!");
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "Error writing document", e);
+                            }
+                        });
 
-                db.collection("habits").document("null").set();
-                db.collection("habits").document("null").delete();
-
+                // delete temp
+                db.collection("habits").document("temp")
+                        .delete()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "Error deleting document", e);
+                            }
+                        });
 
             }
             if (resultCode == Activity.RESULT_CANCELED) {
