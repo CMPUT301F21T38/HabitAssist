@@ -26,7 +26,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -64,6 +66,12 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        MainActivity mainActivityInstance = MainActivity.getInstance();
+
+        String username = mainActivityInstance.getUsername();
+
+        TextView usernameTitle = (TextView) findViewById(R.id.username);
+        usernameTitle.setText(username);
 
         // Initialize variables
         profileListView = (ListView) findViewById(R.id.profile_listview);
@@ -129,6 +137,7 @@ public class ProfileActivity extends AppCompatActivity {
      * @param view
      */
     public void FeedButton(View view) {
+
 
     }
 

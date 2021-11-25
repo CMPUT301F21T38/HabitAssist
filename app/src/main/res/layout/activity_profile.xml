@@ -12,6 +12,7 @@
         android:layout_height="52dp"
         android:layout_marginTop="36dp"
         android:text="Username_of_user"
+        android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="20sp"
         android:textStyle="bold"

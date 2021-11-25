@@ -305,6 +305,8 @@ public class MainActivity extends AppCompatActivity {
      * @param view
      */
     public void FeedButton(View view){
+        Intent intent = new Intent(this, FeedActivity.class);
+        startActivity(intent);
 
     }
 
