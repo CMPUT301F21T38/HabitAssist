@@ -18,7 +18,11 @@
  */
 package com.example.habitassist;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -31,6 +35,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,6 +48,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
@@ -73,6 +79,10 @@ public class MainActivity extends AppCompatActivity {
      * edit if an action like that is triggered. */
     public String DeleteAndEdit;
 
+
+    int profileCode = 42;
+
+    public String username;
     /** Instance of the current running MainActivity `this` context */
     private static MainActivity instance;
 
@@ -86,7 +96,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, profileCode);
+
 
 
         // Initialize variables
@@ -155,6 +166,22 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == profileCode) {
+            if(resultCode == Activity.RESULT_OK){
+                String result = data.getStringExtra("result");
+                username = result;
+                System.out.println(username);
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //return to login screen
+            }
+        }
     }
 
     /**

@@ -2,6 +2,8 @@ package com.example.habitassist;
 
 import static android.content.ContentValues.TAG;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -50,6 +52,10 @@ public class LoginActivity extends AppCompatActivity {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
 
                         if (document.get("password").equals(password.getText().toString())){
+                            //send user profile back to main activity
+                            Intent returnIntent = new Intent();
+                            returnIntent.putExtra("result", username.getText().toString());
+                            setResult(Activity.RESULT_OK,returnIntent);
                             finish();
                         }
                         else {
