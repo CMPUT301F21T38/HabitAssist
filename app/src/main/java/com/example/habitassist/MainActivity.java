@@ -241,6 +241,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void DeleteHabit(View view){
         String toDeleteOrEdit = username + "*" + DeleteAndEdit;
+        System.out.println(toDeleteOrEdit);
         db.collection("habits").document(toDeleteOrEdit)
                 .delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {

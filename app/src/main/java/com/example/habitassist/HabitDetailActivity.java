@@ -258,7 +258,7 @@ public class HabitDetailActivity extends AppCompatActivity {
      */
     public void DeleteHabit(View view){
         db.collection("habits")
-                .document(habitRecieved.getHabitTitle())
+                .document(habitRecieved.getUniqueId())
                 .delete();
         db.collection("habitEvents")
                 .whereEqualTo("habitTitle", habitRecieved.getHabitTitle())
