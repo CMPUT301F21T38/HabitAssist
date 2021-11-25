@@ -64,8 +64,8 @@ public class MainActivityTest {
         String currentDayOfTheWeek = (new SimpleDateFormat("EEEE")).format(todayDate);
         String nextDayOfTheWeek = (new SimpleDateFormat("EEEE")).format(tomorrowDate);
         String dateString = (new SimpleDateFormat("yyyy-MM-dd")).format(todayDate);
-        myExampleHabitToday = new Habit("testt_gym", "stay fit", dateString, currentDayOfTheWeek);
-        myExampleHabitTomorrow = new Habit("testt_cook", "yum", dateString, nextDayOfTheWeek);
+        myExampleHabitToday = new Habit("testt_gym", "stay fit", dateString, currentDayOfTheWeek, MainActivity.getUsername());
+        myExampleHabitTomorrow = new Habit("testt_cook", "yum", dateString, nextDayOfTheWeek, MainActivity.getUsername());
     }
 
     @Test

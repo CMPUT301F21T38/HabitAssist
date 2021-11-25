@@ -85,7 +85,7 @@ public class ProfileActivity extends AppCompatActivity {
                     String daysToBeDone = (String) data.get("daysToBeDone");
                     // Add a guard in case a wrongly structured Habit data is put into firestore
                     if (title != null && reason != null && startDate != null && daysToBeDone != null) {
-                        Habit habit = new Habit(title, reason, startDate, daysToBeDone);
+                        Habit habit = new Habit(title, reason, startDate, daysToBeDone, MainActivity.getUsername());
                         profileAllHabitsList.add(habit);
                         profileAllHabitsTitleList.add(title);
                     }

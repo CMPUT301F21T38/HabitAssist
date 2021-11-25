@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
 
 public class HabitTest {
     private Habit createHabit() {
-        return new Habit("play games", "fun", "2021-09-01", "Monday, Tuesday");
+        return new Habit("play games", "fun", "2021-09-01", "Monday, Tuesday", MainActivity.getUsername());
     }
 
 

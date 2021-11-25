@@ -42,6 +42,8 @@ public class Habit implements Serializable {
 
     private ArrayList<HabitEvent> habitEvents;
 
+    private String username;
+
 
     /**
      * Simple constructor that expects all the attributes as arguments
@@ -50,11 +52,12 @@ public class Habit implements Serializable {
      * @param startDate a date string in the format yyyy-MM-dd
      * @param DaysToBeDone a string of comma-separated days of the week
      */
-    Habit(String title, String reason, String startDate, String DaysToBeDone){
+    Habit(String title, String reason, String startDate, String DaysToBeDone, String username){
         this.title = title;
         this.reason = reason;
         this.startDate = startDate;
         this.daysToBeDone = DaysToBeDone;
+        this.username = username;
     }
 
     // Getters and Setters
@@ -89,6 +92,10 @@ public class Habit implements Serializable {
      */
     public String getDaysToBeDone() {
         return daysToBeDone;
+    }
+
+    String getUniqueId() {
+        return username + "*" + title;
     }
 
     /**

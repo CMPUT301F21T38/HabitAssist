@@ -95,6 +95,10 @@ public class LoginActivity extends AppCompatActivity {
                         HashMap<String, String> profileDocument = newProfile.getDocument();
                         db.collection("profiles").document(name).set(profileDocument);
 
+                        Intent returnIntent = new Intent();
+                        returnIntent.putExtra("result", username.getText().toString());
+                        setResult(Activity.RESULT_OK,returnIntent);
+
                         finish();
                     }
                 } else {

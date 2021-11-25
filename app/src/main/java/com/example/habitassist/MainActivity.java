@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
     int profileCode = 42;
 
-    public String username;
+    private static String username;
     /** Instance of the current running MainActivity `this` context */
     private static MainActivity instance;
 
@@ -98,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivityForResult(intent, profileCode);
 
+        System.out.println(username);
 
 
         // Initialize variables
@@ -123,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                     String startDate = (String) data.get("startDate");
                     String daysToBeDone = (String) data.get("daysToBeDone");
                     if (title != null && reason != null && startDate != null && daysToBeDone != null) {
-                        Habit habit = new Habit(title, reason, startDate, daysToBeDone);
+                        Habit habit = new Habit(title, reason, startDate, daysToBeDone, username);
                         habitList.add(habit);
                         if (habit.isForToday()) {
                             habitTitleList.add(title);
@@ -176,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
             if(resultCode == Activity.RESULT_OK){
                 String result = data.getStringExtra("result");
                 username = result;
-                System.out.println(username);
+
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //return to login screen
@@ -274,5 +275,9 @@ public class MainActivity extends AppCompatActivity {
     public void Logout(View view){
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
+    }
+
+    public static String getUsername(){
+        return username;
     }
 }
