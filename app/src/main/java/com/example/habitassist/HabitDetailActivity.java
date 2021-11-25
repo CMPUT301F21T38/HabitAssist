@@ -99,9 +99,7 @@ public class HabitDetailActivity extends AppCompatActivity {
 
         // Get the Habit that we need to show the details of
         habitRecieved = (Habit) getIntent().getSerializableExtra("habitPassed");
-        System.out.println("__________________________");
-        System.out.println(habitRecieved.getHabitTitle());
-        System.out.println("__________________________");
+
         // Access UI elements from the layout
         habitDetailTitle = (TextView) findViewById(R.id.habit_detail_title);
         habitDetailStartDate = (TextView) findViewById(R.id.habit_detail_date);

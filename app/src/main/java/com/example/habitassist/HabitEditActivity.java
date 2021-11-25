@@ -160,7 +160,7 @@ public class HabitEditActivity extends AppCompatActivity {
             // Directly Edit the Firestore entry from here instead of passing it back to the MainActivity
             String DeleteAndEdit = MainActivity.getInstance().DeleteAndEdit;
             db.collection("habits").document(DeleteAndEdit).delete();
-            db.collection("habits").document(habit.getHabitTitle()).set(habit.getDocument());
+            db.collection("habits").document(habit.getUniqueId()).set(habit.getDocument());
 
             // Exit the activity
             finish();
