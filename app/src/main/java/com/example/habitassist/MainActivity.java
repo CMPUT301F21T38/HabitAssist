@@ -118,9 +118,7 @@ public class MainActivity extends AppCompatActivity {
                 habitTitleList.clear();
                 for (QueryDocumentSnapshot doc: value) {
                     String uniqueId = doc.getId().split("\\*")[0];
-                    System.out.println(doc.getId());
-                    System.out.println(getUsername());
-                    System.out.println(uniqueId.equals(getUsername()));
+
                     if (uniqueId.equals(getUsername())) {
                         Map<String, Object> data = doc.getData();
                         String title = (String) data.get("title");
@@ -164,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, HabitDetailActivity.class);
                 String uniqueTitle = habitTitleList.get(i);
                 Habit habitPassed = habitList.get(i); // Not necessarily the correct Habit object
+
                 for (Habit habit : habitList) {
                     if (habit.getHabitTitle().equals(uniqueTitle)) {
                         habitPassed = habit;

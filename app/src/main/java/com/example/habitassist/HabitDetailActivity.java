@@ -99,7 +99,9 @@ public class HabitDetailActivity extends AppCompatActivity {
 
         // Get the Habit that we need to show the details of
         habitRecieved = (Habit) getIntent().getSerializableExtra("habitPassed");
-
+        System.out.println("__________________________");
+        System.out.println(habitRecieved.getHabitTitle());
+        System.out.println("__________________________");
         // Access UI elements from the layout
         habitDetailTitle = (TextView) findViewById(R.id.habit_detail_title);
         habitDetailStartDate = (TextView) findViewById(R.id.habit_detail_date);
@@ -123,7 +125,7 @@ public class HabitDetailActivity extends AppCompatActivity {
         //     habitDetailProgress.setText(percentString + "%");
         // }
 
-        db.collection("habits").document(habitRecieved.getHabitTitle())
+        db.collection("habits").document(habitRecieved.getUniqueId())
                 .addSnapshotListener(new EventListener<DocumentSnapshot>() {
                     @Override
                     public void onEvent(@Nullable DocumentSnapshot doc, @Nullable FirebaseFirestoreException error) {
