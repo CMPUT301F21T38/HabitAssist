@@ -26,6 +26,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -40,6 +41,7 @@ import java.util.HashMap;
 public class AddHabitActivity extends AppCompatActivity {
     /** A reference to the Firestore database */
     private FirebaseFirestore db;
+    private boolean isPublic;
 
     /**
      * This method sets the view and initializes variables. It runs once immediately after entering
@@ -53,6 +55,7 @@ public class AddHabitActivity extends AppCompatActivity {
 
         // Store a reference to the Firestore database
         db = FirebaseFirestore.getInstance();
+        isPublic = true;
     }
 
     /**
@@ -110,9 +113,12 @@ public class AddHabitActivity extends AppCompatActivity {
         if (reason_added.getText().toString().length() > 30) {
             Toast.makeText(getApplicationContext(), "Please keep the reason under 30 characters", Toast.LENGTH_SHORT).show();
         }
+
+
         if (reason_added.getText().toString().length() <= 30 && title_added.getText().toString().length() <= 20) {
             MainActivity mainActivityInstance = MainActivity.getInstance();
-            Habit habit1 = new Habit(title_added.getText().toString(), reason_added.getText().toString(), date_Started, TextUtils.join(", ", dayToBeDoneArray), mainActivityInstance.getUsername(), true);
+            //ToDo add the UI check box or something to see if habit is going to be public
+            Habit habit1 = new Habit(title_added.getText().toString(), reason_added.getText().toString(), date_Started, TextUtils.join(", ", dayToBeDoneArray), mainActivityInstance.getUsername(), isPublic);
 
             String title = habit1.getHabitTitle();
             HashMap<String, Object> habitDocument = habit1.getDocument();
@@ -128,5 +134,17 @@ public class AddHabitActivity extends AppCompatActivity {
     public void CancelButton(View view){
         // Exit the activity
         finish();
+    }
+
+    public void isPublicButton(View view){
+        if (isPublic){
+            isPublic = false;
+           ((TextView) view).setText("Private");
+            //view.setBackgroundTintList();
+        }else{
+            isPublic = true;
+            ((TextView) view).setText("Public");
+        }
+
     }
 }

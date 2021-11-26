@@ -23,8 +23,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -41,6 +43,10 @@ public class HabitEditActivity extends AppCompatActivity {
     /** A reference to the Firestore database */
     private FirebaseFirestore db;
 
+    private Habit habitPassedIn;
+
+    private boolean isPublic;
+
     /**
      * This method sets the view and initializes variables. It runs once immediately after entering
      * this Activity.
@@ -56,14 +62,23 @@ public class HabitEditActivity extends AppCompatActivity {
 
         // Get the Habit to edit that was passed in from MainActivity
         Habit habit = (Habit) getIntent().getSerializableExtra("habitPassedIn");
-
+        //Save a copy of the orignal Habit before edits
+        habitPassedIn = (Habit) getIntent().getSerializableExtra("habitPassedIn");
         // get the edittext and datepicker objects
         EditText title = (EditText) findViewById(R.id.comment_edit_text);
         EditText reason = (EditText) findViewById(R.id.editTextTextPersonName2);
+        Button isPublicButton = (Button) findViewById(R.id.isPublic);
 
         // set the habit values that have already been given previously
         title.setText(habit.getHabitTitle());
         reason.setText(habit.getReason());
+        if (habitPassedIn.isPublic()) {
+            isPublicButton.setText("Public");
+            isPublic = true;
+        }else{
+            isPublicButton.setText("Private");
+            isPublic = false;
+        }
 
         // check day boxes that have already been checked
         String[] days = habit.getDaysToBeDone().split(",");
@@ -149,6 +164,8 @@ public class HabitEditActivity extends AppCompatActivity {
         //habit.setStartDate(date_Started);
         habit.setDaysToBeDone(TextUtils.join(", ", HabitDays));
 
+        habit.setPublic(isPublic);
+
 
         if (title_added.getText().toString().length() > 20) {
             Toast.makeText(getApplicationContext(), "Please keep the title under 20 characters", Toast.LENGTH_SHORT).show();
@@ -158,8 +175,8 @@ public class HabitEditActivity extends AppCompatActivity {
         }
         if (reason_added.getText().toString().length() <= 30 && title_added.getText().toString().length() <= 20) {
             // Directly Edit the Firestore entry from here instead of passing it back to the MainActivity
-            String DeleteAndEdit = MainActivity.getInstance().DeleteAndEdit;
-            db.collection("habits").document(DeleteAndEdit).delete();
+            //ToDo add the UI check box or something to see if habit is going to be public
+            db.collection("habits").document(habitPassedIn.getUniqueId()).delete();
             db.collection("habits").document(habit.getUniqueId()).set(habit.getDocument());
 
             // Exit the activity
@@ -176,5 +193,17 @@ public class HabitEditActivity extends AppCompatActivity {
     public void CancelButton(View view){
         // Exit the activity
         finish();
+    }
+
+    public void isPublicButton(View view){
+        if (isPublic){
+            isPublic = false;
+            ((TextView) view).setText("Private");
+            //view.setBackgroundTintList();
+        }else{
+            isPublic = true;
+            ((TextView) view).setText("Public");
+        }
+
     }
 }
