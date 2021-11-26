@@ -11,7 +11,7 @@
         android:id="@+id/FollowRequestsTitle"
         android:layout_width="231dp"
         android:layout_height="58dp"
-        android:layout_marginTop="96dp"
+        android:layout_marginTop="84dp"
         android:gravity="center_horizontal|center_vertical"
         android:text="Follow Requests"
         android:textColor="#000000"
@@ -39,7 +39,6 @@
         android:id="@+id/following"
         android:layout_width="337dp"
         android:layout_height="131dp"
-        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
@@ -49,7 +48,6 @@
         android:id="@+id/followRequests"
         android:layout_width="337dp"
         android:layout_height="131dp"
-        android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/FollowRequestsTitle" />
@@ -90,11 +88,25 @@
         android:id="@+id/seach"
         android:layout_width="335dp"
         android:layout_height="56dp"
-        android:layout_marginBottom="16dp"
-        android:text="Search"
+        android:layout_marginBottom="8dp"
+        android:onClick="SearchBar"
+        android:text="Add"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="@+id/followRequests"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/followRequests" />
+
+    <EditText
+        android:id="@+id/SearchName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:ems="10"
+        android:hint="Username"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/seach"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
