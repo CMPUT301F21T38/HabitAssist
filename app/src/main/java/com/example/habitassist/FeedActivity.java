@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,10 +30,12 @@ public class FeedActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
     private Profile profile;
-    private ArrayList<String> followRequestsList;
+
     private ArrayAdapter<String> followRequestAdapter;
+    private ArrayAdapter<String> followingAdapter;
 
     private ListView followRequestListView;
+    private ListView followingListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,7 @@ public class FeedActivity extends AppCompatActivity {
 
         MainActivity mainActivityInstance = MainActivity.getInstance();
         String username = mainActivityInstance.getUsername();
+
 
         db = FirebaseFirestore.getInstance();
         /*DocumentReference docRef = db.collection("profiles").document(username);
@@ -75,15 +79,16 @@ public class FeedActivity extends AppCompatActivity {
             }
         });*/
         //Add code to display following and follow requests
+        followingListView = (ListView) findViewById(R.id.following);
         followRequestListView = (ListView) findViewById(R.id.followRequests);
-        followRequestsList = new ArrayList<>();
 
         //do some stuff
         profile = new Profile();
 
-        db.collection("Profile").document(mainActivityInstance.getUsername()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        db.collection("profiles").document(mainActivityInstance.getUsername()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot doc, @Nullable FirebaseFirestoreException error) {
+
                 if (error == null && doc != null && doc.exists()) {
                     Map<String, Object> data = doc.getData();
                     String username = (String) data.get("username");
@@ -93,8 +98,8 @@ public class FeedActivity extends AppCompatActivity {
                     //convert the follow requests and following to their respective lists.
                     // Add a guard in case a wrongly structured Habit data is put into firestore
                     if (username != null && password != null && followRequests != null && following != null) {
-                        String[] requests = followRequests.split(",");
-                        String[] followed = following.split(",");
+                        String[] requests = followRequests.split(", ");
+                        String[] followed = following.split(", ");
                         profile.setUsername(username);
                         profile.setPassword(password);
 
@@ -112,11 +117,15 @@ public class FeedActivity extends AppCompatActivity {
                 }
 
                 followRequestAdapter.notifyDataSetChanged();
+                followingAdapter.notifyDataSetChanged();
             }
         });
 
         followRequestAdapter = new ArrayAdapter<>(this, R.layout.profile_content, R.id.list_item, profile.getFollowRequests());
         followRequestListView.setAdapter(followRequestAdapter);
+
+        followingAdapter = new ArrayAdapter<>(this, R.layout.profile_content, R.id.list_item, profile.getFollowing());
+        followingListView.setAdapter(followingAdapter);
 
 
 
