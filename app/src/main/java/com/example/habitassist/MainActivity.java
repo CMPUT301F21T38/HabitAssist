@@ -172,6 +172,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 intent.putExtra("habitPassed", habitPassed);
+                intent.putExtra("isMyHabit", "true");
                 startActivity(intent);
 
             }

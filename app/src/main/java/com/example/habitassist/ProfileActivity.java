@@ -112,9 +112,11 @@ public class ProfileActivity extends AppCompatActivity {
                         // Add a guard in case a wrongly structured Habit data is put into firestore
                         if (title != null && reason != null && startDate != null && daysToBeDone != null) {
                             //if not ismyprofile check if this is a public habit
-                            Habit habit = new Habit(title, reason, startDate, daysToBeDone, username, isPublic);
-                            profileAllHabitsList.add(habit);
-                            profileAllHabitsTitleList.add(title);
+                            if (isMyProfile || isPublic){
+                                Habit habit = new Habit(title, reason, startDate, daysToBeDone, username, isPublic);
+                                profileAllHabitsList.add(habit);
+                                profileAllHabitsTitleList.add(title);
+                            }
                         }
                     }
                 }

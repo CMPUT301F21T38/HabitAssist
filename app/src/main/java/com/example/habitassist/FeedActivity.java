@@ -179,14 +179,20 @@ public class FeedActivity extends AppCompatActivity {
                                     requests = mainActivityInstance.getUsername();
                                 }else{
                                     //from the comma separated list and check if username already exists
-                                    requests = requests + ", " + mainActivityInstance.getUsername();
+                                    if (!requests.contains(mainActivityInstance.getUsername()))
+                                    {
+                                        requests = requests + ", " + mainActivityInstance.getUsername();
+                                    }else{
+                                        Toast.makeText(FeedActivity.this, "Request Already Sent", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+
                                 }
                                 db.collection("profiles").document(SearchUser).update("followRequests", requests);
-                                System.out.println("--------------");
-                                System.out.println(requests);
-                                System.out.println("--------------");
+                                Toast.makeText(FeedActivity.this, "Request Sent", Toast.LENGTH_SHORT).show();
                             } else {
                                 //toast message "user does not exist"
+                                Toast.makeText(FeedActivity.this, "User Does Not Exist", Toast.LENGTH_SHORT).show();
 
                             }
                         }
