@@ -1,17 +1,20 @@
 package com.example.habitassist;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Profile implements Serializable {
-     private String username;
+    private ArrayList<String> following;
+    private String username;
      private String password;
-
+     private ArrayList<String> followRequests;
 
     Profile(String username, String password){
         this.username = username;
         this.password = password;
-
+        this.following = new ArrayList<>();
+        this.followRequests = new ArrayList<>();
     }
 
     public String getUsername(){
@@ -30,4 +33,19 @@ public class Profile implements Serializable {
     }
 
 
+    public ArrayList<String> getFollowing() {
+        return following;
+    }
+
+    public void addFollowing(String follow) {
+        this.following.add(follow);
+    }
+
+    public ArrayList<String> getFollowRequests() {
+        return followRequests;
+    }
+
+    public void AddFollowRequests(String follower) {
+        this.followRequests.add(follower);
+    }
 }

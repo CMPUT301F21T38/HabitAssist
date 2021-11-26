@@ -137,7 +137,8 @@ public class ProfileActivity extends AppCompatActivity {
      * @param view
      */
     public void FeedButton(View view) {
-
+        MainActivity mainActivityInstance = MainActivity.getInstance();
+        mainActivityInstance.FeedButton(view);
 
     }
 
@@ -146,8 +147,10 @@ public class ProfileActivity extends AppCompatActivity {
      * @param view
      */
     public void HomeButton(View view) {
+        //need to find a work around for this
         finish();
     }
+
 
     public void Logout(View view){
 

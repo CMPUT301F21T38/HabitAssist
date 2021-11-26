@@ -13,6 +13,9 @@
             android:name=".HabitEventEditActivity"
             android:exported="false" />
         <activity
+            android:name=".FeedActivity"
+            android:exported="false" />
+        <activity
             android:name=".HabitEventDetailActivity"
             android:exported="false" />
         <activity
