@@ -43,6 +43,9 @@ public class Habit implements Serializable {
     private ArrayList<HabitEvent> habitEvents;
 
     private String username;
+    private boolean isPublic;
+
+
 
 
     /**
@@ -52,16 +55,23 @@ public class Habit implements Serializable {
      * @param startDate a date string in the format yyyy-MM-dd
      * @param DaysToBeDone a string of comma-separated days of the week
      */
-    Habit(String title, String reason, String startDate, String DaysToBeDone, String username){
+    Habit(String title, String reason, String startDate, String DaysToBeDone, String username, boolean isPublic){
         this.title = title;
         this.reason = reason;
         this.startDate = startDate;
         this.daysToBeDone = DaysToBeDone;
         this.username = username;
+        this.isPublic = isPublic;
     }
 
     // Getters and Setters
+    public boolean isPublic() {
+        return isPublic;
+    }
 
+    public void setPublic(boolean aPublic) {
+        isPublic = aPublic;
+    }
     /**
      * Getter for the `title` attribute
      * @return the title attribute
@@ -174,12 +184,13 @@ public class Habit implements Serializable {
      * the Firestore Database
      * @return a hashmap representation of the Habit class
      */
-    public HashMap<String, String> getDocument() {
-        HashMap<String, String> habitDocument = new HashMap<>();
+    public HashMap<String, Object> getDocument() {
+        HashMap<String, Object> habitDocument = new HashMap<>();
         habitDocument.put("title", title);
         habitDocument.put("reason", reason);
         habitDocument.put("startDate", startDate);
         habitDocument.put("daysToBeDone", daysToBeDone);
+        habitDocument.put("isPublic", isPublic);
         return habitDocument;
     }
 }

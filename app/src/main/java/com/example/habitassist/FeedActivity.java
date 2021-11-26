@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -126,6 +127,18 @@ public class FeedActivity extends AppCompatActivity {
 
         followingAdapter = new ArrayAdapter<>(this, R.layout.profile_content, R.id.list_item, profile.getFollowing());
         followingListView.setAdapter(followingAdapter);
+
+        followingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                // it returns the name of the habit from the Listview OR the ArrayList
+                String user = profile.getFollowing().get(i);
+                Intent intent = new Intent(FeedActivity.this, ProfileActivity.class);
+                intent.putExtra("usernameOfFollowing", user);
+                startActivity(intent);
+
+            }
+        });
 
 
 

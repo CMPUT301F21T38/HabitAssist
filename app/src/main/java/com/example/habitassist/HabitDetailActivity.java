@@ -81,6 +81,8 @@ public class HabitDetailActivity extends AppCompatActivity {
     private float numberOfDaysToDoThisWeek;
     private float numberOfDaysDoneThisWeek;
 
+    private boolean isMyHabit;
+
     /**
      * This method sets the view and initializes variables. It runs once immediately after entering
      * this Activity.
@@ -99,6 +101,13 @@ public class HabitDetailActivity extends AppCompatActivity {
 
         // Get the Habit that we need to show the details of
         habitRecieved = (Habit) getIntent().getSerializableExtra("habitPassed");
+
+        String isTrue = getIntent().getStringExtra("isMyHabit");
+        if (isTrue != null && isTrue.equals("true")){
+            isMyHabit = true;
+        }else{
+            isMyHabit = false;
+        }
 
         // Access UI elements from the layout
         habitDetailTitle = (TextView) findViewById(R.id.habit_detail_title);
@@ -133,10 +142,10 @@ public class HabitDetailActivity extends AppCompatActivity {
                             String reason = (String) data.get("reason");
                             String startDate = (String) data.get("startDate");
                             String daysToBeDone = (String) data.get("daysToBeDone");
-
+                            boolean isPublic = (boolean) data.get("isPublic");
                             if (title != null && reason != null && startDate != null && daysToBeDone != null) {
                                 MainActivity mainActivityInstance = MainActivity.getInstance();
-                                habitRecieved = new Habit(title, reason, startDate, daysToBeDone, mainActivityInstance.getUsername());
+                                habitRecieved = new Habit(title, reason, startDate, daysToBeDone, mainActivityInstance.getUsername(), isPublic);
                             }
 
                             if (startDate == null) {
@@ -231,11 +240,13 @@ public class HabitDetailActivity extends AppCompatActivity {
         // habitDetailReason.setText(habitRecieved.getReason());
         // habitDetailDaysToDo.setText(habitRecieved.getDaysToBeDone());
 
-        // TODO: Determine here if this habit actually belongs to the correct profile in database
-        if (true) {
+        if (isMyHabit) {
             // Show the Edit and Delete buttons
             habitDetailDeleteButton.setVisibility(View.VISIBLE);
             habitDetailEditButton.setVisibility(View.VISIBLE);
+            findViewById(R.id.completed_button).setVisibility(View.VISIBLE);
+            findViewById(R.id.textView23).setVisibility(View.VISIBLE);
+            findViewById(R.id.habit_events_listview).setVisibility(View.VISIBLE);
         }
     }
 

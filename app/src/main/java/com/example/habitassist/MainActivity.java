@@ -125,8 +125,10 @@ public class MainActivity extends AppCompatActivity {
                         String reason = (String) data.get("reason");
                         String startDate = (String) data.get("startDate");
                         String daysToBeDone = (String) data.get("daysToBeDone");
+                        boolean isPublic = (boolean) data.get("isPublic");
                         if (title != null && reason != null && startDate != null && daysToBeDone != null) {
-                            Habit habit = new Habit(title, reason, startDate, daysToBeDone, username);
+
+                            Habit habit = new Habit(title, reason, startDate, daysToBeDone, username, isPublic);
                             habitList.add(habit);
                             if (habit.isForToday()) {
                                 habitTitleList.add(title);

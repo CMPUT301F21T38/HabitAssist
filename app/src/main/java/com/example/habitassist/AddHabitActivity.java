@@ -112,10 +112,10 @@ public class AddHabitActivity extends AppCompatActivity {
         }
         if (reason_added.getText().toString().length() <= 30 && title_added.getText().toString().length() <= 20) {
             MainActivity mainActivityInstance = MainActivity.getInstance();
-            Habit habit1 = new Habit(title_added.getText().toString(), reason_added.getText().toString(), date_Started, TextUtils.join(", ", dayToBeDoneArray), mainActivityInstance.getUsername());
+            Habit habit1 = new Habit(title_added.getText().toString(), reason_added.getText().toString(), date_Started, TextUtils.join(", ", dayToBeDoneArray), mainActivityInstance.getUsername(), true);
 
             String title = habit1.getHabitTitle();
-            HashMap<String, String> habitDocument = habit1.getDocument();
+            HashMap<String, Object> habitDocument = habit1.getDocument();
             db.collection("habits").document(habit1.getUniqueId()).set(habitDocument);
             finish();
         }

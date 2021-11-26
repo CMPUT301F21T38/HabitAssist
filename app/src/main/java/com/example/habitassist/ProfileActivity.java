@@ -29,6 +29,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -57,6 +58,8 @@ public class ProfileActivity extends AppCompatActivity {
     /** A reference to the Firestore database */
     private FirebaseFirestore db;
 
+    private Boolean isMyProfile;
+    private String username;
     /**
      * This method sets the view, initializes variables, and assigns the Event Listeners.
      * It runs once immediately after entering this Activity.
@@ -68,8 +71,19 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         MainActivity mainActivityInstance = MainActivity.getInstance();
 
-        String username = mainActivityInstance.getUsername();
+        username = mainActivityInstance.getUsername();
 
+        String usernameOfFollowing = getIntent().getStringExtra("usernameOfFollowing");
+        if (usernameOfFollowing != null) {
+            isMyProfile = false;
+            username = usernameOfFollowing;
+        }else{
+            isMyProfile = true;
+        }
+
+        if (isMyProfile){
+            findViewById(R.id.logout_button).setVisibility(View.VISIBLE);
+        }
         TextView usernameTitle = (TextView) findViewById(R.id.username);
         usernameTitle.setText(username);
 
@@ -88,15 +102,17 @@ public class ProfileActivity extends AppCompatActivity {
                 for (QueryDocumentSnapshot doc : value) {
                     String uniqueId = doc.getId().split("\\*")[0];
                     MainActivity mainActivityInstance = MainActivity.getInstance();
-                    if (uniqueId.equals(mainActivityInstance.getUsername())) {
+                    if (uniqueId.equals(username)) {
                         Map<String, Object> data = doc.getData();
                         String title = (String) data.get("title");
                         String reason = (String) data.get("reason");
                         String startDate = (String) data.get("startDate");
                         String daysToBeDone = (String) data.get("daysToBeDone");
+                        boolean isPublic = (boolean) data.get("isPublic");
                         // Add a guard in case a wrongly structured Habit data is put into firestore
                         if (title != null && reason != null && startDate != null && daysToBeDone != null) {
-                            Habit habit = new Habit(title, reason, startDate, daysToBeDone, mainActivityInstance.getUsername());
+                            //if not ismyprofile check if this is a public habit
+                            Habit habit = new Habit(title, reason, startDate, daysToBeDone, username, isPublic);
                             profileAllHabitsList.add(habit);
                             profileAllHabitsTitleList.add(title);
                         }
@@ -119,6 +135,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                 Intent habitDetailIntent = new Intent(ProfileActivity.this, HabitDetailActivity.class);
                 habitDetailIntent.putExtra("habitPassed", habitClickedOn);
+                habitDetailIntent.putExtra("isMyHabit", isMyProfile.toString());
                 startActivity(habitDetailIntent);
             }
         });

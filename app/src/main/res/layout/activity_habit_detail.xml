@@ -169,7 +169,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="onClickCompleted"
-                android:text="Mark Completion" />
+                android:text="Mark Completion"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/textView23"
@@ -181,12 +182,14 @@
                 android:text="Habit Events:"
                 android:textColor="#000000"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="gone" />
 
             <ListView
                 android:id="@+id/habit_events_listview"
                 android:layout_width="match_parent"
-                android:layout_height="671dp" />
+                android:layout_height="671dp"
+                android:visibility="gone" />
 
         </LinearLayout>
     </ScrollView>
