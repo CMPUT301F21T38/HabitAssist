@@ -42,35 +42,39 @@ public class LoginActivity extends AppCompatActivity {
         EditText username =  (EditText) findViewById(R.id.username);
         EditText password = (EditText) findViewById(R.id.Password);
 
-        DocumentReference docRef = db.collection("profiles").document(username.getText().toString());
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+        if (!username.getText().toString().equals("")) {
+            DocumentReference docRef = db.collection("profiles").document(username.getText().toString());
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            Log.d(TAG, "DocumentSnapshot data: " + document.getData());
 
-                        if (document.get("password").equals(password.getText().toString())){
-                            //send user profile back to main activity
-                            Intent returnIntent = new Intent();
-                            returnIntent.putExtra("result", username.getText().toString());
-                            setResult(Activity.RESULT_OK,returnIntent);
-                            finish();
-                        }
-                        else {
-                            Toast.makeText(getApplicationContext(), "Password incorrect", Toast.LENGTH_SHORT).show();
+                            if (document.get("password").equals(password.getText().toString())) {
+                                //send user profile back to main activity
+                                Intent returnIntent = new Intent();
+                                returnIntent.putExtra("result", username.getText().toString());
+                                setResult(Activity.RESULT_OK, returnIntent);
+                                finish();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Password incorrect", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Log.d(TAG, "No such document");
+
+                            Toast.makeText(getApplicationContext(), "Username does not exist", Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Log.d(TAG, "No such document");
-
-                        Toast.makeText(getApplicationContext(), "Username does not exist", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "get failed with ", task.getException());
                     }
-                } else {
-                    Log.d(TAG, "get failed with ", task.getException());
                 }
-            }
-        });
+            });
+        }
+        else {
+            Toast.makeText(getApplicationContext(), "Please enter a username", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void CreateAccount(View view){
