@@ -4,8 +4,14 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+
+import com.google.android.gms.common.util.ArrayUtils;
+import com.google.common.primitives.Ints;
+
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class Profile implements Serializable {
@@ -69,6 +75,10 @@ public class Profile implements Serializable {
     public void AddFollowRequests(String follower) {
         this.followRequests.add(follower);
     }
+
+    public void deleteFollower(String follower){this.following.remove(follower);}
+
+    public void deleteFollowRequest(String follower){this.followRequests.remove(follower);}
 
     public void clearFollowRequests(){this.followRequests.clear();}
 
