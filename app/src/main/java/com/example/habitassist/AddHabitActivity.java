@@ -20,9 +20,12 @@ package com.example.habitassist;
 
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -42,7 +45,7 @@ public class AddHabitActivity extends AppCompatActivity {
     /** A reference to the Firestore database */
     private FirebaseFirestore db;
     private boolean isPublic;
-
+    Button location;
     /**
      * This method sets the view and initializes variables. It runs once immediately after entering
      * this Activity.
@@ -55,6 +58,14 @@ public class AddHabitActivity extends AppCompatActivity {
 
         // Store a reference to the Firestore database
         db = FirebaseFirestore.getInstance();
+        location = findViewById(R.id.button6);
+        location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AddHabitActivity.this,MapActivity.class);
+                startActivity(intent);
+            }
+        });
         isPublic = true;
     }
 
