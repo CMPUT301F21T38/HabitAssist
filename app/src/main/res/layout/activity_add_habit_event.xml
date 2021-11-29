@@ -6,161 +6,160 @@
     android:layout_height="match_parent"
     tools:context=".AddHabitEventActivity">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/textView"
+                android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Add Habit Event"
+                android:textSize="34sp"/>
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Add Habit Event"
-        android:textSize="34sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        android:text="Comment:"
-        android:textSize="24dp"
-        app:layout_constraintEnd_toStartOf="@+id/comment_edit_text"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:layout_marginLeft="20dp"
+                android:text="Comment:"
+                android:textSize="24dp" />
 
-    <EditText
-        android:id="@+id/comment_edit_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="44dp"
-        android:ems="10"
-        android:hint="(Optional)"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView2"
-        app:layout_constraintEnd_toEndOf="parent" />
+            <EditText
+                android:id="@+id/comment_edit_text"
+                android:layout_width="300dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:ems="10"
+                android:hint="(Optional)" />
 
-    <TextView
-        android:id="@+id/textView12"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="84dp"
-        android:layout_marginEnd="16dp"
-        android:text="Location (Optional):"
-        android:textSize="24dp"
-        app:layout_constraintEnd_toStartOf="@+id/comment_edit_text"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:layout_marginLeft="20dp"
+                android:text="Location (Optional):"
+                android:textSize="24dp" />
 
-    <TextView
-        android:id="@+id/latlng"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="116dp"
-        android:layout_marginEnd="16dp"
-        android:text="latitude, longitude: "
-        android:textSize="15dp"
-        app:layout_constraintEnd_toStartOf="@+id/comment_edit_text"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+                <Button
+                    android:id="@+id/button6"
+                    android:layout_width="105dp"
+                    android:layout_height="50dp"
+                    android:backgroundTint="@color/black"
+                    android:text="Add location"
+                    android:onClick="locationButtonHandler"
+                    android:textSize="12sp"
+                    android:layout_margin="5dp"/>
 
-    <Button
-        android:id="@+id/button6"
-        android:layout_width="105dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="84dp"
-        android:backgroundTint="@color/black"
-        android:text="Add location"
-        android:onClick="locationButtonHandler"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.065"
-        app:layout_constraintStart_toEndOf="@+id/textView12"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+                <Button
+                    android:id="@+id/button00"
+                    android:layout_width="105dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="5dp"
+                    android:backgroundTint="@color/black"
+                    android:text="Remove location"
+                    android:onClick="removeLocationButtonHandler"
+                    android:textSize="12sp"/>
+            </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="148dp"
-        android:layout_marginEnd="16dp"
-        android:text="Photo (Optional):"
-        android:textSize="24dp"
-        app:layout_constraintEnd_toStartOf="@+id/comment_edit_text"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+            <fragment
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:id="@+id/google_map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"/>
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:onClick="onClickGallery"
-        android:text="Gallery"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:layout_marginLeft="20dp"
+                android:text="Photo (Optional):"
+                android:textSize="24dp" />
 
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="onClickCamera"
-        android:text="Camera"
-        app:layout_constraintEnd_toStartOf="@+id/button5"
-        app:layout_constraintHorizontal_bias="0.444"
-        app:layout_constraintStart_toEndOf="@+id/button3"
-        app:layout_constraintTop_toTopOf="@+id/button3" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal">
 
-    <Button
-        android:id="@+id/button5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:onClick="onClickRemove"
-        android:text="Remove"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/button4" />
+                <Button
+                    android:id="@+id/button3"
+                    android:layout_margin="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onClickGallery"
+                    android:text="Gallery" />
 
-    <ImageView
-        android:id="@+id/image_view"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button4"
-        app:layout_constraintVertical_bias="0.116" />
+                <Button
+                    android:id="@+id/button4"
+                    android:layout_margin="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onClickCamera"
+                    android:text="Camera"/>
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="180dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="16dp"
-        android:onClick="onClickSaveButton"
-        android:text="@string/save_button"
-        app:layout_constraintBaseline_toBaselineOf="@+id/button2"
-        app:layout_constraintStart_toStartOf="parent" />
+                <Button
+                    android:id="@+id/button5"
+                    android:layout_margin="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onClickRemove"
+                    android:text="Remove" />
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="180dp"
-        android:layout_height="60dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="4dp"
-        android:onClick="onClickCancelButton"
-        android:text="@string/cancel_button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+            </LinearLayout>
+
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/image_view"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_gravity="center_horizontal"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center">
+                <Button
+                    android:id="@+id/button"
+                    android:layout_width="180dp"
+                    android:layout_height="60dp"
+                    android:onClick="onClickSaveButton"
+                    android:layout_margin="5dp"
+                    android:text="@string/save_button" />
+
+                <Button
+                    android:id="@+id/button2"
+                    android:layout_width="180dp"
+                    android:layout_height="60dp"
+                    android:layout_margin="5dp"
+                    android:onClick="onClickCancelButton"
+                    android:text="@string/cancel_button" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+
+
+
+
+
+
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

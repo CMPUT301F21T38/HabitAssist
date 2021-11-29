@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -28,7 +29,6 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 
 public class HabitEventEditActivity extends AppCompatActivity {
     FirebaseFirestore db;
@@ -45,7 +45,7 @@ public class HabitEventEditActivity extends AppCompatActivity {
     private ImageView imageView;
     private String latlngString;
 
-    private String TAG = "HabitEventEditActivity";
+    private Map mapController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +62,17 @@ public class HabitEventEditActivity extends AppCompatActivity {
         commentEditText.setText(habitEventRecieved.getComment());
         if (imageBitmapStringToStore != null && !imageBitmapStringToStore.isEmpty()) {
             Bitmap imageBitmap = HabitEvent.stringToBitMap(imageBitmapStringToStore);
+            imageView.setVisibility(View.VISIBLE);
             imageView.setImageBitmap(imageBitmap);
         }
+
+        SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.google_map);
+        View mapViewWidget = findViewById(R.id.google_map);
+        mapController = new Map(supportMapFragment, mapViewWidget);
+
         if (habitEventRecieved.getLatlngString() != null && !habitEventRecieved.getLatlngString().isEmpty()) {
-            ((TextView) findViewById(R.id.latlng)).setText("latitude, longitude: " + latlngString);
+            mapController.showOnMap(habitEventRecieved.getLatlngString());
         }
     }
 
@@ -82,6 +89,7 @@ public class HabitEventEditActivity extends AppCompatActivity {
 
     public void onClickRemove(View view) {
         imageBitmapStringToStore = "";
+        imageView.setVisibility(View.GONE);
         imageView.setImageBitmap(null);
     }
 
@@ -107,6 +115,12 @@ public class HabitEventEditActivity extends AppCompatActivity {
         startActivityForResult(intent, LOCATION_REQUEST_CODE);
     }
 
+
+    public void removeLocationButtonHandler(View view) {
+        latlngString = null;
+        mapController.hideMapWidget();
+    }
+
     public void onClickCancelButton(View view) {
         finish();
     }
@@ -120,6 +134,7 @@ public class HabitEventEditActivity extends AppCompatActivity {
                 if (extra != null) {
                     Bitmap imageBitmap = (Bitmap) extra.get("data");
                     if (imageBitmap != null) {
+                        imageView.setVisibility(View.VISIBLE);
                         imageView.setImageBitmap(imageBitmap);
                         imageBitmapStringToStore = HabitEvent.bitMapToString(imageBitmap, true);
 
@@ -133,6 +148,7 @@ public class HabitEventEditActivity extends AppCompatActivity {
                     Uri imageURI = data.getData();
                     if (imageURI != null) {
                         Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageURI);
+                        imageView.setVisibility(View.VISIBLE);
                         imageView.setImageBitmap(imageBitmap);
                         imageBitmapStringToStore = HabitEvent.bitMapToString(imageBitmap, true);
                     }
@@ -144,7 +160,7 @@ public class HabitEventEditActivity extends AppCompatActivity {
         } else if (requestCode == LOCATION_REQUEST_CODE) {
         if (data != null) {
             latlngString = data.getStringExtra("latlngString");
-            ((TextView) findViewById(R.id.latlng)).setText("latitude, longitude: " + latlngString);
+            mapController.showOnMap(latlngString);
         }
 
     }
