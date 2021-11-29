@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2021-11-29T19:06:19.394Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36" etag="9DaxjkevYV-TShfnxjNC" version="15.8.7" type="github">
+<mxfile host="app.diagrams.net" modified="2021-11-29T19:08:24.809Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36" etag="L4yFNyukQAed2ErRDr0c" version="15.8.7" type="github">
   <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
     <mxGraphModel dx="2617" dy="3183" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -33,7 +33,7 @@
           <mxGeometry y="190" width="320" height="100" as="geometry" />
         </mxCell>
         <mxCell id="lfY1y7EgfsoNMWNS-3i6-5" value="ProfileActivity" style="swimlane;fontStyle=2;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
-          <mxGeometry x="-430" y="-540" width="250" height="242" as="geometry">
+          <mxGeometry x="-430" y="-540" width="250" height="282" as="geometry">
             <mxRectangle x="230" y="140" width="160" height="26" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
@@ -43,8 +43,8 @@
         <mxCell id="lfY1y7EgfsoNMWNS-3i6-6" value="" style="line;html=1;strokeWidth=1;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;" parent="lfY1y7EgfsoNMWNS-3i6-5" vertex="1">
           <mxGeometry y="156" width="250" height="6" as="geometry" />
         </mxCell>
-        <mxCell id="2tdP9jHFn7oQBucGkD1O-12" value="onCreate()&lt;br&gt;onEvent()&lt;br&gt;onItemClick()&lt;br&gt;FeedButton(view)&lt;br&gt;HomeButton(view)" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="lfY1y7EgfsoNMWNS-3i6-5" vertex="1">
-          <mxGeometry y="162" width="250" height="80" as="geometry" />
+        <mxCell id="2tdP9jHFn7oQBucGkD1O-12" value="#onCreate(Bundle):void&lt;br&gt;+addHabitButtonClickHandler(View):void&lt;br&gt;+FeedButton(View):void&lt;br&gt;+HomeButton(View):void&lt;br&gt;+Logout(View):void&lt;br&gt;+onBackPressed():void&lt;br&gt;+TimeOrder(View):void&lt;br&gt;+AlphabeticalOrder(View):void" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="lfY1y7EgfsoNMWNS-3i6-5" vertex="1">
+          <mxGeometry y="162" width="250" height="120" as="geometry" />
         </mxCell>
         <mxCell id="lfY1y7EgfsoNMWNS-3i6-7" value="HabitEditActivity" style="swimlane;fontStyle=2;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="-535.5" y="-1590" width="170" height="150" as="geometry">
