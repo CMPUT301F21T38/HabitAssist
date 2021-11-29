@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2021-11-29T22:22:54.487Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.1 Safari/605.1.15" etag="67rDztijiPMPDpv9MJGg" version="15.8.7" type="github">
+<mxfile host="app.diagrams.net" modified="2021-11-29T22:31:26.555Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.1 Safari/605.1.15" etag="9ELd-b0L0JTi378dYddB" version="15.8.7" type="github">
   <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
     <mxGraphModel dx="5240" dy="5215" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -379,14 +379,17 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="o0q4TQ1V3Dbs9UK1iBCI-0" value="Singleton Method" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="567" y="-712" width="160" height="20" as="geometry" />
+        <mxCell id="o0q4TQ1V3Dbs9UK1iBCI-0" value="Singleton Mathod: We needed to access the username&amp;nbsp;&lt;br&gt;for most of the classes.&lt;br&gt;we used singleton pattern to create one&lt;br&gt;instance of the object that&amp;nbsp;&lt;br&gt;provides the username&amp;nbsp;&lt;br&gt;in order to Manage the data for a user&lt;br&gt;and prevent unnecessary&lt;br&gt;creation of multiple object with &lt;br&gt;the same purpose.&amp;nbsp;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="414" y="-700" width="460" height="130" as="geometry" />
         </mxCell>
         <mxCell id="o0q4TQ1V3Dbs9UK1iBCI-1" value="Builder Pattern: Every time we use dialog boxes we use this to make the dialog boxes and it allows the code to be organized&lt;br&gt;allowing us to pass I the parameters that show what we want the user interface to look like&amp;nbsp;&lt;br&gt;we can also use the callback functions to specify what to do on success clicks, ok clicks, negative clicks, etc." style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
           <mxGeometry x="-510" y="-140" width="1010" height="50" as="geometry" />
         </mxCell>
         <mxCell id="o0q4TQ1V3Dbs9UK1iBCI-2" value="The Map class acts as a controller it helps in the separation of concerns for all things related to maps.&lt;br&gt;&amp;nbsp;it ties into the UI and contains utility methods for latitude longitude string conversion.&lt;br&gt;It encapsulates the logic of the map showing the location on the map and animating it. &lt;br&gt;It also allows the map to be hidden the map from view when there is no location." style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
           <mxGeometry x="-300" y="-2365" width="820" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="o0q4TQ1V3Dbs9UK1iBCI-3" value="We are using the observer pattern&amp;nbsp;&lt;br&gt;in order to attach event&amp;nbsp;&lt;br&gt;listeners to certain firebase&lt;br&gt;documents and when the&amp;nbsp;&lt;br&gt;data in the database changes from&lt;br&gt;any other activity, these observers&lt;br&gt;react and call the event listener&lt;br&gt;function that updates our view&lt;br&gt;this pattern was helpful to avoid &lt;br&gt;bugs that have stale data&amp;nbsp;&lt;br&gt;that would be outdated due to&amp;nbsp;&lt;br&gt;updates in the database." style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="-190" y="-1012" width="290" height="170" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
