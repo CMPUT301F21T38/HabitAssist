@@ -28,6 +28,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -195,10 +196,15 @@ public class ProfileActivity extends AppCompatActivity {
             profileAllHabitsTitleList.sort(Comparator.comparing(String::toString));
             profile_habitAdapter.notifyDataSetChanged();
             AtoZ = true;
+            Button rename = (Button) view.findViewById(R.id.AtoZ);
+            rename.setText("Z-A");
+
         }else{
             profileAllHabitsTitleList.sort(Comparator.comparing(String::toString).reversed() );
             profile_habitAdapter.notifyDataSetChanged();
             AtoZ = false;
+            Button rename = (Button) view.findViewById(R.id.AtoZ);
+            rename.setText("A-Z");
         }
 
     }
