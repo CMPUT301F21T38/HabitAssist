@@ -7,20 +7,25 @@ import android.util.Base64;
 import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Map;
 
 public class HabitEvent implements Serializable {
     private String comment;
     /** This is the unique title of the Habit that this HabitEvent belongs to  */
-    private String habitTitle;
+    private String parentHabitUniqueId;
     private String timeStamp;
     private String imageBitmapString;
+    private String latlngString;
+    private String dateString;
 
     // Constructors
-    HabitEvent(String habitTitle, String timeStamp, String comment, String imageBitmapString) {
-        this.habitTitle = habitTitle;
+    HabitEvent(String parentHabitUniqueId, String timeStamp, String comment, String imageBitmapString, String latlngString) {
+        this.parentHabitUniqueId = parentHabitUniqueId;
         this.timeStamp = timeStamp;
+        this.dateString = timeStamp.split(" ")[0];
         this.comment = comment;
         this.imageBitmapString = imageBitmapString;
+        this.latlngString = latlngString;
     }
 
     // Getters and Setters
@@ -33,12 +38,12 @@ public class HabitEvent implements Serializable {
         this.comment = comment;
     }
 
-    public String getHabitTitle() {
-        return habitTitle;
+    public String getParentHabitUniqueId() {
+        return parentHabitUniqueId;
     }
 
-    public void setHabitTitle(String habitTitle) {
-        this.habitTitle = habitTitle;
+    public void setParentHabitUniqueId(String parentHabitUniqueId) {
+        this.parentHabitUniqueId = parentHabitUniqueId;
     }
 
     public String getTimeStamp() {
@@ -57,20 +62,62 @@ public class HabitEvent implements Serializable {
         this.imageBitmapString = imageBitmapString;
     }
 
+    public String getLatlngString() {
+        return latlngString;
+    }
+
+    public void setLatlngString(String latlngString) {
+        this.latlngString = latlngString;
+    }
+
+    public String getDateString() {
+        return dateString;
+    }
+
+    public void setDateString(String dateString) {
+        this.dateString = dateString;
+    }
+
     // Utility methods
+
+    static public HabitEvent parseFromDoc(Map<String, Object> data) {
+        String comment = (String) data.get("comment");
+        String parentHabitUniqueId = (String) data.get("parentHabitUniqueId");
+        String timeStamp = (String) data.get("timeStamp");
+        String dateString = (String) data.get("dateString");
+        String imageBitmapString = (String) data.get("imageBitmapString");
+        String latlngString = (String) data.get("latlngString");
+        // Add a guard in case a wrongly structured Habit data is put into firestore
+        if (parentHabitUniqueId != null || timeStamp != null) {
+            if (comment == null) {
+                comment = "";
+            }
+            if (imageBitmapString == null) {
+                imageBitmapString = "";
+            }
+            if (latlngString == null) {
+                latlngString = "";
+            }
+            HabitEvent habitEvent = new HabitEvent(parentHabitUniqueId, timeStamp, comment,
+                    imageBitmapString, latlngString);
+            return habitEvent;
+        }
+        return null;
+    }
 
     public HashMap<String, String> getDocument() {
         HashMap<String, String> habitEventDocument = new HashMap<>();
         habitEventDocument.put("comment", comment);
-        habitEventDocument.put("habitTitle", habitTitle);
+        habitEventDocument.put("parentHabitUniqueId", parentHabitUniqueId);
         habitEventDocument.put("timeStamp", timeStamp);
         habitEventDocument.put("imageBitmapString", imageBitmapString);
-        habitEventDocument.put("dateString", timeStamp.split(" ")[0]);
+        habitEventDocument.put("dateString", dateString);
+        habitEventDocument.put("latlngString", latlngString);
         return habitEventDocument;
     }
 
     String getUniqueId() {
-        return habitTitle + "*" + timeStamp;
+        return parentHabitUniqueId + "*" + timeStamp;
     }
 
     // Static utility methods

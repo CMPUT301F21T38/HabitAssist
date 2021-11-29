@@ -56,6 +56,7 @@ public class MainActivityTest {
     @Before
     public void setUp() throws Exception {
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
+        MainActivity mainActivityInstance = MainActivity.getInstance();
 
         // Create two habits for the tests
         LocalDate today = LocalDate.now();
@@ -64,8 +65,8 @@ public class MainActivityTest {
         String currentDayOfTheWeek = (new SimpleDateFormat("EEEE")).format(todayDate);
         String nextDayOfTheWeek = (new SimpleDateFormat("EEEE")).format(tomorrowDate);
         String dateString = (new SimpleDateFormat("yyyy-MM-dd")).format(todayDate);
-        myExampleHabitToday = new Habit("testt_gym", "stay fit", dateString, currentDayOfTheWeek);
-        myExampleHabitTomorrow = new Habit("testt_cook", "yum", dateString, nextDayOfTheWeek);
+        myExampleHabitToday = new Habit("testt_gym", "stay fit", dateString, currentDayOfTheWeek, mainActivityInstance.getUsername());
+        myExampleHabitTomorrow = new Habit("testt_cook", "yum", dateString, nextDayOfTheWeek, mainActivityInstance.getUsername());
     }
 
     @Test
@@ -79,11 +80,11 @@ public class MainActivityTest {
                 AddHabitActivity.class);
 
         // Test title
-        solo.enterText((EditText) solo.getView(R.id.editTextTextPersonName), "1234567890 1234567890 1");
+        solo.enterText((EditText) solo.getView(R.id.SearchName), "1234567890 1234567890 1");
         solo.clickOnView((Button) solo.getView(R.id.button)); // click on save
         solo.assertCurrentActivity("", AddHabitActivity.class);
-        solo.clearEditText((EditText) solo.getView(R.id.editTextTextPersonName));
-        solo.enterText((EditText) solo.getView(R.id.editTextTextPersonName), myExampleHabitToday.getHabitTitle());
+        solo.clearEditText((EditText) solo.getView(R.id.SearchName));
+        solo.enterText((EditText) solo.getView(R.id.SearchName), myExampleHabitToday.getHabitTitle());
 
         // Test reason
         solo.enterText((EditText) solo.getView(R.id.editTextTextPersonName2), "1234567890 1234567890 1234567890 1");
@@ -106,11 +107,11 @@ public class MainActivityTest {
                 AddHabitActivity.class);
 
         // Test title
-        solo.enterText((EditText) solo.getView(R.id.editTextTextPersonName), "1234567890 1234567890 1");
+        solo.enterText((EditText) solo.getView(R.id.SearchName), "1234567890 1234567890 1");
         solo.clickOnView((Button) solo.getView(R.id.button)); // click on save
         solo.assertCurrentActivity("", AddHabitActivity.class);
-        solo.clearEditText((EditText) solo.getView(R.id.editTextTextPersonName));
-        solo.enterText((EditText) solo.getView(R.id.editTextTextPersonName), myExampleHabitTomorrow.getHabitTitle());
+        solo.clearEditText((EditText) solo.getView(R.id.SearchName));
+        solo.enterText((EditText) solo.getView(R.id.SearchName), myExampleHabitTomorrow.getHabitTitle());
 
         // Test reason
         solo.enterText((EditText) solo.getView(R.id.editTextTextPersonName2), "1234567890 1234567890 1234567890 1");

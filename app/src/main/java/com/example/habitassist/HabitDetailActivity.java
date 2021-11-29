@@ -22,10 +22,12 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -43,6 +45,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
@@ -66,7 +69,7 @@ import java.util.Map;
  */
 public class HabitDetailActivity extends AppCompatActivity {
     /** UI buttons */
-    private TextView habitDetailTitle, habitDetailStartDate, habitDetailReason, habitDetailDaysToDo, habitDetailProgress;
+    private TextView habitDetailTitle, habitDetailStartDate, habitDetailReason, habitDetailDaysToDo, habitDetailProgress, habitDetailVisibility;
     private Button habitDetailDeleteButton, habitDetailEditButton;
     private ProgressBar habitProgressBar;
 
@@ -80,6 +83,13 @@ public class HabitDetailActivity extends AppCompatActivity {
 
     private float numberOfDaysToDoThisWeek;
     private float numberOfDaysDoneThisWeek;
+    private int datesToBeDoneSize;
+
+    private String habitOwnerUsername;
+
+    private int EDITHABIT_REQUEST_CODE = 123;
+
+    private boolean isMyHabit;
 
     /**
      * This method sets the view and initializes variables. It runs once immediately after entering
@@ -100,6 +110,15 @@ public class HabitDetailActivity extends AppCompatActivity {
         // Get the Habit that we need to show the details of
         habitRecieved = (Habit) getIntent().getSerializableExtra("habitPassed");
 
+        habitOwnerUsername = SingletonUsername.get(); MainActivity.getInstance().getUsername();
+        String isTrue = getIntent().getStringExtra("isMyHabit");
+        if (isTrue != null && isTrue.equals("true")){
+            isMyHabit = true;
+        }else{
+            isMyHabit = false;
+            habitOwnerUsername = getIntent().getStringExtra("habitOwnerUsername");
+        }
+
         // Access UI elements from the layout
         habitDetailTitle = (TextView) findViewById(R.id.habit_detail_title);
         habitDetailStartDate = (TextView) findViewById(R.id.habit_detail_date);
@@ -107,134 +126,99 @@ public class HabitDetailActivity extends AppCompatActivity {
         habitDetailProgress = (TextView) findViewById(R.id.habit_detail_progress);
         habitProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
         habitDetailDaysToDo = (TextView) findViewById(R.id.habit_detail_days_to_do);
+        habitDetailVisibility = (TextView) findViewById(R.id.habit_detail_visibility);
         habitDetailDeleteButton = (Button) findViewById(R.id.habit_detail_delete_button);
         habitDetailEditButton = (Button) findViewById(R.id.habit_detail_edit_button);
         ListView habitEventsListView = (ListView) findViewById(R.id.habit_events_listview);
 
 
-        String[] daysToBeDone = habitRecieved.getDaysToBeDone().split(",");
-        numberOfDaysToDoThisWeek = daysToBeDone.length;
+        numberOfDaysToDoThisWeek = habitRecieved.getDaysToBeDone().split(",").length;
         numberOfDaysDoneThisWeek = 0;
-        // // Avoid zero division error
-        // if (numberOfDaysToDoThisWeek != 0) {
-        //     float percentage = (numberOfDaysDoneThisWeek / numberOfDaysToDoThisWeek) * 100;
-        //     String percentString = String.format("%.2f", percentage);
-        //     // Update User interface
-        //     habitDetailProgress.setText(percentString + "%");
-        // }
 
-        db.collection("habits").document(habitRecieved.getHabitTitle())
-                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable DocumentSnapshot doc, @Nullable FirebaseFirestoreException error) {
-                        if (error == null && doc != null && doc.exists()) {
-                            Map<String, Object> data = doc.getData();
-                            String title = (String) data.get("title");
-                            String reason = (String) data.get("reason");
-                            String startDate = (String) data.get("startDate");
-                            String daysToBeDone = (String) data.get("daysToBeDone");
-
-                            if (title != null && reason != null && startDate != null && daysToBeDone != null) {
-                                habitRecieved = new Habit(title, reason, startDate, daysToBeDone);
-                            }
-
-                            if (startDate == null) {
-                                startDate = "";
-                            }
+        db.collection("habits").document(habitRecieved.getUniqueId())
+                .addSnapshotListener((doc, error) -> {
+                    if (error == null && doc != null && doc.exists()) {
+                        Habit habitParsed = Habit.parseFromDoc(doc.getData());
+                        if (habitParsed != null) {
+                            habitRecieved.setTitle(habitParsed.getHabitTitle());
+                            habitRecieved.setDaysToBeDone(habitParsed.getDaysToBeDone());
+                            habitRecieved.setReason(habitParsed.getReason());
+                            habitRecieved.setPublic(habitParsed.isPublic());
 
                             // Enter the details of the habit onto the View
-                            habitDetailTitle.setText(title);
-                            habitDetailStartDate.setText("Date started: " + startDate);
-                            habitDetailReason.setText(reason);
-                            habitDetailDaysToDo.setText(daysToBeDone);
+                            habitDetailTitle.setText(habitRecieved.getHabitTitle());
+                            habitDetailStartDate.setText("Date started: " + habitParsed.getStartDate());
+                            habitDetailReason.setText(habitRecieved.getReason());
+                            habitDetailDaysToDo.setText(habitRecieved.getDaysToBeDone());
+                            habitDetailVisibility.setText(
+                                    habitRecieved.isPublic()
+                                            ? ("All followers of " + habitOwnerUsername)
+                                            : ("Only " + habitOwnerUsername)
+                            );
+
+                            updateProgressBar(habitRecieved.getDaysToBeDone(), habitRecieved.getHabitEvents());
+                        } else {
+                            Toast.makeText(HabitDetailActivity.this, "This is an invalid Habit", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
 
-        ArrayList<HabitEvent> habitEventsList = new ArrayList<>();
-        ArrayList<String> habitEventsIdList = new ArrayList<>();
-        db.collection("habitEvents").addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                // Split the days of the week into an ArrayList; e.g. ["Monday", "Friday"]
-                List<String> dayToBeDoneList = Arrays.asList(habitRecieved.getDaysToBeDone().split(", "));
-                ArrayList dayToBeDoneArray = new ArrayList(dayToBeDoneList);
-
-                // Convert the days into dates in current week
-                // e.g. ["Monday", "Friday"] -> ["2021-11-22", "2021-11-26"]
-                ArrayList<String> datesToBeDone = datesOfThisWeek(dayToBeDoneArray);
-                numberOfDaysDoneThisWeek = 0;
-
-                habitEventsList.clear();
-                habitEventsIdList.clear();
-                for (QueryDocumentSnapshot doc : value) {
-                    Map<String, Object> data = doc.getData();
-                    String comment = (String) data.get("comment");
-                    String habitTitle = (String) data.get("habitTitle");
-                    String timeStamp = (String) data.get("timeStamp");
-                    String dateString = (String) data.get("dateString");
-                    String imageBitmapString = (String) data.get("imageBitmapString");
-                    // Add a guard in case a wrongly structured Habit data is put into firestore
-                    if (habitTitle == null || timeStamp == null) {
-                        continue;
-                    }
-                    // Only add if this HabitEvent belongs to the correct Habit in question.
-                    if (habitTitle.equals(habitRecieved.getHabitTitle())) {
-                        HabitEvent habitEvent = new HabitEvent(habitTitle, timeStamp, comment, imageBitmapString);
-                        habitEventsList.add(habitEvent);
-                        // Set the content to be shown for each habitEvent
-                        String dateAndTime = doc.getId().split("\\*")[1];
-                        habitEventsIdList.add("Completed on: " + dateAndTime);
-
-                        datesToBeDone.remove(dateString);
-                    }
-                }
-                habitEventsAdapter.notifyDataSetChanged();
-
-                // Avoid zero division error
-                if (numberOfDaysToDoThisWeek != 0) {
-                    numberOfDaysDoneThisWeek = numberOfDaysToDoThisWeek - datesToBeDone.size();
-                    float percentage = (numberOfDaysDoneThisWeek / numberOfDaysToDoThisWeek) * 100;
-                    // prevent percentage from going over 100%
-                    percentage = Math.min(percentage, 100);
-                    String percentString = String.format("%.2f", percentage);
-
-                    // Update User interface
-                    habitDetailProgress.setText(percentString + "%");
-                    habitProgressBar.setProgress((int) percentage);
-                }
-
-                // updateHabitProgress();
-            }
-        });
-
         // Connect the habit titles data list to the user-interface with an ArrayAdapter
-        habitEventsAdapter = new ArrayAdapter<>(this, R.layout.habitevents_content, R.id.list_item, habitEventsIdList);
+        ArrayList<String> habitEventsCompletionDateList = new ArrayList<>();
+        habitEventsAdapter = new ArrayAdapter<>(this, R.layout.habitevents_content, R.id.list_item, habitEventsCompletionDateList);
         habitEventsListView.setAdapter(habitEventsAdapter);
 
-        // Add listener that navigates to the correct Habit detail page when a habit is clicked
-        habitEventsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Intent intent = new Intent(HabitDetailActivity.this, HabitEventDetailActivity.class);
-                intent.putExtra("habitEventPassed", habitEventsList.get(position));
-                startActivity(intent);
+        db.collection("habitEvents").addSnapshotListener((value, error) -> {
+            if (error != null) {
+                return;
             }
+
+            habitRecieved.clearHabitEvents();
+            habitEventsCompletionDateList.clear();
+            for (QueryDocumentSnapshot doc : value) {
+                HabitEvent habitEventParsed = HabitEvent.parseFromDoc(doc.getData());
+                // Add a guard in case a wrongly structured Habit data is put into firestore
+                if (habitEventParsed == null) {
+                    continue;
+                }
+                // Only add if this HabitEvent belongs to the correct Habit in question.
+                if (habitEventParsed.getParentHabitUniqueId().equals(habitRecieved.getUniqueId())) {
+                    habitRecieved.addToHabitEvents(habitEventParsed);
+                    // Set the content to be shown for each habitEvent
+                    String dateAndTime = habitEventParsed.getTimeStamp();
+                    habitEventsCompletionDateList.add("Completed on: " + dateAndTime);
+                }
+            }
+            habitEventsAdapter.notifyDataSetChanged();
+            updateProgressBar(habitRecieved.getDaysToBeDone(), habitRecieved.getHabitEvents());
+
+            //Dynamically update height
+            ViewGroup.LayoutParams params = habitEventsListView.getLayoutParams();
+            float dpFactor = getApplicationContext().getResources().getDisplayMetrics().density;
+            int dpPerItem = 51;
+            int offsetInDp = 80;
+            int nHabitEvents = habitEventsCompletionDateList.size();
+            int height = (int) ((nHabitEvents * dpPerItem + offsetInDp) * dpFactor);
+            params.height = nHabitEvents == 0 ? 0 : height;
+            habitEventsListView.setLayoutParams(params);
+            habitEventsListView.requestLayout();
         });
 
 
+        // Add listener that navigates to the correct Habit detail page when a habit is clicked
+        habitEventsListView.setOnItemClickListener((adapterView, view, position, l) -> {
+            Intent intent = new Intent(HabitDetailActivity.this, HabitEventDetailActivity.class);
+            intent.putExtra("habitEventPassed", habitRecieved.getHabitEvents().get(position));
+            startActivity(intent);
+        });
 
-        // // Enter the details of the habit onto the View
-        // habitDetailTitle.setText(habitRecieved.getHabitTitle());
-        // habitDetailStartDate.setText("Date started: " + habitRecieved.getStartDate());
-        // habitDetailReason.setText(habitRecieved.getReason());
-        // habitDetailDaysToDo.setText(habitRecieved.getDaysToBeDone());
-
-        // TODO: Determine here if this habit actually belongs to the correct profile in database
-        if (true) {
+        if (isMyHabit) {
             // Show the Edit and Delete buttons
             habitDetailDeleteButton.setVisibility(View.VISIBLE);
             habitDetailEditButton.setVisibility(View.VISIBLE);
+            findViewById(R.id.completed_button).setVisibility(View.VISIBLE);
+            findViewById(R.id.textView23).setVisibility(View.VISIBLE);
+            findViewById(R.id.habit_events_listview).setVisibility(View.VISIBLE);
         }
     }
 
@@ -254,18 +238,17 @@ public class HabitDetailActivity extends AppCompatActivity {
      * @param view
      */
     public void DeleteHabit(View view){
+        // Delete this habit
         db.collection("habits")
-                .document(habitRecieved.getHabitTitle())
+                .document(habitRecieved.getUniqueId())
                 .delete();
+        // Delete all habitEvents associated with this habit
         db.collection("habitEvents")
-                .whereEqualTo("habitTitle", habitRecieved.getHabitTitle())
+                .whereEqualTo("parentHabitUniqueId", habitRecieved.getUniqueId())
                 .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot value) {
-                        for (QueryDocumentSnapshot doc : value) {
-                            doc.getReference().delete();
-                        }
+                .addOnSuccessListener((value) -> {
+                    for (QueryDocumentSnapshot doc : value) {
+                        doc.getReference().delete();
                     }
                 });
         finish();
@@ -277,13 +260,9 @@ public class HabitDetailActivity extends AppCompatActivity {
      * @param view
      */
     public void EditHabit(View view) {
-        // Get mainActivity
-        MainActivity mainActivityInstance = MainActivity.getInstance();
-        // Set the habit to be edited into the DeleteAndEdit variable in the MainActivity
-        mainActivityInstance.DeleteAndEdit = habitRecieved.getHabitTitle();
-        // Let mainActivity handle the deleting
-        mainActivityInstance.EditHabit(view);
-        finish();
+        Intent intent = new Intent(this, HabitEditActivity.class);
+        intent.putExtra("habitPassedIn", (Serializable) habitRecieved);
+        startActivityForResult(intent, EDITHABIT_REQUEST_CODE);
     }
 
     public void onClickCompleted(View view) {
@@ -292,49 +271,35 @@ public class HabitDetailActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void updateHabitProgress() {
-        // Split the days of the week into an ArrayList; e.g. ["Monday", "Friday"]
-        List<String> dayToBeDoneList = Arrays.asList(habitRecieved.getDaysToBeDone().split(", "));
-        ArrayList dayToBeDoneArray = new ArrayList(dayToBeDoneList);
+    private void updateProgressBar(String daysToBeDone, ArrayList<HabitEvent> habitEvents) {
+        ArrayList<String> datesOfThisWeek = datesOfThisWeek(daysToBeDone);
 
-        // Convert the days into dates in current week
-        // e.g. ["Monday", "Friday"] -> ["2021-11-22", "2021-11-26"]
-        ArrayList<String> datesToBeDone = datesOfThisWeek(dayToBeDoneArray);
-
+        numberOfDaysToDoThisWeek = datesOfThisWeek.size();
         numberOfDaysDoneThisWeek = 0;
 
-        // Do for each date
-        for (String dateString : datesToBeDone) {
+        for (HabitEvent habitEvent : habitEvents) {
+            datesOfThisWeek.remove(habitEvent.getDateString());
+        }
 
-            // Search for a habitEvent (of correct habit) that was completed on said date
-            db.collection("habitEvents")
-                    .whereEqualTo("habitTitle", habitRecieved.getHabitTitle())
-                    .whereEqualTo("dateString", dateString)
-                    .get()
-                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                        @Override
-                        public void onSuccess(QuerySnapshot value) {
-                            for (QueryDocumentSnapshot doc : value) {
-                                // If such a habitEvent was found then increment this count
-                                numberOfDaysDoneThisWeek += 1;
-                            }
+        if (numberOfDaysToDoThisWeek != 0) {
+            numberOfDaysDoneThisWeek = numberOfDaysToDoThisWeek - datesOfThisWeek.size();
+            float percentage = (numberOfDaysDoneThisWeek / numberOfDaysToDoThisWeek) * 100;
+            // prevent percentage from going over 100%
+            percentage = Math.min(percentage, 100);
+            String percentString = String.format("%.2f", percentage);
 
-                            // Avoid zero division error
-                            if (numberOfDaysToDoThisWeek != 0) {
-                                float percentage = (numberOfDaysDoneThisWeek / numberOfDaysToDoThisWeek) * 100;
-                                // prevent percentage from going over 100%
-                                percentage = Math.max(percentage, 100);
-                                String percentString = String.format("%.2f", percentage);
-
-                                // Update User interface
-                                habitDetailProgress.setText(percentString + "%");
-                            }
-                        }
-                    });
+            // Update User interface
+            habitDetailProgress.setText(percentString + "%");
+            habitProgressBar.setProgress((int) percentage);
         }
     }
 
-    private ArrayList<String> datesOfThisWeek(ArrayList<String> daysOfTheWeek) {
+    private ArrayList<String> datesOfThisWeek(String daysToBeDone) {
+        // Split the days of the week into an ArrayList; e.g. ["Monday", "Friday"]
+        List<String> dayToBeDoneList = Arrays.asList(habitRecieved.getDaysToBeDone().split(", "));
+        ArrayList<String> daysOfTheWeek = new ArrayList(dayToBeDoneList);
+
+
         // Initialize return value
         ArrayList<String> datesOfTheWeek = new ArrayList<>();
 
@@ -361,6 +326,7 @@ public class HabitDetailActivity extends AppCompatActivity {
             // Get the date of corresponding day of the week (in the current week)
             // Source: https://stackoverflow.com/a/9307961/8270982
             Calendar cal = Calendar.getInstance();
+            cal.setFirstDayOfWeek(Calendar.MONDAY);
             cal.set(Calendar.DAY_OF_WEEK, dayNum);
             String dateString = (new SimpleDateFormat("yyyy-MM-dd")).format(cal.getTime());
 

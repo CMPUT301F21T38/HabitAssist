@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HabitDetailActivity">
+    tools:context=".HabitEventDetailActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -19,12 +19,12 @@
             <TextView
                 android:id="@+id/habit_title"
                 android:layout_width="match_parent"
-                android:layout_height="122dp"
+                android:layout_height="52dp"
                 android:height="90dp"
                 android:padding="10dp"
                 android:text="Example my title"
                 android:textColor="#000000"
-                android:textSize="34sp"
+                android:textSize="24sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -48,7 +48,7 @@
                 android:padding="5dp">
 
                 <TextView
-                    android:id="@+id/textView13"
+                    android:id="@+id/comment_text"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:height="90dp"
@@ -73,7 +73,24 @@
                     android:textStyle="normal" />
 
                 <TextView
-                    android:id="@+id/textView1000"
+                    android:id="@+id/location_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:height="90dp"
+                    android:padding="5dp"
+                    android:text="Location:"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <fragment
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:id="@+id/google_map"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"/>
+
+                <TextView
+                    android:id="@+id/picture_text"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:height="90dp"
@@ -105,7 +122,7 @@
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:backgroundTint="#FF3C3C"
-                    android:onClick="DeleteHabit"
+                    android:onClick="DeleteHabitEvent"
                     android:text="Delete" />
 
                 <Button
@@ -115,7 +132,7 @@
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:backgroundTint="#4CAF50"
-                    android:onClick="EditHabit"
+                    android:onClick="EditHabitEvent"
                     android:text="Edit" />
 
             </LinearLayout>

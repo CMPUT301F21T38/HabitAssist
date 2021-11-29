@@ -5,171 +5,188 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Edit Habit"
-        android:textSize="34sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/comment_edit_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="68dp"
-        android:ems="10"
-        android:hint="@string/Enter_Name"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView2"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        android:text="Title:"
-        android:textSize="24dp"
-        app:layout_constraintEnd_toStartOf="@+id/comment_edit_text"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Reason:"
-        android:textSize="24dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_gravity="center_horizontal"
+                android:text="Add Habit"
+                android:textSize="34sp" />
 
 
-    <EditText
-        android:id="@+id/editTextTextPersonName2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="68dp"
-        android:ems="10"
-        android:hint="@string/Enter_Reason"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/comment_edit_text" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="180dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="16dp"
-        android:text="@string/save_button"
-        android:onClick="SaveButton"
-        app:layout_constraintBaseline_toBaselineOf="@+id/button2"
-        app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:id="@+id/textView1234"
+                android:layout_width="match_parent"
+                android:gravity="center_vertical"
+                android:layout_height="50dp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:text="Privacy:"
+                android:textSize="24dp"
+                android:layout_marginHorizontal="20dp"/>
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="180dp"
-        android:layout_height="60dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="4dp"
-        android:onClick="CancelButton"
-        android:text="@string/cancel_button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal">
+                <Button
+                    android:id="@+id/isPublic"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:backgroundTint="#070707"
+                    android:onClick="isPublicButton"
+                    android:text="Public"/>
+            </LinearLayout>
 
-    <CheckBox
-        android:id="@+id/checkbox_Monday"
-        android:layout_width="112dp"
-        android:layout_height="41dp"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="16dp"
-        android:text="Monday"
-        app:layout_constraintBottom_toTopOf="@+id/checkbox_Friday"
-        app:layout_constraintStart_toEndOf="@+id/checkbox_Tuesday"
-        app:layout_constraintTop_toTopOf="@+id/textView6" />
-
-    <CheckBox
-        android:id="@+id/checkbox_Saturday"
-        android:layout_width="112dp"
-        android:layout_height="41dp"
-        android:layout_marginStart="48dp"
-        android:text="Saturday"
-        app:layout_constraintBaseline_toBaselineOf="@+id/checkbox_Wednesday"
-        app:layout_constraintStart_toEndOf="@+id/checkbox_Wednesday" />
-
-    <CheckBox
-        android:id="@+id/checkbox_Wednesday"
-        android:layout_width="112dp"
-        android:layout_height="41dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="16dp"
-        android:text="Wednesday"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkbox_Tuesday" />
-
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="48dp"
-        android:datePickerMode="spinner"
-
-        android:scaleX="0.7"
-        android:scaleY="0.7"
-        android:text="Days in a Week:"
-        android:textSize="24dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
-    <CheckBox
-        android:id="@+id/checkbox_Thursday"
-        android:layout_width="112dp"
-        android:layout_height="41dp"
-        android:layout_marginTop="16dp"
-        android:text="Thursday"
-        app:layout_constraintEnd_toEndOf="@+id/checkbox_Wednesday"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkbox_Wednesday" />
-
-    <CheckBox
-        android:id="@+id/checkbox_Sunday"
-        android:layout_width="112dp"
-        android:layout_height="41dp"
-        android:layout_marginStart="48dp"
-        android:text="Sunday"
-        app:layout_constraintBaseline_toBaselineOf="@+id/checkbox_Thursday"
-        app:layout_constraintStart_toEndOf="@+id/checkbox_Thursday" />
-
-    <CheckBox
-        android:id="@+id/checkbox_Friday"
-        android:layout_width="114dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="48dp"
-        android:text="Friday"
-        app:layout_constraintBaseline_toBaselineOf="@+id/checkbox_Tuesday"
-        app:layout_constraintStart_toEndOf="@+id/checkbox_Tuesday" />
-
-    <CheckBox
-        android:id="@+id/checkbox_Tuesday"
-        android:layout_width="112dp"
-        android:layout_height="41dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="24dp"
-        android:text="Tuesday"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:gravity="center_vertical"
+                android:layout_height="50dp"
+                android:text="Title:"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="24dp"
+                android:layout_marginHorizontal="20dp"/>
 
 
+            <EditText
+                android:id="@+id/comment_edit_text"
+                android:layout_width="250dp"
+                android:layout_height="match_parent"
+                android:hint="@string/Enter_Name"
+                android:layout_gravity="center_horizontal"/>
+            <TextView
+                android:gravity="center_vertical"
+                android:layout_height="50dp"
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:text="Reason:"
+                android:textSize="24dp"
+                android:layout_marginRight="10dp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginHorizontal="20dp"/>
+
+
+            <EditText
+                android:id="@+id/editTextTextPersonName2"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/Enter_Reason"
+                android:layout_gravity="center_horizontal"/>
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_height="50dp"
+                android:layout_marginHorizontal="20dp"
+                android:datePickerMode="spinner"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:text="Days in a Week:"
+                android:textSize="24dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal">
+
+                <CheckBox
+                    android:id="@+id/checkbox_Monday"
+                    android:layout_width="112dp"
+                    android:layout_height="41dp"
+                    android:text="Monday" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_Tuesday"
+                    android:layout_width="112dp"
+                    android:layout_height="41dp"
+                    android:text="Tuesday" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_Wednesday"
+                    android:layout_width="112dp"
+                    android:layout_height="41dp"
+                    android:text="Wednesday" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal">
+                <CheckBox
+                    android:id="@+id/checkbox_Thursday"
+                    android:layout_width="112dp"
+                    android:layout_height="41dp"
+                    android:text="Thursday" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_Friday"
+                    android:layout_width="114dp"
+                    android:layout_height="45dp"
+                    android:text="Friday" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_Saturday"
+                    android:layout_width="112dp"
+                    android:layout_height="41dp"
+                    android:text="Saturday" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal">
+
+                <CheckBox
+                    android:id="@+id/checkbox_Sunday"
+                    android:layout_width="112dp"
+                    android:layout_height="41dp"
+                    android:text="Sunday" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginHorizontal="10dp"
+
+                android:layout_marginTop="50dp"
+                android:gravity="center_horizontal">
+                <Button
+                    android:id="@+id/button"
+                    android:layout_width="180dp"
+                    android:layout_height="60dp"
+                    android:text="@string/save_button"
+                    android:layout_marginHorizontal="10dp"
+                    android:onClick="SaveButton"/>
+
+                <Button
+                    android:id="@+id/button2"
+                    android:layout_width="180dp"
+                    android:layout_height="60dp"
+                    android:onClick="CancelButton"
+                    android:layout_marginHorizontal="10dp"
+                    android:text="@string/cancel_button"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
