@@ -20,6 +20,8 @@ package com.example.habitassist;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -29,7 +31,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -72,44 +78,43 @@ public class HabitEditActivity extends AppCompatActivity {
         // set the habit values that have already been given previously
         title.setText(habit.getHabitTitle());
         reason.setText(habit.getReason());
+
         if (habitPassedIn.isPublic()) {
             isPublicButton.setText("Public");
             isPublic = true;
-        }else{
+        } else {
             isPublicButton.setText("Private");
             isPublic = false;
         }
 
         // check day boxes that have already been checked
-        String[] days = habit.getDaysToBeDone().split(",");
-
-        if (Arrays.asList(days).contains("Monday")) {
+        if (habit.getDaysToBeDone().contains("Monday")) {
             CheckBox monday = findViewById(R.id.checkbox_Monday);
             monday.setChecked(true);
         }
 
-        if (Arrays.asList(days).contains(" Tuesday")) {
+        if (habit.getDaysToBeDone().contains("Tuesday")) {
             CheckBox tuesday = findViewById(R.id.checkbox_Tuesday);
             tuesday.setChecked(true);
         }
 
-        if (Arrays.asList(days).contains(" Wednesday")) {
+        if (habit.getDaysToBeDone().contains("Wednesday")) {
             CheckBox wed = findViewById(R.id.checkbox_Wednesday);
             wed.setChecked(true);
         }
-        if (Arrays.asList(days).contains(" Thursday")) {
+        if (habit.getDaysToBeDone().contains("Thursday")) {
             CheckBox thurs = findViewById(R.id.checkbox_Thursday);
             thurs.setChecked(true);
         }
-        if (Arrays.asList(days).contains(" Friday")) {
+        if (habit.getDaysToBeDone().contains("Friday")) {
             CheckBox fri = findViewById(R.id.checkbox_Friday);
             fri.setChecked(true);
         }
-        if (Arrays.asList(days).contains(" Saturday")) {
+        if (habit.getDaysToBeDone().contains("Saturday")) {
             CheckBox sat = findViewById(R.id.checkbox_Saturday);
             sat.setChecked(true);
         }
-        if (Arrays.asList(days).contains(" Sunday")) {
+        if (habit.getDaysToBeDone().contains("Sunday")) {
             CheckBox sun = findViewById(R.id.checkbox_Sunday);
             sun.setChecked(true);
         }
@@ -122,20 +127,24 @@ public class HabitEditActivity extends AppCompatActivity {
      * @param view
      */
     public void SaveButton(View view){
+        // get the edittext
+        String titleAdded = ((EditText) findViewById(R.id.comment_edit_text)).getText().toString();
+        String reasonAdded = ((EditText) findViewById(R.id.editTextTextPersonName2)).getText().toString();
+
+        if (titleAdded.length() > 20) {
+            Toast.makeText(getApplicationContext(), "Please keep the title under 20 characters", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (titleAdded.isEmpty()) {
+            Toast.makeText(this, "Title of the habit cannot be empty", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (reasonAdded.length() > 30) {
+            Toast.makeText(getApplicationContext(), "Please keep the reason under 30 characters", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         ArrayList<String> HabitDays = new ArrayList<>();
-
-        // get the habit to edit passed in from MainActivity
-        Habit habit = (Habit) getIntent().getSerializableExtra("habitPassedIn");
-
-        // get the edittext and datepicker objects
-        EditText title_added = (EditText) findViewById(R.id.comment_edit_text);
-        EditText reason_added = (EditText) findViewById(R.id.editTextTextPersonName2);
-        //DatePicker take_date = (DatePicker) findViewById(R.id.editTextDate2);
-
-        // get the title and reason from the user
-        String main_title = title_added.getText().toString();
-        String main_reason = reason_added.getText().toString();
-
         if (((CheckBox) findViewById(R.id.checkbox_Monday)).isChecked()) {
             HabitDays.add("Monday");
         }
@@ -158,32 +167,16 @@ public class HabitEditActivity extends AppCompatActivity {
             HabitDays.add("Sunday");
         }
 
-        // edit the habit object
-        habit.setTitle(main_title);
-        habit.setReason(main_reason);
-        //habit.setStartDate(date_Started);
-        habit.setDaysToBeDone(TextUtils.join(", ", HabitDays));
+        // Directly Edit the Firestore entry from here instead of passing it back to the MainActivity
+        habitPassedIn.setTitle(titleAdded);
+        habitPassedIn.setReason(reasonAdded);
+        habitPassedIn.setDaysToBeDone(TextUtils.join(", ", HabitDays));
+        habitPassedIn.setPublic(isPublic);
+        db.collection("habits")
+                .document(habitPassedIn.getUniqueId()).set(habitPassedIn.getDocument());
 
-        habit.setPublic(isPublic);
-
-
-        if (title_added.getText().toString().length() > 20) {
-            Toast.makeText(getApplicationContext(), "Please keep the title under 20 characters", Toast.LENGTH_SHORT).show();
-        }
-        if (reason_added.getText().toString().length() > 30) {
-            Toast.makeText(getApplicationContext(), "Please keep the reason under 30 characters", Toast.LENGTH_SHORT).show();
-        }
-        if (reason_added.getText().toString().length() <= 30 && title_added.getText().toString().length() <= 20) {
-            // Directly Edit the Firestore entry from here instead of passing it back to the MainActivity
-            //ToDo add the UI check box or something to see if habit is going to be public
-            db.collection("habits").document(habitPassedIn.getUniqueId()).delete();
-            db.collection("habits").document(habit.getUniqueId()).set(habit.getDocument());
-
-            // Exit the activity
-            finish();
-        }
-
-
+        // Exit the activity
+        finish();
     }
 
     /**
@@ -199,7 +192,6 @@ public class HabitEditActivity extends AppCompatActivity {
         if (isPublic){
             isPublic = false;
             ((TextView) view).setText("Private");
-            //view.setBackgroundTintList();
         }else{
             isPublic = true;
             ((TextView) view).setText("Public");

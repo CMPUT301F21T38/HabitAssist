@@ -45,7 +45,6 @@ public class AddHabitActivity extends AppCompatActivity {
     /** A reference to the Firestore database */
     private FirebaseFirestore db;
     private boolean isPublic;
-    Button location;
     /**
      * This method sets the view and initializes variables. It runs once immediately after entering
      * this Activity.
@@ -58,14 +57,6 @@ public class AddHabitActivity extends AppCompatActivity {
 
         // Store a reference to the Firestore database
         db = FirebaseFirestore.getInstance();
-        location = findViewById(R.id.button6);
-        location.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(AddHabitActivity.this,MapActivity.class);
-                startActivity(intent);
-            }
-        });
         isPublic = true;
     }
 
@@ -75,27 +66,23 @@ public class AddHabitActivity extends AppCompatActivity {
      * @param view
      */
     public void SaveButton(View view){
+        String titleAdded = ((EditText) findViewById(R.id.comment_edit_text)).getText().toString();
+        String reasonAdded = ((EditText) findViewById(R.id.editTextTextPersonName2)).getText().toString();
+
+        if (titleAdded.length() > 20) {
+            Toast.makeText(getApplicationContext(), "Please keep the title under 20 characters", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (titleAdded.isEmpty()) {
+            Toast.makeText(this, "Title of the habit cannot be empty", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (reasonAdded.length() > 30) {
+            Toast.makeText(getApplicationContext(), "Please keep the reason under 30 characters", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         ArrayList<String> dayToBeDoneArray = new ArrayList<>();
-        EditText title_added = (EditText) findViewById(R.id.comment_edit_text);
-
-        EditText reason_added = (EditText) findViewById(R.id.editTextTextPersonName2);
-
-        DatePicker take_date = (DatePicker) findViewById(R.id.editTextDate2);
-        int take_day = take_date.getDayOfMonth();
-        String take_day1 = Integer.toString(take_day);
-        if (take_day < 10){
-            take_day1 = "0" + take_day1;
-        }
-        int take_month = take_date.getMonth() + 1;
-        int take_year = take_date.getYear();
-
-        String take_month1 = Integer.toString(take_month);
-        if (take_month < 10){
-            take_month1 = "0" + take_month1;
-        }
-        String take_year1 = Integer.toString(take_year);
-        String date_Started = take_year1 + "-" + take_month1 + "-" + take_day1;
-
         if (((CheckBox) findViewById(R.id.checkbox_Monday)).isChecked()) {
             dayToBeDoneArray.add("Monday");
         }
@@ -117,25 +104,13 @@ public class AddHabitActivity extends AppCompatActivity {
         if (((CheckBox) findViewById(R.id.checkbox_Sunday)).isChecked()) {
             dayToBeDoneArray.add("Sunday");
         }
+        String daysToBeDone = TextUtils.join(", ", dayToBeDoneArray);
+        String date_Started = Habit.dateStringFromDatePicker((DatePicker) findViewById(R.id.editTextDate2));
 
-        if (title_added.getText().toString().length() > 20) {
-            Toast.makeText(getApplicationContext(), "Please keep the title under 20 characters", Toast.LENGTH_SHORT).show();
-        }
-        if (reason_added.getText().toString().length() > 30) {
-            Toast.makeText(getApplicationContext(), "Please keep the reason under 30 characters", Toast.LENGTH_SHORT).show();
-        }
-
-
-        if (reason_added.getText().toString().length() <= 30 && title_added.getText().toString().length() <= 20) {
-            MainActivity mainActivityInstance = MainActivity.getInstance();
-            //ToDo add the UI check box or something to see if habit is going to be public
-            Habit habit1 = new Habit(title_added.getText().toString(), reason_added.getText().toString(), date_Started, TextUtils.join(", ", dayToBeDoneArray), mainActivityInstance.getUsername(), isPublic);
-
-            String title = habit1.getHabitTitle();
-            HashMap<String, Object> habitDocument = habit1.getDocument();
-            db.collection("habits").document(habit1.getUniqueId()).set(habitDocument);
-            finish();
-        }
+        Habit habit = new Habit(titleAdded, reasonAdded, date_Started, daysToBeDone,
+                SingletonUsername.get(), isPublic);
+        db.collection("habits").document(habit.getUniqueId()).set(habit.getDocument());
+        finish();
     }
 
     /**
@@ -148,11 +123,10 @@ public class AddHabitActivity extends AppCompatActivity {
     }
 
     public void isPublicButton(View view){
-        if (isPublic){
+        if (isPublic) {
             isPublic = false;
            ((TextView) view).setText("Private");
-            //view.setBackgroundTintList();
-        }else{
+        } else {
             isPublic = true;
             ((TextView) view).setText("Public");
         }

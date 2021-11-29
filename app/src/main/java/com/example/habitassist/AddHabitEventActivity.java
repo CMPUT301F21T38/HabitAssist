@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -29,15 +30,14 @@ public class AddHabitEventActivity extends AppCompatActivity {
 
     FirebaseFirestore db;
     Habit habitRecieved;
-
-    EditText commentEditText;
-
     private String imageBitmapStringToStore;
 
     private int CAMERA_REQUEST_CODE = 10;
     private int GALLERY_REQUEST_CODE = 12;
+    private int LOCATION_REQUEST_CODE = 13;
 
     private ImageView imageView;
+    private String latlngString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +46,6 @@ public class AddHabitEventActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         habitRecieved = (Habit) getIntent().getSerializableExtra("habit");
-
-        commentEditText = (EditText) findViewById(R.id.comment_edit_text);
         imageView = (ImageView) findViewById(R.id.image_view);
     }
 
@@ -69,22 +67,25 @@ public class AddHabitEventActivity extends AppCompatActivity {
 
 
     public void onClickSaveButton(View view) {
-        String comment = commentEditText.getText().toString();
+        String comment = ((EditText) findViewById(R.id.comment_edit_text)).getText().toString();
         if (comment.length() > 20) {
             Toast.makeText(getApplicationContext(), "Please keep the comment under 20 characters", Toast.LENGTH_SHORT).show();
         } else {
             // Added it to firebase
             // Source: https://stackoverflow.com/a/23068721/8270982
             String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-
-            String title = habitRecieved.getHabitTitle();
-
-            HabitEvent habitEvent = new HabitEvent(title, timeStamp, comment, imageBitmapStringToStore);
-            String uniqueHabitEventID = title + "*" + timeStamp;
-            HashMap<String, String> habitEventDocument = habitEvent.getDocument();
-            db.collection("habitEvents").document(uniqueHabitEventID).set(habitEventDocument);
+            String parentHabitUniqueId = habitRecieved.getUniqueId();
+            HabitEvent habitEvent = new HabitEvent(parentHabitUniqueId, timeStamp, comment,
+                    imageBitmapStringToStore, latlngString);
+            db.collection("habitEvents")
+                    .document(habitEvent.getUniqueId()).set(habitEvent.getDocument());
             finish();
         }
+    }
+
+    public void locationButtonHandler(View view) {
+        Intent intent = new Intent(AddHabitEventActivity.this, MapActivity.class);
+        startActivityForResult(intent, LOCATION_REQUEST_CODE);
     }
 
 
@@ -103,7 +104,6 @@ public class AddHabitEventActivity extends AppCompatActivity {
                     if (imageBitmap != null) {
                         imageView.setImageBitmap(imageBitmap);
                         imageBitmapStringToStore = HabitEvent.bitMapToString(imageBitmap, true);
-
                     }
                 }
             }
@@ -125,6 +125,12 @@ public class AddHabitEventActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else if (requestCode == LOCATION_REQUEST_CODE) {
+            if (data != null) {
+                latlngString = data.getStringExtra("latlngString");
+                ((TextView) findViewById(R.id.latlng)).setText("latitude, longitude: " + latlngString);
+            }
+
         }
     }
 }

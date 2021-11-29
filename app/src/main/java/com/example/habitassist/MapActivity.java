@@ -1,15 +1,17 @@
 package com.example.habitassist;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.TaskStackBuilder;
-
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -26,6 +28,7 @@ public class MapActivity extends AppCompatActivity {
 
     SupportMapFragment supportMapFragment;
     FusedLocationProviderClient client;
+    String latlngString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,47 +36,54 @@ public class MapActivity extends AppCompatActivity {
         setContentView(R.layout.activity_map);
         Intent intent1 = getIntent();
         supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.google_map);
-        client = LocationServices.getFusedLocationProviderClient(this);
         if (ActivityCompat.checkSelfPermission(MapActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            getCurrentLocation();
+            LocationServices
+                    .getFusedLocationProviderClient(this)
+                    .getLastLocation().addOnSuccessListener((location) -> {
+                        if (location != null) {
+                            latlngString = location.getLatitude() + ", " + location.getLongitude();
+
+                            // Load map into the map fragment on the screen
+                            supportMapFragment.getMapAsync((googleMap) -> {
+                                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                                MarkerOptions options = new MarkerOptions().position(latLng).title("You are here");
+                                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+                                googleMap.addMarker(options);
+
+                                // Set onClick listener to update the marker when clicked
+                                googleMap.setOnMapClickListener((point) -> {
+                                    googleMap.clear();
+                                    MarkerOptions options1 = new MarkerOptions().position(point).title("Habit completed here");
+                                    googleMap.addMarker(options1);
+                                    latlngString = Map.latlngToString(point);
+                                });
+                            });
+                        }
+                    });
         } else {
             ActivityCompat.requestPermissions(MapActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+            finish();
         }
     }
 
-    private void getCurrentLocation() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
+    public void onClickSaveButton(View view) {
+        if (latlngString == null) {
+            latlngString = "";
         }
-        Task<Location> task = client.getLastLocation();
-        task.addOnSuccessListener(new OnSuccessListener<Location>() {
-            public void onSuccess(final Location location) {
-                if (location != null) {
-                    supportMapFragment.getMapAsync(new OnMapReadyCallback() {
-                        @Override
-                        public void onMapReady(@NonNull GoogleMap googleMap) {
-                            com.google.android.gms.maps.model.LatLng latLng = new LatLng(location.getLatitude(),location.getLongitude());
-                            MarkerOptions options= new MarkerOptions().position(latLng).title("I am there");
-                            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,10));
-                            googleMap.addMarker(options);
-                        }
-                    });
-                }
-            }
-        });
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("latlngString", latlngString);
+        setResult(Activity.RESULT_OK, returnIntent);
+        finish();
     }
-    public void onRequestPermissionResult(int requestCode, @NonNull String[] permission, @NonNull int[] grantResults) {
-        if (requestCode == 44) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                getCurrentLocation();
-            }
+
+    @Override
+    public void onBackPressed() {
+        if (latlngString == null) {
+            latlngString = "";
         }
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("latlngString", latlngString);
+        setResult(Activity.RESULT_OK, returnIntent);
+        finish();
     }
 }

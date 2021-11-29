@@ -1,6 +1,7 @@
 package com.example.habitassist;
 
 import android.os.Build;
+import android.text.TextUtils;
 
 import androidx.annotation.RequiresApi;
 
@@ -17,8 +18,8 @@ import java.util.HashMap;
 public class Profile implements Serializable {
     private ArrayList<String> following;
     private String username;
-     private String password;
-     private ArrayList<String> followRequests;
+    private String password;
+    private ArrayList<String> followRequests;
 
     public void setUsername(String username) {
         this.username = username;
@@ -49,13 +50,12 @@ public class Profile implements Serializable {
         return this.password;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public HashMap<String, String> getDocument() {
         HashMap<String, String> profileDocument = new HashMap<>();
         profileDocument.put("username", username);
         profileDocument.put("password", password);
-        profileDocument.put("followRequests", String.join("," ,followRequests));
-        profileDocument.put("following", String.join("," ,following));
+        profileDocument.put("followRequests", TextUtils.join("," ,followRequests));
+        profileDocument.put("following", TextUtils.join("," ,following));
         return profileDocument;
     }
 

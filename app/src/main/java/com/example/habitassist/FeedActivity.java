@@ -4,11 +4,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Layout;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -49,42 +53,8 @@ public class FeedActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
 
-        MainActivity mainActivityInstance = MainActivity.getInstance();
-        String username = mainActivityInstance.getUsername();
-
 
         db = FirebaseFirestore.getInstance();
-        /*DocumentReference docRef = db.collection("profiles").document(username);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Map<String, Object> data = document.getData();
-                        String username = (String) data.get("username");
-                        String password = (String) data.get("password");
-                        String followRequests = (String) data.get("followRequests");
-                        String following = (String) data.get("following");
-                        //convert the follow requests and following to their respective lists.
-                        // Add a guard in case a wrongly structured Habit data is put into firestore
-                        if (username != null && password != null && followRequests != null && following != null) {
-                            String[] requests = followRequests.split(",");
-                            String[] followed = following.split(",");
-
-                           profile = new Profile(username, password);
-
-                            for (String names : requests) {
-                                profile.AddFollowRequests(names);
-                            }
-                            for (String names : followed) {
-                                profile.addFollowing(names);
-                            }
-                        }
-                    }
-                }
-            }
-        });*/
         //Add code to display following and follow requests
         followingListView = (ListView) findViewById(R.id.following);
         followRequestListView = (ListView) findViewById(R.id.followRequests);
@@ -92,7 +62,7 @@ public class FeedActivity extends AppCompatActivity {
         //do some stuff
         profile = new Profile();
 
-        db.collection("profiles").document(mainActivityInstance.getUsername()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        db.collection("profiles").document(SingletonUsername.get()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot doc, @Nullable FirebaseFirestoreException error) {
 
@@ -108,10 +78,12 @@ public class FeedActivity extends AppCompatActivity {
                         String[] requests = {followRequests};
                         String[] followed = {following};
                         if (followRequests.indexOf(",") != -1) {
-                            requests = followRequests.split(", ");
+                            requests = followRequests.split(",");
                         }
+
+
                         if (following.indexOf(",") != -1) {
-                            followed = following.split(", ");
+                            followed = following.split(",");
                         }
 
                         profile.setUsername(username);
@@ -121,10 +93,14 @@ public class FeedActivity extends AppCompatActivity {
                         profile.clearFollowRequests();
 
                         for (String names : requests) {
-                            profile.AddFollowRequests(names);
+                            if (!names.isEmpty()) {
+                                profile.AddFollowRequests(names);
+                            }
                         }
                         for (String names : followed) {
-                            profile.addFollowing(names);
+                            if (!names.isEmpty()) {
+                                profile.addFollowing(names);
+                            }
                         }
                     }
 
@@ -132,6 +108,26 @@ public class FeedActivity extends AppCompatActivity {
 
                 followRequestAdapter.notifyDataSetChanged();
                 followingAdapter.notifyDataSetChanged();
+
+                //Dynamically update height
+                LinearLayout followRequestsLayout = (LinearLayout) findViewById(R.id.followrequests_linearlayout);
+                LinearLayout followingLayout = (LinearLayout) findViewById(R.id.following_linearlayout);
+
+                ViewGroup.LayoutParams followRequestsLayoutParams = followRequestsLayout.getLayoutParams();
+                float dpFactor = getApplicationContext().getResources().getDisplayMetrics().density;
+                int dpPerItem = 51;
+                int offsetInDp = 80;
+                int nFollowRequests = profile.getFollowRequests().size();
+                int height = (int) ((nFollowRequests * dpPerItem + offsetInDp) * dpFactor);
+                followRequestsLayoutParams.height = nFollowRequests == 0 ? 0 : height;
+                followRequestsLayout.setLayoutParams(followRequestsLayoutParams);
+                followRequestsLayout.requestLayout();
+                int nFollowing = profile.getFollowing().size();
+                height = (int) ((nFollowing * dpPerItem + offsetInDp) * dpFactor);
+                ViewGroup.LayoutParams followingLayoutParams = followingLayout.getLayoutParams();
+                followingLayoutParams.height = nFollowing == 0 ? 0 : height;
+                followingListView.setLayoutParams(followingLayoutParams);
+                followingListView.requestLayout();
             }
         });
 
@@ -144,6 +140,9 @@ public class FeedActivity extends AppCompatActivity {
         followingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (profile.getFollowing().isEmpty()) {
+                    return;
+                }
                 // it returns the name of the habit from the Listview OR the ArrayList
                 String user = profile.getFollowing().get(i);
                 Intent intent = new Intent(FeedActivity.this, ProfileActivity.class);
@@ -154,14 +153,16 @@ public class FeedActivity extends AppCompatActivity {
         });
 
         // Accept/delete follow requests
-        db.collection("profiles").document(mainActivityInstance.getUsername())
+        db.collection("profiles").document(SingletonUsername.get())
                 .addSnapshotListener(new EventListener<DocumentSnapshot>() {
                     @Override
                     public void onEvent(@Nullable DocumentSnapshot document, @Nullable FirebaseFirestoreException error) {
                         if (error == null && document != null && document.exists()) {
                             followRequestListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
                                 @Override
                                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
                                     DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                                         @RequiresApi(api = Build.VERSION_CODES.O)
                                         @Override
@@ -170,8 +171,6 @@ public class FeedActivity extends AppCompatActivity {
                                                 case DialogInterface.BUTTON_POSITIVE:
                                                     //Accept button clicked
                                                     String requester = profile.getFollowRequests().get(i);
-                                                    // update database
-                                                    Map<String, Object> data = document.getData();
 
                                                     // add the follower to the requester's profile
                                                     DocumentReference docRef = db.collection("profiles").document(profile.getFollowRequests().get(i));
@@ -181,12 +180,12 @@ public class FeedActivity extends AppCompatActivity {
                                                             if (task2.isSuccessful()) {
                                                                 DocumentSnapshot document2 = task2.getResult();
                                                                 if (document2.exists()) {
-                                                                    String following = (String) data.get("following");
+                                                                    String following = (String) document2.getData().get("following");
                                                                     // remake the string, accounting for edge cases
                                                                     if (following.equals("")) {
                                                                         following = profile.getUsername();
                                                                     } else {
-                                                                        following = following + ", " + profile.getUsername();
+                                                                        following = following + "," + profile.getUsername();
                                                                     }
                                                                     // update db
                                                                     db.collection("profiles").document(requester).update("following", following);
@@ -196,59 +195,21 @@ public class FeedActivity extends AppCompatActivity {
                                                     });
 
                                                     // delete the request from the users requests
-                                                    String requests = (String) data.get("followRequests");
-                                                    String[] requests_array = requests.split(", ", 0);
-                                                    List<String> requests_list = new ArrayList<String>(Arrays.asList(requests_array));
-
+                                                    ArrayList<String> requests_list = new ArrayList<>(profile.getFollowRequests());
                                                     requests_list.remove(profile.getFollowRequests().get(i));
-
-                                                    if (requests_list.size() == 0) {
-                                                        requests = "";
-                                                    } else {
-                                                        requests = String.join(",", requests_list);
-                                                    }
-//                                                    if (requests.indexOf(",") != -1) {
-//                                                        requests = requests.replace(profile.getFollowRequests().get(i) + ",", "");
-//                                                        requests = requests.replace(" " +profile.getFollowRequests().get(i), ""); //last value case
-//                                                    }
-//                                                    else {
-//                                                        requests = requests.replace(profile.getFollowRequests().get(i), "");
-//                                                    }
-
-                                                    //update class
-                                                    //profile.deleteFollowRequest(profile.getFollowRequests().get(i));
-
+                                                    String requests = TextUtils.join(",", requests_list);
                                                     // update database
-                                                    System.out.println(requests);
                                                     db.collection("profiles").document(profile.getUsername()).update("followRequests", requests);
-                                                    followRequestAdapter.notifyDataSetChanged();
 
                                                     Toast.makeText(FeedActivity.this, "Request Accepted", Toast.LENGTH_SHORT).show();
                                                     break;
 
                                                 case DialogInterface.BUTTON_NEGATIVE:
                                                     // update database
-                                                    data = document.getData();
-                                                    requests = (String) data.get("followRequests");
-                                                    requests_array = requests.split(", ", 0);
-                                                    requests_list = new ArrayList<String>(Arrays.asList(requests_array));
-
+                                                    requests_list = new ArrayList<String>(profile.getFollowRequests());
                                                     requests_list.remove(profile.getFollowRequests().get(i));
-
-                                                    if (requests_list.size() == 0) {
-                                                        requests = "";
-                                                    } else {
-                                                        requests = String.join(",", requests_list);
-                                                    }
-
-
-                                                    //update class
-                                                    //profile.deleteFollowRequest(profile.getFollowRequests().get(i));
-
-                                                    // update db
-                                                    System.out.println(requests);
+                                                    requests = TextUtils.join(",", requests_list);
                                                     db.collection("profiles").document(profile.getUsername()).update("followRequests", requests);
-                                                    followRequestAdapter.notifyDataSetChanged();
 
                                                     Toast.makeText(FeedActivity.this, "Request Deleted " + requests, Toast.LENGTH_SHORT).show();
                                                     break;
@@ -257,7 +218,8 @@ public class FeedActivity extends AppCompatActivity {
                                     };
 
                                     AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                                    builder.setMessage("Follow Request").setPositiveButton("Accept", dialogClickListener)
+                                    builder.setMessage("Follow Request")
+                                            .setPositiveButton("Accept", dialogClickListener)
                                             .setNegativeButton("Delete", dialogClickListener).show();
 
 
@@ -271,15 +233,19 @@ public class FeedActivity extends AppCompatActivity {
     }
 
     public void ProfileButton(View view){
-        MainActivity mainActivityInstance = MainActivity.getInstance();
-        mainActivityInstance.ProfileButton(view);
+        Intent intent = new Intent(this, ProfileActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        overridePendingTransition(R.anim.nav_default_enter_anim, R.anim.nav_default_exit_anim);
         finish();
-
     }
 
     public void HomeButton(View view){
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        overridePendingTransition(R.anim.nav_default_enter_anim, R.anim.nav_default_exit_anim);
         finish();
-
     }
 
     public void SearchBar(View view){
@@ -289,37 +255,41 @@ public class FeedActivity extends AppCompatActivity {
         //for functionality purposes I will only search the database for the username and later if we want
         //we can add the search for items like this username and display them in a new activity
         MainActivity mainActivityInstance = MainActivity.getInstance();
+        String myUsername = SingletonUsername.get(); mainActivityInstance.getUsername();
+
+        if (SearchUser.equals(myUsername)) {
+            Toast.makeText(this, "You cannot follow yourself 😄", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         db.collection("profiles").document(SearchUser)
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                //add the username to profile list
-                                Map<String, Object> data = document.getData();
-                                String requests = (String) data.get("followRequests");
-                                if (requests.isEmpty()){
-                                    requests = mainActivityInstance.getUsername();
+                .addOnCompleteListener((task) -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            //add the username to profile list
+                            Map<String, Object> data = document.getData();
+                            String requests = (String) data.get("followRequests");
+                            if (requests.isEmpty()){
+                                requests = myUsername;
+                            }else{
+                                //from the comma separated list and check if username already exists
+                                if (!requests.contains(myUsername))
+                                {
+                                    requests = requests + "," + myUsername;
                                 }else{
-                                    //from the comma separated list and check if username already exists
-                                    if (!requests.contains(mainActivityInstance.getUsername()))
-                                    {
-                                        requests = requests + ", " + mainActivityInstance.getUsername();
-                                    }else{
-                                        Toast.makeText(FeedActivity.this, "Request Already Sent", Toast.LENGTH_SHORT).show();
-                                        return;
-                                    }
-
+                                    Toast.makeText(FeedActivity.this, "Request Already Sent", Toast.LENGTH_SHORT).show();
+                                    return;
                                 }
-                                db.collection("profiles").document(SearchUser).update("followRequests", requests);
-                                Toast.makeText(FeedActivity.this, "Request Sent", Toast.LENGTH_SHORT).show();
-                            } else {
-                                //toast message "user does not exist"
-                                Toast.makeText(FeedActivity.this, "User Does Not Exist", Toast.LENGTH_SHORT).show();
 
                             }
+                            db.collection("profiles").document(SearchUser).update("followRequests", requests);
+                            Toast.makeText(FeedActivity.this, "Request Sent", Toast.LENGTH_SHORT).show();
+                        } else {
+                            //toast message "user does not exist"
+                            Toast.makeText(FeedActivity.this, "User Does Not Exist", Toast.LENGTH_SHORT).show();
+
                         }
                     }
                 });
@@ -329,5 +299,20 @@ public class FeedActivity extends AppCompatActivity {
         intent.putExtra(SearchUser);
         startActivity(intent);*/
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        new android.app.AlertDialog.Builder(this)
+                .setTitle("Exiting HabitAssist")
+                .setMessage("Are you sure you want to exit the app?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finishAffinity();
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 }

@@ -19,13 +19,19 @@
 package com.example.habitassist;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -38,6 +44,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Map;
 
 /**
@@ -60,6 +67,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private Boolean isMyProfile;
     private String username;
+    private boolean AtoZ;
     /**
      * This method sets the view, initializes variables, and assigns the Event Listeners.
      * It runs once immediately after entering this Activity.
@@ -71,8 +79,7 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         MainActivity mainActivityInstance = MainActivity.getInstance();
 
-        username = mainActivityInstance.getUsername();
-
+        username = SingletonUsername.get();
         String usernameOfFollowing = getIntent().getStringExtra("usernameOfFollowing");
         if (usernameOfFollowing != null) {
             isMyProfile = false;
@@ -83,9 +90,12 @@ public class ProfileActivity extends AppCompatActivity {
 
         if (isMyProfile){
             findViewById(R.id.logout_button).setVisibility(View.VISIBLE);
+        } else {
+            findViewById(R.id.bottom_bar).setVisibility(View.GONE);
+            findViewById(R.id.add_habit_button).setVisibility(View.GONE);
         }
         TextView usernameTitle = (TextView) findViewById(R.id.username);
-        usernameTitle.setText(username);
+        usernameTitle.setText("Habits of " + username);
 
         // Initialize variables
         profileListView = (ListView) findViewById(R.id.profile_listview);
@@ -100,27 +110,27 @@ public class ProfileActivity extends AppCompatActivity {
                 profileAllHabitsList.clear();
                 profileAllHabitsTitleList.clear();
                 for (QueryDocumentSnapshot doc : value) {
-                    String uniqueId = doc.getId().split("\\*")[0];
-                    MainActivity mainActivityInstance = MainActivity.getInstance();
-                    if (uniqueId.equals(username)) {
-                        Map<String, Object> data = doc.getData();
-                        String title = (String) data.get("title");
-                        String reason = (String) data.get("reason");
-                        String startDate = (String) data.get("startDate");
-                        String daysToBeDone = (String) data.get("daysToBeDone");
-                        boolean isPublic = (boolean) data.get("isPublic");
-                        // Add a guard in case a wrongly structured Habit data is put into firestore
-                        if (title != null && reason != null && startDate != null && daysToBeDone != null) {
-                            //if not ismyprofile check if this is a public habit
-                            if (isMyProfile || isPublic){
-                                Habit habit = new Habit(title, reason, startDate, daysToBeDone, username, isPublic);
-                                profileAllHabitsList.add(habit);
-                                profileAllHabitsTitleList.add(title);
-                            }
+                    String usernameFromUniqueId = doc.getId().split("\\*")[0];
+                    if (usernameFromUniqueId.equals(username)) {
+                        Habit habit = Habit.parseFromDoc(doc.getData());
+                        if (habit != null && (isMyProfile || habit.isPublic())){
+                            profileAllHabitsList.add(habit);
+                            profileAllHabitsTitleList.add(habit.getHabitTitle());
                         }
                     }
                 }
                 profile_habitAdapter.notifyDataSetChanged();
+
+                // Dynamically update height
+                ViewGroup.LayoutParams params = profileListView.getLayoutParams();
+                float dpFactor = getApplicationContext().getResources().getDisplayMetrics().density;
+                int dpPerItem = 51;
+                int offsetInDp = 80;
+                int nHabits = profileAllHabitsList.size();
+                int height =  (int) ((nHabits * dpPerItem + offsetInDp) * dpFactor);
+                params.height =  nHabits == 0 ? 0 : height;
+                profileListView.setLayoutParams(params);
+                profileListView.requestLayout();
             }
         });
 
@@ -133,11 +143,19 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 // Get habit clicked from the ListView
-                Habit habitClickedOn = profileAllHabitsList.get(position);
+                String titleOfClickedHabit = profileAllHabitsTitleList.get(position);
+                Habit habitClickedOn = null;
+                for (Habit habit : profileAllHabitsList) {
+                    if (habit.getHabitTitle().equals(titleOfClickedHabit)) {
+                        habitClickedOn = habit;
+                        break;
+                    }
+                }
 
                 Intent habitDetailIntent = new Intent(ProfileActivity.this, HabitDetailActivity.class);
                 habitDetailIntent.putExtra("habitPassed", habitClickedOn);
                 habitDetailIntent.putExtra("isMyHabit", isMyProfile.toString());
+                habitDetailIntent.putExtra("habitOwnerUsername", username);
                 startActivity(habitDetailIntent);
             }
         });
@@ -156,9 +174,11 @@ public class ProfileActivity extends AppCompatActivity {
      * @param view
      */
     public void FeedButton(View view) {
-        MainActivity mainActivityInstance = MainActivity.getInstance();
-        mainActivityInstance.FeedButton(view);
-
+        Intent intent = new Intent(this, FeedActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        overridePendingTransition(R.anim.nav_default_enter_anim, R.anim.nav_default_exit_anim);
+        finish();
     }
 
     /**
@@ -166,16 +186,59 @@ public class ProfileActivity extends AppCompatActivity {
      * @param view
      */
     public void HomeButton(View view) {
-        //need to find a work around for this
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        overridePendingTransition(R.anim.nav_default_enter_anim, R.anim.nav_default_exit_anim);
         finish();
     }
 
 
     public void Logout(View view){
-
-        MainActivity mainActivityInstance = MainActivity.getInstance();
-
-        mainActivityInstance.Logout(view);
+        SingletonUsername.initialize(null);
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isMyProfile) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Exiting HabitAssist")
+                    .setMessage("Are you sure you want to exit the app?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finishAffinity();
+                        }
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+        } else {
+            finish();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void AlphabeticalOrder(View view){
+
+        //Use allHabitsTitleList
+        if (AtoZ == false) {
+            profileAllHabitsTitleList.sort(Comparator.comparing(String::toString));
+            profile_habitAdapter.notifyDataSetChanged();
+            AtoZ = true;
+            Button rename = (Button) view.findViewById(R.id.AtoZ);
+            rename.setText("Z-A");
+
+        }else{
+            profileAllHabitsTitleList.sort(Comparator.comparing(String::toString).reversed() );
+            profile_habitAdapter.notifyDataSetChanged();
+            AtoZ = false;
+            Button rename = (Button) view.findViewById(R.id.AtoZ);
+            rename.setText("A-Z");
+        }
+
     }
 }
