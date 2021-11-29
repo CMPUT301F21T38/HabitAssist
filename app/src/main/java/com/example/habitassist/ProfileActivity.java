@@ -19,9 +19,11 @@
 package com.example.habitassist;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -38,7 +40,10 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * The Android Activity that handles showing the user profile and with a list of all habits for
@@ -60,6 +65,8 @@ public class ProfileActivity extends AppCompatActivity {
 
     private Boolean isMyProfile;
     private String username;
+
+    private boolean AtoZ;
     /**
      * This method sets the view, initializes variables, and assigns the Event Listeners.
      * It runs once immediately after entering this Activity.
@@ -70,6 +77,7 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         MainActivity mainActivityInstance = MainActivity.getInstance();
+        AtoZ = false;
 
         username = mainActivityInstance.getUsername();
 
@@ -177,5 +185,21 @@ public class ProfileActivity extends AppCompatActivity {
 
         mainActivityInstance.Logout(view);
         finish();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void AlphabeticalOrder(View view){
+
+        //Use allHabitsTitleList
+        if (AtoZ == false) {
+            profileAllHabitsTitleList.sort(Comparator.comparing(String::toString));
+            profile_habitAdapter.notifyDataSetChanged();
+            AtoZ = true;
+        }else{
+            profileAllHabitsTitleList.sort(Comparator.comparing(String::toString).reversed() );
+            profile_habitAdapter.notifyDataSetChanged();
+            AtoZ = false;
+        }
+
     }
 }

@@ -40,7 +40,7 @@
         android:id="@+id/textView7"
         android:layout_width="151dp"
         android:layout_height="50dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="68dp"
         android:gravity="center_horizontal|center_vertical"
         android:text="Your Habits"
         android:textColor="#000000"
@@ -57,10 +57,10 @@
         android:layout_marginTop="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.557"
+        app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.009" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_habit_button"
@@ -107,6 +107,27 @@
             android:text="Profile" />
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/AtoZ"
+        android:layout_width="140dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
+        android:onClick="AlphabeticalOrder"
+        android:text="A-Z"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logout_button" />
+
+    <Button
+        android:id="@+id/StartDate"
+        android:layout_width="140dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="40dp"
+        android:text="Start Date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logout_button" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
