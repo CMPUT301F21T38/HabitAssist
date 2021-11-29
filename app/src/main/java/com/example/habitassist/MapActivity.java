@@ -24,6 +24,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
+/**
+ * This Class collects the users location if allowed and places a mark on the map
+ * which is then used to mark down a location to be used
+ * when marking down a habit event
+ */
 public class MapActivity extends AppCompatActivity {
 
     SupportMapFragment supportMapFragment;
@@ -66,6 +71,7 @@ public class MapActivity extends AppCompatActivity {
         }
     }
 
+    //saves the location
     public void onClickSaveButton(View view) {
         if (latlngString == null) {
             latlngString = "";
@@ -76,6 +82,7 @@ public class MapActivity extends AppCompatActivity {
         finish();
     }
 
+    //implements the back button
     @Override
     public void onBackPressed() {
         if (latlngString == null) {

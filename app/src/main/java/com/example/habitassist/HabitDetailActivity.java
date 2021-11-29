@@ -84,7 +84,6 @@ public class HabitDetailActivity extends AppCompatActivity {
 
     private float numberOfDaysToDoThisWeek;
     private float numberOfDaysDoneThisWeek;
-    private int datesToBeDoneSize;
 
     private String habitOwnerUsername;
 
@@ -136,6 +135,10 @@ public class HabitDetailActivity extends AppCompatActivity {
         numberOfDaysToDoThisWeek = habitRecieved.getDaysToBeDone().split(",").length;
         numberOfDaysDoneThisWeek = 0;
 
+        /**
+         * Goes through the Habit and collects the information.
+         * It then sets all the information on the screen to match the Habit that we collected from the database
+         */
         db.collection("habits").document(habitRecieved.getUniqueId())
                 .addSnapshotListener((doc, error) -> {
                     if (error == null && doc != null && doc.exists()) {
@@ -274,13 +277,15 @@ public class HabitDetailActivity extends AppCompatActivity {
         intent.putExtra("habitPassedIn", (Serializable) habitRecieved);
         startActivityForResult(intent, EDITHABIT_REQUEST_CODE);
     }
-
-    public void onClickCompleted(View view) {
+    //Allows the user to mark completion of a Habit event.
+    //Starts a new activity to do this.
+    public void markCompletion(View view) {
         Intent intent = new Intent(this, AddHabitEventActivity.class);
         intent.putExtra("habit", habitRecieved);
         startActivity(intent);
     }
 
+    //Updates the progress bar upon completion of the Habit event
     private void updateProgressBar(String daysToBeDone, ArrayList<HabitEvent> habitEvents) {
         ArrayList<String> datesOfThisWeek = datesOfThisWeek(daysToBeDone);
 
@@ -304,6 +309,9 @@ public class HabitDetailActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Gets the days of this week and helps with the setup of the progress bar.
+     */
     private ArrayList<String> datesOfThisWeek(String daysToBeDone) {
         // Split the days of the week into an ArrayList; e.g. ["Monday", "Friday"]
         List<String> dayToBeDoneList = Arrays.asList(habitRecieved.getDaysToBeDone().split(", "));

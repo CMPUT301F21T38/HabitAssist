@@ -188,6 +188,12 @@ public class HabitEditActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * This method is called when the is Public Button is clicked.
+     * it sets the isPublic attribute to true or false
+     * denoting if the habit can be viewed by other users.
+     * @param view
+     */
     public void isPublicButton(View view){
         if (isPublic){
             isPublic = false;

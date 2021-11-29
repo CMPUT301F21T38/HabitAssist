@@ -60,6 +60,8 @@ public class Habit implements Serializable {
      * @param reason a string containing the reason for the habit
      * @param startDate a date string in the format yyyy-MM-dd
      * @param DaysToBeDone a string of comma-separated days of the week
+     * @param ownerUsername a string containing the username of the owner of this Habit
+     * @param isPublic a boolean value that says if the Habit is visible to other users who follow the User
      */
     Habit(String title, String reason, String startDate, String DaysToBeDone, String ownerUsername, boolean isPublic){
         this.title = title;
@@ -84,6 +86,10 @@ public class Habit implements Serializable {
     }
 
     // Getters and Setters
+    /**
+     * Getter for the `isPublic` attribute
+     * @return the isPublic attribute
+     */
     public boolean isPublic() {
         return isPublic;
     }
@@ -123,15 +129,19 @@ public class Habit implements Serializable {
         return daysToBeDone;
     }
 
-
+    /**
+     * Getter for the `ownerUsername` attribute
+     * @return the ownerUsername attribute
+     */
     public String getOwnerUsername() {
         return ownerUsername;
     }
 
-    public void setOwnerUsername(String ownerUsername) {
-        this.ownerUsername = ownerUsername;
-    }
-
+    /**
+     * Getter for the UniqueId
+     * @return the ownerUsername + * + timeStamp resulting in a unique ID for the Habit that can be used
+     * to identify the Habit in the database
+     */
     String getUniqueId() {
         return ownerUsername + "*" + timeStamp;
     }
@@ -160,22 +170,30 @@ public class Habit implements Serializable {
         this.title = title;
     }
 
+    /**
+     * Getter for the `timeStamp' attribute
+     */
     public String getTimeStamp() {
         return timeStamp;
     }
 
+    /**
+     * Getter for the `habitEvents' attribute
+     */
     public ArrayList<HabitEvent> getHabitEvents() {
         return habitEvents;
     }
 
-    public void setHabitEvents(ArrayList<HabitEvent> habitEvents) {
-        this.habitEvents = habitEvents;
-    }
-
+    /**
+     * Clears the Habit events
+     */
     public void clearHabitEvents() {
         this.habitEvents.clear();
     }
 
+    /**
+     * Adds a new Habit Event to the Habit events attributes
+     */
     public void addToHabitEvents(HabitEvent habitEvent) {
         this.habitEvents.add(habitEvent);
     }
@@ -230,6 +248,11 @@ public class Habit implements Serializable {
         return date_Started;
     }
 
+    /**
+     * implements a parser that collects information and returns a habit from the given data.
+     * used as a way to use one function in many different lines.
+     * if the data has a null value it returns null.
+     */
     static public Habit parseFromDoc(Map<String, Object> data) {
         String title = (String) data.get("title");
         String reason = (String) data.get("reason");

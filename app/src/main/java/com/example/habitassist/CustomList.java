@@ -35,9 +35,6 @@ import java.util.ArrayList;
 
 /**
  * An ArrayAdapter used to display data into a ListView
- *
- * Currently outstanding issues: This class is UNFINISHED and UNUSED right now.
- * It will be used for HabitEvents later.
  */
 public class CustomList extends ArrayAdapter<Habit> {
     //Declaring variables as understood in CustomList Lab 3

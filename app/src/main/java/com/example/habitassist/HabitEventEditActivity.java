@@ -30,6 +30,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
+/**
+ * The Android Activity that handles editing the details of a particular event and Editing it.
+ */
 public class HabitEventEditActivity extends AppCompatActivity {
     FirebaseFirestore db;
     HabitEvent habitEventRecieved;
