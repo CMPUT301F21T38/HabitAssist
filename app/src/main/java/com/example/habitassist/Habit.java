@@ -260,9 +260,9 @@ public class Habit implements Serializable {
         String daysToBeDone = (String) data.get("daysToBeDone");
         String ownerUsername = (String) data.get("ownerUsername");
         String timeStamp = (String) data.get("timeStamp");
-        boolean isPublic = (boolean) data.get("isPublic");
+        Boolean isPublic = (Boolean) data.get("isPublic");
         // Add a guard in case a wrongly structured Habit data is put into firestore
-        if (title != null && reason != null && startDate != null && daysToBeDone != null && ownerUsername != null) {
+        if (title != null && reason != null && startDate != null && daysToBeDone != null && ownerUsername != null && isPublic != null) {
             Habit habit = new Habit(title, reason, startDate, daysToBeDone, ownerUsername, isPublic, timeStamp);
             return habit;
         }
