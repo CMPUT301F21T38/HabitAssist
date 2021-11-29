@@ -23,6 +23,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -238,20 +239,29 @@ public class HabitDetailActivity extends AppCompatActivity {
      * @param view
      */
     public void DeleteHabit(View view){
-        // Delete this habit
-        db.collection("habits")
-                .document(habitRecieved.getUniqueId())
-                .delete();
-        // Delete all habitEvents associated with this habit
-        db.collection("habitEvents")
-                .whereEqualTo("parentHabitUniqueId", habitRecieved.getUniqueId())
-                .get()
-                .addOnSuccessListener((value) -> {
-                    for (QueryDocumentSnapshot doc : value) {
-                        doc.getReference().delete();
-                    }
-                });
-        finish();
+
+        new AlertDialog.Builder(this)
+                .setTitle("Deleting a Habit")
+                .setMessage("Are you sure you want to delete this habit? All habitEvents related" +
+                        "to this habit will also be deleted.")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    // Delete this habit
+                    db.collection("habits")
+                            .document(habitRecieved.getUniqueId())
+                            .delete();
+                    // Delete all habitEvents associated with this habit
+                    db.collection("habitEvents")
+                            .whereEqualTo("parentHabitUniqueId", habitRecieved.getUniqueId())
+                            .get()
+                            .addOnSuccessListener((value) -> {
+                                for (QueryDocumentSnapshot doc : value) {
+                                    doc.getReference().delete();
+                                }
+                            });
+                    finish();
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 
     /**

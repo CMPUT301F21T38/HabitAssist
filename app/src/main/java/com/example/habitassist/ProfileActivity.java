@@ -43,8 +43,12 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -67,7 +71,8 @@ public class ProfileActivity extends AppCompatActivity {
 
     private Boolean isMyProfile;
     private String username;
-    private boolean AtoZ;
+    private boolean AtoZ = false;
+    private boolean EarlyToLate = false;
     /**
      * This method sets the view, initializes variables, and assigns the Event Listeners.
      * It runs once immediately after entering this Activity.
@@ -144,13 +149,16 @@ public class ProfileActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 // Get habit clicked from the ListView
                 String titleOfClickedHabit = profileAllHabitsTitleList.get(position);
-                Habit habitClickedOn = null;
-                for (Habit habit : profileAllHabitsList) {
-                    if (habit.getHabitTitle().equals(titleOfClickedHabit)) {
-                        habitClickedOn = habit;
-                        break;
-                    }
-                }
+
+                // Habit habitClickedOn = null;
+                // for (Habit habit : profileAllHabitsList) {
+                //     if (habit.getHabitTitle().equals(titleOfClickedHabit)) {
+                //         habitClickedOn = habit;
+                //         break;
+                //     }
+                // }
+
+                Habit habitClickedOn = profileAllHabitsList.get(position);
 
                 Intent habitDetailIntent = new Intent(ProfileActivity.this, HabitDetailActivity.class);
                 habitDetailIntent.putExtra("habitPassed", habitClickedOn);
@@ -195,11 +203,18 @@ public class ProfileActivity extends AppCompatActivity {
 
 
     public void Logout(View view){
-        SingletonUsername.initialize(null);
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-        finish();
+        new AlertDialog.Builder(this)
+                .setTitle("Logging out")
+                .setMessage("Are you sure you want to log out?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    SingletonUsername.initialize(null);
+                    Intent intent = new Intent(this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 
     @Override
@@ -221,9 +236,51 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
+    public void TimeOrder(View view) {
+        int minus, plus;
+        if (EarlyToLate == false) {
+            minus = 1;
+            plus = -1;
+            ((Button) findViewById(R.id.StartDate)).setText("Late-Early");
+            ((TextView) findViewById(R.id.sortedby)).setText("Reordered manually from: Earliest startDate to latest");
+        } else {
+            minus = -1;
+            plus = 1;
+            ((Button) findViewById(R.id.StartDate)).setText("Early-Late");
+            ((TextView) findViewById(R.id.sortedby)).setText("Reordered manually from: Latest startDate to earliest");
+        }
+
+        EarlyToLate = !EarlyToLate;
+
+        // future to past order
+        Collections.sort(profileAllHabitsList, (h1, h2) -> {
+            Date h1StartDate = null, h2StartDate = null;
+            try {
+                h1StartDate = (new SimpleDateFormat("yyyy-MM-dd")).parse(h1.getStartDate());
+                h2StartDate = (new SimpleDateFormat("yyyy-MM-dd")).parse(h2.getStartDate());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            int returnVal = 0;
+            if (h1StartDate.after(h2StartDate)) {
+                returnVal = minus;
+            } else if (h2StartDate.after(h1StartDate)) {
+                returnVal = plus;
+            }
+            return returnVal;
+        });
+
+        for (int i = 0; i < profileAllHabitsList.size(); i++) {
+            profileAllHabitsTitleList.set(i, profileAllHabitsList.get(i).getHabitTitle());
+        }
+        profile_habitAdapter.notifyDataSetChanged();
+        AtoZ = false;
+        ((Button) findViewById(R.id.AtoZ)).setText("A-Z");
+
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void AlphabeticalOrder(View view){
-
         //Use allHabitsTitleList
         if (AtoZ == false) {
             profileAllHabitsTitleList.sort(Comparator.comparing(String::toString));
@@ -231,6 +288,9 @@ public class ProfileActivity extends AppCompatActivity {
             AtoZ = true;
             Button rename = (Button) view.findViewById(R.id.AtoZ);
             rename.setText("Z-A");
+            Collections.sort(profileAllHabitsList, Comparator.comparing(Habit::getHabitTitle));
+            ((TextView) findViewById(R.id.sortedby)).setText("Reordered manually from: A to Z");
+            EarlyToLate = false;
 
         }else{
             profileAllHabitsTitleList.sort(Comparator.comparing(String::toString).reversed() );
@@ -238,6 +298,9 @@ public class ProfileActivity extends AppCompatActivity {
             AtoZ = false;
             Button rename = (Button) view.findViewById(R.id.AtoZ);
             rename.setText("A-Z");
+            Collections.sort(profileAllHabitsList, (h1, h2) -> h2.getHabitTitle().compareTo(h1.getHabitTitle()));
+            ((TextView) findViewById(R.id.sortedby)).setText("Reordered manually from: Z to A");
+            EarlyToLate = false;
         }
 
     }

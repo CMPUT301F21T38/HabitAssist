@@ -18,6 +18,8 @@
  */
 package com.example.habitassist;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -64,7 +66,7 @@ public class HabitEventDetailActivity extends AppCompatActivity {
 
     private ArrayAdapter<String> habitEventsAdapter;
 
-    Map mapController;
+    private Map mapController;
 
     /**
      * This method sets the view and initializes variables. It runs once immediately after entering
@@ -164,19 +166,26 @@ public class HabitEventDetailActivity extends AppCompatActivity {
      * @param view
      */
     public void DeleteHabitEvent(View view) {
-        String habitEventId = habitEventRecieved.getUniqueId();
-        db.collection("habitEvents")
-                .document(habitEventId)
-                .delete()
-                .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(HabitEventDetailActivity.this,
-                            habitEventId+" successfully deleted!", Toast.LENGTH_SHORT).show();
+        new AlertDialog.Builder(this)
+                .setTitle("Deleting a HabitEvent")
+                .setMessage("Are you sure you want to delete this habit event?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    String habitEventId = habitEventRecieved.getUniqueId();
+                    db.collection("habitEvents")
+                            .document(habitEventId)
+                            .delete()
+                            .addOnSuccessListener(aVoid -> {
+                                Toast.makeText(HabitEventDetailActivity.this,
+                                        habitEventId+" successfully deleted!", Toast.LENGTH_SHORT).show();
+                            })
+                            .addOnFailureListener(e -> {
+                                Toast.makeText(HabitEventDetailActivity.this,
+                                        "Error deleting "+habitEventId+" :" + e, Toast.LENGTH_SHORT).show();
+                            });
+                    finish();
                 })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(HabitEventDetailActivity.this,
-                            "Error deleting "+habitEventId+" :" + e, Toast.LENGTH_SHORT).show();
-                });
-        finish();
+                .setNegativeButton("No", null)
+                .show();
     }
 
     /**

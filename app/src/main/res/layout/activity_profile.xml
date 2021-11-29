@@ -37,16 +37,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/AtoZ" />
 
+    <TextView
+        android:id="@+id/sortedby"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="Not manually reordered yet"
+        android:textColor="#000000"
+        android:textSize="14dp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/username" />
+
     <ListView
         android:id="@+id/profile_listview"
-        android:layout_width="360dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="12dp"
+        android:layout_width="359dp"
+        android:layout_height="530dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.557"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username"
+        app:layout_constraintTop_toBottomOf="@+id/sortedby"
         app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -54,7 +66,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
-        android:layout_margin="16dp"
+        android:layout_margin="5dp"
         android:layout_marginEnd="32dp"
         android:clickable="true"
         android:onClick="addHabitButtonClickHandler"
@@ -81,7 +93,8 @@
         android:layout_height="45dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="40dp"
-        android:text="Start Date"
+        android:text="Early-late"
+        android:onClick="TimeOrder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logout_button" />
 
