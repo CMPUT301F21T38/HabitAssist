@@ -186,7 +186,7 @@ public class HabitDetailActivity extends AppCompatActivity {
                     continue;
                 }
                 // Only add if this HabitEvent belongs to the correct Habit in question.
-                if (habitEventParsed.getParentHabitUniqueId().equals(habitRecieved.getUniqueId())) {
+                if (habitEventParsed.getParentHabitUniqueId() != null && habitEventParsed.getParentHabitUniqueId().equals(habitRecieved.getUniqueId())) {
                     habitRecieved.addToHabitEvents(habitEventParsed);
                     // Set the content to be shown for each habitEvent
                     String dateAndTime = habitEventParsed.getTimeStamp();

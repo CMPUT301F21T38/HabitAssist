@@ -26,8 +26,11 @@ import org.junit.jupiter.api.Test;
 
 public class HabitTest {
     private Habit createHabit() {
-        MainActivity mainActivityInstance = MainActivity.getInstance();
-        return new Habit("play games", "fun", "2021-09-01", "Monday, Tuesday", mainActivityInstance.getUsername());
+        String title = "play games", reason = "fun", startDate = "2021-09-01",
+                DaysToBeDone = "Monday, Tuesday", ownerUsername = "waseem",
+                timeStamp = "2021-09-01 12:12:12";
+        boolean isPublic = true;
+        return new Habit(title, reason, startDate, DaysToBeDone, ownerUsername, isPublic, timeStamp);
     }
 
 
@@ -47,6 +50,18 @@ public class HabitTest {
     @Test
     public void testDaysToBeDone() {
         assertEquals("Monday, Tuesday", createHabit().getDaysToBeDone());
+    }
+    @Test
+    public void testOwnerUsername() {
+        assertEquals("waseem", createHabit().getOwnerUsername());
+    }
+    @Test
+    public void testIsPublic() {
+        assertEquals(true, createHabit().isPublic());
+    }
+    @Test
+    public void testTimeStamp() {
+        assertEquals("2021-09-01 12:12:12", createHabit().getTimeStamp());
     }
 
 }
