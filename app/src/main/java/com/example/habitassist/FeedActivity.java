@@ -37,6 +37,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class is one of out main screens. It displays who the user follows and shows them their follow requests.
+ * It allows the user to accept or deny the follow requests.
+ * There is also functionality for sending friend requests to to others.
+ * The app also manages the navigation and information when a person the user follows is clicked on.
+ */
+
 public class FeedActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
@@ -232,6 +239,10 @@ public class FeedActivity extends AppCompatActivity {
                 });
     }
 
+
+    /**
+     * This handles a user clicking on the profile button at the bottom navigation.
+     */
     public void ProfileButton(View view){
         Intent intent = new Intent(this, ProfileActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -240,6 +251,9 @@ public class FeedActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * This handles a user clicking on the Home button at the bottom navigation.
+     */
     public void HomeButton(View view){
         Intent intent = new Intent(this, HomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -248,6 +262,11 @@ public class FeedActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * This handles the user typing something into the search bar and clicking add.
+     * If the user is found a message will pop up saying request sent and will send the request to the other user.
+     * If the user does not exist a message will pop up saying so and will not do anything.
+     */
     public void SearchBar(View view){
         //search for other users
         EditText search = (EditText) findViewById(R.id.SearchName);
@@ -294,13 +313,11 @@ public class FeedActivity extends AppCompatActivity {
                     }
                 });
 
-
-        /*Intent intent = new Intent(this, FeedActivity.class);
-        intent.putExtra(SearchUser);
-        startActivity(intent);*/
-
     }
 
+    /**
+     * Implements a back button for navigation purposes in the app.
+     */
     @Override
     public void onBackPressed() {
         new android.app.AlertDialog.Builder(this)

@@ -15,20 +15,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+/**
+ * This Class implements the profile object
+ * it has parameters such as username, password, following and follow requests
+ * all this information is stored and can be then placed into the database.
+ */
+
 public class Profile implements Serializable {
     private ArrayList<String> following;
     private String username;
     private String password;
     private ArrayList<String> followRequests;
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
+    //different versions of creating a profile object
     Profile(String username, String password){
         this.username = username;
         this.password = password;
@@ -42,6 +42,14 @@ public class Profile implements Serializable {
         this.followRequests = new ArrayList<>();
     }
 
+    //setters and getters
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
     public String getUsername(){
         return this.username;
     }
@@ -50,6 +58,7 @@ public class Profile implements Serializable {
         return this.password;
     }
 
+    //Gets the information and returns it as a hashmap allowing th einfo to be put into the database
     public HashMap<String, String> getDocument() {
         HashMap<String, String> profileDocument = new HashMap<>();
         profileDocument.put("username", username);
@@ -72,6 +81,7 @@ public class Profile implements Serializable {
         return this.followRequests;
     }
 
+    //adds a follow request to follow request list
     public void AddFollowRequests(String follower) {
         this.followRequests.add(follower);
     }

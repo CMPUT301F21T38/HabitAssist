@@ -23,6 +23,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * The Android Activity that handles displaying the Habits to Do today and allows navigation to
+ * see the details of those habits.
+ * This Activity also enables navigating to the add habit activity.
+ */
 public class HomeActivity extends AppCompatActivity {
     /** A list of the habits belonging to the profile that needs to be done today */
     private ArrayList<Habit> habitList;
@@ -34,17 +39,6 @@ public class HomeActivity extends AppCompatActivity {
     /** A reference to the Firestore database  */
     public FirebaseFirestore db;
 
-    /** A name tag used in logging statements from this activity */
-    final String TAG = "MainActivity";
-
-    /**
-     * This variable is set immediately after a ListView of habits is clicked. It stores the title
-     * of the habit clicked. The unique title is used to identify which habit object to delete or
-     * edit if an action like that is triggered. */
-    public String DeleteAndEdit;
-
-
-    int profileCode = 42;
 
     private String username;
 
@@ -109,7 +103,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     /**
-     * This method is called when the Feed button on the activity_main.xml page is clicked
+     * This method is called when the Feed button on the activity_home.xml page is clicked
      * @param view
      */
     public void FeedButton(View view){
@@ -120,6 +114,11 @@ public class HomeActivity extends AppCompatActivity {
         finish();
     }
 
+
+    /**
+     * This method is called when the Profile button on the activity_home.xml page is clicked
+     * @param view
+     */
     public void ProfileButton(View view){
         Intent intent = new Intent(this, ProfileActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -128,6 +127,7 @@ public class HomeActivity extends AppCompatActivity {
         finish();
     }
 
+    //Handles the back button
     @Override
     public void onBackPressed() {
         new AlertDialog.Builder(this)

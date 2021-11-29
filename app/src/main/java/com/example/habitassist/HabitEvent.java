@@ -42,17 +42,11 @@ public class HabitEvent implements Serializable {
         return parentHabitUniqueId;
     }
 
-    public void setParentHabitUniqueId(String parentHabitUniqueId) {
-        this.parentHabitUniqueId = parentHabitUniqueId;
-    }
 
     public String getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(String timeStamp) {
-        this.timeStamp = timeStamp;
-    }
 
     public String getImageBitmapString() {
         return imageBitmapString;
@@ -74,9 +68,6 @@ public class HabitEvent implements Serializable {
         return dateString;
     }
 
-    public void setDateString(String dateString) {
-        this.dateString = dateString;
-    }
 
     // Utility methods
 
@@ -116,6 +107,7 @@ public class HabitEvent implements Serializable {
         return habitEventDocument;
     }
 
+    //Returns the uniqueID of a habit event.
     String getUniqueId() {
         return parentHabitUniqueId + "*" + timeStamp;
     }

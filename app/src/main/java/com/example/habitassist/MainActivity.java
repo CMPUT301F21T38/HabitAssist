@@ -19,7 +19,9 @@
 package com.example.habitassist;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -111,13 +113,10 @@ public class MainActivity extends AppCompatActivity {
 
         usernameEditText =  (EditText) findViewById(R.id.username);
         passwordEditText = (EditText) findViewById(R.id.Password);
-
-        // // TODO: DELETE THISSSSSS
-        // SingletonUsername.initialize("jacob");
         SingletonUsername.initialize(null);
-        // // TODO: DELETE THISSSSSS
     }
 
+    //This tells where the app opens to after login
     @Override
     protected void onStart() {
         super.onStart();
@@ -127,6 +126,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * This method is called when the user hits the login button.
+     * if the username and password is correct the user is logged in
+     * otherwise, they are told which field is incorrect
+     * @param view
+     */
     public void LoginButton(View view){
         String usernameEntered = usernameEditText.getText().toString();
         String passwordEntered = passwordEditText.getText().toString();
@@ -154,33 +159,53 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * This method is called when the user hits the CreateAccount button.
+     * the username and password are identified and the user is asked to validate their selected password
+     * if they say yes they are continued into the app as if they were logging in otherwise the
+     * user is returned to the login screen.
+     * @param view
+     */
     public void CreateAccount(View view){
         String usernameEntered = usernameEditText.getText().toString();
         String passwordEntered = passwordEditText.getText().toString();
+        new AlertDialog.Builder(this)
+                .setTitle("Creating Account")
+                .setMessage("Are you sure you want your password to be " + passwordEntered)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // here
+                        DocumentReference docRef = db.collection("profiles").document(usernameEntered);
+                        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot document = task.getResult();
+                                    if (document.exists()) {
+                                        Toast.makeText(getApplicationContext(), "Username already taken, please try again", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Profile newProfile = new Profile(usernameEntered, passwordEntered);
+                                        String name = newProfile.getUsername();
+                                        HashMap<String, String> profileDocument = newProfile.getDocument();
+                                        db.collection("profiles").document(name).set(profileDocument);
 
-        DocumentReference docRef = db.collection("profiles").document(usernameEntered);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Toast.makeText(getApplicationContext(), "Username already taken, please try again", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Profile newProfile = new Profile(usernameEntered, passwordEntered);
-                        String name = newProfile.getUsername();
-                        HashMap<String, String> profileDocument = newProfile.getDocument();
-                        db.collection("profiles").document(name).set(profileDocument);
+                                        setUsername(usernameEntered);
 
-                        setUsername(usernameEntered);
+                                        SingletonUsername.initialize(usernameEntered);
 
-                        SingletonUsername.initialize(usernameEntered);
-
-                        startActivity(new Intent(MainActivity.this, HomeActivity.class));
+                                        startActivity(new Intent(MainActivity.this, HomeActivity.class));
+                                    }
+                                }
+                            }
+                        });
                     }
-                }
-            }
-        });
+                })
+                .setNegativeButton("No", null)
+
+                .show();
+
+
     }
 
     /**
@@ -191,10 +216,12 @@ public class MainActivity extends AppCompatActivity {
         return instance;
     }
 
+    //This sets the username for the user of the account
     public void setUsername(String new_username){
         username = new_username;
     }
 
+    //This allows access to the username throughout the application
     public String getUsername(){
         return username;
     }

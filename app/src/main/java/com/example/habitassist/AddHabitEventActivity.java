@@ -27,6 +27,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+/**
+ * The Android Activity that handles getting information about a new HabitEvent from the user, validating
+ * it and then adding it to the database of habitsEvents.
+ */
+
 public class AddHabitEventActivity extends AppCompatActivity {
 
     FirebaseFirestore db;
@@ -57,24 +62,39 @@ public class AddHabitEventActivity extends AppCompatActivity {
         mapController = new Map(supportMapFragment, mapViewWidget);
     }
 
+    /**
+     * The on Click Gallery Method is called when the button to select photo from gallery is clicked.
+     * it will open up your phone photos that you have had in the past and allow you to choose one.
+     */
+
     public void onClickGallery(View view) {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(intent, GALLERY_REQUEST_CODE);
     }
 
+
+    /**
+     * The onClickCamera method is called when you choose to take a picture it opens up the camera and
+     * allows you to snap a photo and choose to use the photo, retake or cancel.
+     */
     public void onClickCamera(View view) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, CAMERA_REQUEST_CODE);
     }
 
+    /**
+     * This Removes the picture from the HabitEvent.
+     */
     public void onClickRemove(View view) {
         imageBitmapStringToStore = "";
         imageView.setVisibility(View.GONE);
         imageView.setImageBitmap(null);
     }
 
-
+    /**
+     * This saves the HabitEvent event in the Database when you click the save button.
+     */
     public void onClickSaveButton(View view) {
         String comment = ((EditText) findViewById(R.id.comment_edit_text)).getText().toString();
         if (comment.length() > 20) {
@@ -92,21 +112,36 @@ public class AddHabitEventActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * This allows you to choose to record the location of your new HabitEvent and save it
+     * setting your location
+     */
+
     public void locationButtonHandler(View view) {
         Intent intent = new Intent(AddHabitEventActivity.this, MapActivity.class);
         startActivityForResult(intent, LOCATION_REQUEST_CODE);
     }
 
+    /**
+     * This removes the location and sets your location to nothing
+     */
     public void removeLocationButtonHandler(View view) {
         latlngString = null;
         mapController.hideMapWidget();
     }
 
-
+    /**
+     * This cancels the addition of a new Habit event and leaves this screen to return back to the Habit Detail screen.
+     */
     public void onClickCancelButton(View view) {
         finish();
     }
 
+
+    /**
+     * TThis gets the results and information from the Camera and converts the picture data into a bitmap.
+     * otherwise it gets the picture information from the gallery and converts to bitmap.
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

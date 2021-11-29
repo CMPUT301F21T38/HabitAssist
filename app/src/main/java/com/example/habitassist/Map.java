@@ -12,6 +12,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+/**
+ * This class implements the Map for Habit events and allows the user to mark down the location of their habit event
+ */
 public class Map {
     final private SupportMapFragment supportMapFragment;
     final private View mapViewWidget;
@@ -22,6 +25,7 @@ public class Map {
         hideMapWidget();
     }
 
+    //shows the user location
     public void showOnMap(LatLng point) {
         mapViewWidget.setVisibility(View.VISIBLE);
         MarkerOptions options = new MarkerOptions().position(point).title("Habit completed here");
@@ -45,6 +49,7 @@ public class Map {
         }
     }
 
+    //sets the widget visibility to gone
     public void hideMapWidget() {
         mapViewWidget.setVisibility(View.GONE);
     }

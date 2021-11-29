@@ -201,7 +201,13 @@ public class ProfileActivity extends AppCompatActivity {
         finish();
     }
 
-
+    /**
+     * This method is called when the user hits the logout button.
+     * it then double checks if the user truly would like to log out
+     * and then changes the username attached to the app and returns to the main activity
+     * where the user is then prompted to login again.
+     * @param view
+     */
     public void Logout(View view){
         new AlertDialog.Builder(this)
                 .setTitle("Logging out")
@@ -217,6 +223,10 @@ public class ProfileActivity extends AppCompatActivity {
                 .show();
     }
 
+    /**
+     * This method is called when the user hits the back button
+     * it then navigates back
+     */
     @Override
     public void onBackPressed() {
         if (isMyProfile) {
@@ -236,8 +246,10 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
+    //this is implemented to order the users list of habits via of start date
     public void TimeOrder(View view) {
         int minus, plus;
+        //past to future
         if (EarlyToLate == false) {
             minus = 1;
             plus = -1;
@@ -279,9 +291,11 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
+    //this is implemented to order the users list of habits via of Alphabetical order
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void AlphabeticalOrder(View view){
         //Use allHabitsTitleList
+        //A to Z
         if (AtoZ == false) {
             profileAllHabitsTitleList.sort(Comparator.comparing(String::toString));
             profile_habitAdapter.notifyDataSetChanged();
@@ -292,7 +306,7 @@ public class ProfileActivity extends AppCompatActivity {
             ((TextView) findViewById(R.id.sortedby)).setText("Reordered manually from: A to Z");
             EarlyToLate = false;
 
-        }else{
+        }else{ //Z to A
             profileAllHabitsTitleList.sort(Comparator.comparing(String::toString).reversed() );
             profile_habitAdapter.notifyDataSetChanged();
             AtoZ = false;

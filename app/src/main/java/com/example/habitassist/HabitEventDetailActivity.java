@@ -45,7 +45,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 
 
 /**
- * The Android Activity that handles displaying the details of a particular habit and deleting it.
+ * The Android Activity that handles displaying the details of a particular habitEvent and deleting it.
  * This Activity also enables navigating to the activity where the habit details can be edited.
  *
  *  Currently outstanding issues: Always shows the Edit and Delete buttons on all habits because it

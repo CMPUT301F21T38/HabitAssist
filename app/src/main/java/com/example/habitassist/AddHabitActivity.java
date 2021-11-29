@@ -122,6 +122,12 @@ public class AddHabitActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * This method is called when the Public button is pushed on the activity_add_habit.xml page.
+     * It sets a habit to public or private meaning that the habit is either viewable(Public) to others
+     * or it is not.
+     * @param view
+     */
     public void isPublicButton(View view){
         if (isPublic) {
             isPublic = false;
